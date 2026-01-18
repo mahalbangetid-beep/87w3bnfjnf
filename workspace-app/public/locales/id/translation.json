@@ -1,0 +1,756 @@
+{
+  "common": {
+    "loading": "Memuat...",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "create": "Buat",
+    "search": "Cari",
+    "filter": "Filter",
+    "all": "Semua",
+    "none": "Tidak ada",
+    "yes": "Ya",
+    "no": "Tidak",
+    "confirm": "Konfirmasi",
+    "back": "Kembali",
+    "next": "Selanjutnya",
+    "previous": "Sebelumnya",
+    "close": "Tutup",
+    "submit": "Kirim",
+    "refresh": "Segarkan",
+    "export": "Ekspor",
+    "import": "Impor",
+    "download": "Unduh",
+    "upload": "Unggah",
+    "settings": "Pengaturan",
+    "logout": "Keluar",
+    "login": "Masuk",
+    "register": "Daftar",
+    "profile": "Profil",
+    "dashboard": "Dasbor",
+    "home": "Beranda",
+    "success": "Berhasil",
+    "error": "Gagal",
+    "warning": "Peringatan",
+    "info": "Informasi"
+  },
+  "auth": {
+    "login": {
+      "title": "Selamat Datang Kembali",
+      "subtitle": "Masuk untuk melanjutkan ke Workspace",
+      "email": "Alamat Email",
+      "password": "Kata Sandi",
+      "rememberMe": "Ingat saya",
+      "forgotPassword": "Lupa kata sandi?",
+      "loginButton": "Masuk",
+      "noAccount": "Belum punya akun?",
+      "registerLink": "Buat akun",
+      "loginSuccess": "Login berhasil!",
+      "loginError": "Email atau kata sandi salah"
+    },
+    "register": {
+      "title": "Buat Akun Baru",
+      "subtitle": "Bergabunglah dengan Workspace dan tingkatkan produktivitas Anda",
+      "name": "Nama Lengkap",
+      "email": "Alamat Email",
+      "phone": "Nomor Telepon",
+      "phoneHint": "Digunakan untuk pemulihan kata sandi",
+      "password": "Kata Sandi",
+      "passwordPlaceholder": "Min. 6 karakter",
+      "confirmPassword": "Konfirmasi Kata Sandi",
+      "confirmPasswordPlaceholder": "Masukkan ulang kata sandi",
+      "termsAgree": "Saya setuju dengan syarat dan ketentuan",
+      "registerButton": "Buat Akun",
+      "haveAccount": "Sudah punya akun?",
+      "loginLink": "Masuk",
+      "registerSuccess": "Pendaftaran berhasil!",
+      "registerError": "Gagal mendaftar. Silakan coba lagi.",
+      "passwordMismatch": "Kata sandi tidak cocok",
+      "passwordTooShort": "Kata sandi minimal 6 karakter",
+      "invalidPhone": "Masukkan nomor telepon Indonesia yang valid (contoh: 08123456789)"
+    },
+    "forgotPassword": {
+      "title": "Reset Kata Sandi",
+      "subtitle": "Masukkan email Anda untuk reset kata sandi",
+      "step1Subtitle": "Masukkan nomor telepon Anda untuk menerima OTP",
+      "step2Subtitle": "Masukkan OTP yang dikirim ke telepon Anda",
+      "step3Subtitle": "Buat kata sandi baru Anda",
+      "email": "Email",
+      "sendButton": "Kirim Link Reset",
+      "backToLogin": "Kembali ke login",
+      "emailSent": "Email reset telah dikirim"
+    }
+  },
+  "placeholder": {
+    "comingSoon": "Segera Hadir",
+    "comingSoonDesc": "Kami sedang bekerja keras untuk menghadirkan fitur ini. Nantikan update-nya!",
+    "goBack": "Kembali",
+    "notifyMe": "Beritahu Saya"
+  },
+  "landing": {
+    "nav": {
+      "features": "Fitur",
+      "pricing": "Harga",
+      "about": "Tentang",
+      "contact": "Kontak",
+      "login": "Masuk",
+      "getStarted": "Mulai Gratis"
+    },
+    "hero": {
+      "title": "Ruang Kerja Digital Untuk Kreator Modern",
+      "subtitle": "Kelola proyek, keuangan, dan media sosial dalam satu platform terintegrasi",
+      "cta": "Mulai Sekarang",
+      "watchDemo": "Lihat Demo"
+    },
+    "features": {
+      "title": "Fitur Unggulan",
+      "subtitle": "Semua yang Anda butuhkan untuk produktivitas maksimal",
+      "work": {
+        "title": "Manajemen Proyek",
+        "description": "Kelola proyek, tugas, dan catatan dengan mudah"
+      },
+      "finance": {
+        "title": "Pelacakan Keuangan",
+        "description": "Pantau pemasukan, pengeluaran, dan tagihan"
+      },
+      "social": {
+        "title": "Media Sosial",
+        "description": "Jadwalkan posting ke berbagai platform"
+      },
+      "ai": {
+        "title": "Asisten AI",
+        "description": "Bantuan cerdas untuk konten dan analisis"
+      }
+    },
+    "pricing": {
+      "title": "Pilih Paket Anda",
+      "subtitle": "Mulai gratis, upgrade kapan saja",
+      "monthly": "Bulanan",
+      "yearly": "Tahunan",
+      "free": {
+        "name": "Gratis",
+        "price": "Rp 0",
+        "period": "/bulan",
+        "features": [
+          "3 Proyek",
+          "Pelacakan keuangan dasar",
+          "5 posting terjadwal/bulan"
+        ],
+        "cta": "Mulai Gratis"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "Rp 99.000",
+        "period": "/bulan",
+        "features": [
+          "Proyek tak terbatas",
+          "Laporan keuangan lengkap",
+          "100 posting terjadwal/bulan",
+          "Integrasi AI"
+        ],
+        "cta": "Mulai Pro"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Rp 299.000",
+        "period": "/bulan",
+        "features": [
+          "Semua fitur Pro",
+          "Kolaborasi tim",
+          "API akses",
+          "Dukungan prioritas"
+        ],
+        "cta": "Hubungi Kami"
+      }
+    },
+    "cta": {
+      "title": "Siap Meningkatkan Produktivitas?",
+      "subtitle": "Bergabunglah dengan ribuan kreator yang telah menggunakan Workspace",
+      "button": "Mulai Sekarang - Gratis"
+    },
+    "footer": {
+      "description": "Platform all-in-one untuk kreator dan profesional modern",
+      "product": "Produk",
+      "company": "Perusahaan",
+      "resources": "Sumber Daya",
+      "legal": "Legal",
+      "copyright": "© 2026 Workspace. Hak cipta dilindungi."
+    }
+  },
+  "sidebar": {
+    "work": "Work",
+    "space": "Space",
+    "social": "Sosial",
+    "finance": "Keuangan",
+    "assets": "Aset",
+    "system": "Sistem",
+    "dashboard": "Dasbor",
+    "projects": "Project",
+    "tasks": "Tugas",
+    "notes": "Catatan",
+    "calendar": "Kalender",
+    "targeting": "Targeting",
+    "reporting": "Laporan",
+    "settings": "Pengaturan",
+    "accounts": "Management Akun",
+    "posting": "Posting",
+    "schedule": "Jadwal",
+    "blog": "Blog",
+    "balance": "Saldo",
+    "income": "Pemasukan",
+    "expense": "Pengeluaran",
+    "bills": "Tagihan",
+    "budget": "Anggaran",
+    "report": "Laporan",
+    "management": "Management Aset",
+    "bookmarks": "Favorit",
+    "users": "Pengguna",
+    "projectsPlan": "Ide Project",
+    "roadmap": "Roadmap",
+    "sosmedSettings": "Pengaturan Sosmed",
+    "blogSettings": "Pengaturan Blog/Web",
+    "overview": "Ringkasan",
+    "roleManagement": "Manajemen Peran",
+    "activityLogs": "Log Aktivitas",
+    "integrations": "Integrasi",
+    "invitations": "Undangan",
+    "analytics": "Analitik",
+    "userSettings": "Pengaturan",
+    "profile": "Profil",
+    "account": "Akun",
+    "aiConfig": "Konfigurasi AI",
+    "notifications": "Notifikasi",
+    "preferences": "Preferensi",
+    "suggestions": "Saran Fitur",
+    "security": "Keamanan"
+  },
+  "work": {
+    "dashboard": {
+      "title": "Dasbor Kerja",
+      "welcome": "Selamat datang",
+      "subtitle": "Berikut ringkasan produktivitas Anda",
+      "activeProjects": "Proyek Aktif",
+      "pendingTasks": "Tugas Tertunda",
+      "completedThisWeek": "Selesai Minggu Ini",
+      "upcomingDeadlines": "Deadline Mendatang"
+    },
+    "projects": {
+      "title": "Proyek",
+      "newProject": "Proyek Baru",
+      "allProjects": "Semua Proyek",
+      "active": "Aktif",
+      "completed": "Selesai",
+      "archived": "Diarsipkan",
+      "noProjects": "Belum ada proyek",
+      "createFirst": "Buat proyek pertama Anda",
+      "subtitle": "Kelola dan lacak semua proyek Anda"
+    },
+    "tasks": {
+      "title": "Tugas",
+      "newTask": "Tugas Baru",
+      "allTasks": "Semua Tugas",
+      "todo": "Harus Dikerjakan",
+      "inProgress": "Sedang Dikerjakan",
+      "done": "Selesai",
+      "priority": "Prioritas",
+      "dueDate": "Tanggal Jatuh Tempo",
+      "assignee": "Ditugaskan ke"
+    },
+    "calendar": {
+      "title": "Kalender",
+      "subtitle": "Jadwalkan tugas dan lacak timeline proyek",
+      "newTask": "Tugas Baru",
+      "todaysTasks": "Tugas Hari Ini",
+      "upcoming": "Mendatang",
+      "activeProjects": "Proyek Aktif",
+      "goToToday": "Ke Hari Ini"
+    },
+    "notes": {
+      "title": "Catatan",
+      "newNote": "Catatan Baru",
+      "allNotes": "Semua Catatan",
+      "noNotes": "Belum ada catatan",
+      "searchNotes": "Cari catatan...",
+      "subtitle": "Catat ide dan simpan informasi penting"
+    },
+    "budget": {
+      "title": "Anggaran",
+      "subtitle": "Lacak dan kelola anggaran dan pengeluaran proyek"
+    },
+    "assets": {
+      "title": "Aset",
+      "subtitle": "Kelola file dan dokumen proyek"
+    },
+    "reporting": {
+      "title": "Pelaporan",
+      "subtitle": "Buat dan lihat laporan proyek"
+    },
+    "settings": {
+      "title": "Pengaturan Kerja",
+      "subtitle": "Konfigurasi preferensi modul kerja"
+    }
+  },
+  "finance": {
+    "dashboard": {
+      "title": "Dasbor Keuangan",
+      "subtitle": "Ringkasan keuangan Anda",
+      "totalBalance": "Total Saldo",
+      "totalBudget": "Total Anggaran",
+      "totalExpenses": "Total Pengeluaran",
+      "netProfit": "Laba Bersih",
+      "income": "Pemasukan",
+      "expense": "Pengeluaran",
+      "thisMonth": "Bulan Ini",
+      "lastMonth": "Bulan Lalu"
+    },
+    "profit": "Untung",
+    "loss": "Rugi",
+    "accountsConnected": "akun terhubung",
+    "incomeThisMonth": "Pemasukan Bulan Ini",
+    "expenseThisMonth": "Pengeluaran Bulan Ini",
+    "cashflowLast6Months": "Cash Flow 6 Bulan Terakhir",
+    "noData": "Belum ada data",
+    "upcomingBills": "Tagihan Mendatang",
+    "recentTransactions": "Transaksi Terbaru",
+    "viewAll": "Lihat Semua",
+    "noBills": "Tidak ada tagihan",
+    "noTransactionsYet": "Belum ada transaksi",
+    "addFirstTransaction": "Tambah Transaksi Pertama",
+    "quickActions": {
+      "title": "Aksi Cepat",
+      "viewBalance": "Lihat Saldo"
+    },
+    "transactions": {
+      "title": "Transaksi",
+      "newTransaction": "Tambah Transaksi",
+      "allTransactions": "Semua Transaksi",
+      "income": "Pemasukan",
+      "expense": "Pengeluaran",
+      "transfer": "Transfer",
+      "category": "Kategori",
+      "amount": "Jumlah",
+      "date": "Tanggal",
+      "description": "Deskripsi",
+      "noTransactions": "Belum ada transaksi"
+    },
+    "reports": {
+      "title": "Laporan Keuangan",
+      "subtitle": "Analisis pemasukan, pengeluaran, dan arus kas",
+      "monthly": "Bulanan",
+      "cashflow": "Cash Flow",
+      "previous": "← Sebelumnya",
+      "next": "Selanjutnya →",
+      "totalIncome": "Total Pemasukan",
+      "totalExpense": "Total Pengeluaran",
+      "netProfitLoss": "Laba / Rugi Bersih",
+      "incomeByCategory": "Pemasukan per Kategori",
+      "expenseByCategory": "Pengeluaran per Kategori",
+      "cashflowLast12Months": "Cash Flow 12 Bulan Terakhir",
+      "noData": "Tidak ada data",
+      "period": "Periode",
+      "net": "Net",
+      "total": "Total",
+      "other": "Lainnya"
+    },
+    "bills": {
+      "title": "Tagihan",
+      "subtitle": "Kelola semua tagihan dan pembayaran rutin",
+      "newBill": "Tagihan Baru",
+      "addBill": "Tambah Tagihan",
+      "editBill": "Edit Tagihan",
+      "allBills": "Semua Tagihan",
+      "upcoming": "Mendatang",
+      "overdue": "Terlambat",
+      "paid": "Lunas",
+      "pending": "Menunggu",
+      "cancelled": "Dibatalkan",
+      "dueDate": "Jatuh Tempo",
+      "amount": "Jumlah",
+      "markAsPaid": "Tandai Lunas",
+      "pay": "Bayar",
+      "totalUnpaid": "Total Belum Bayar",
+      "waiting": "Menunggu",
+      "noBills": "Belum Ada Tagihan",
+      "addYourBills": "Tambahkan tagihan rutin Anda",
+      "quickAdd": "Tambah Cepat",
+      "confirmDelete": "Yakin ingin menghapus tagihan ini?",
+      "deleteFailed": "Gagal menghapus",
+      "dueDateLabel": "Jatuh tempo",
+      "monthly": "Bulanan",
+      "weekly": "Mingguan",
+      "yearly": "Tahunan",
+      "payBill": "Bayar Tagihan",
+      "selectAccount": "Pilih akun",
+      "paidAmount": "Jumlah dibayar",
+      "category": "Kategori",
+      "billName": "Nama tagihan",
+      "recurring": "Berulang",
+      "reminder": "Pengingat",
+      "reminderDays": "Ingatkan sebelum (hari)",
+      "notes": "Catatan",
+      "saving": "Menyimpan...",
+      "save": "Simpan",
+      "cancel": "Batal",
+      "filter": {
+        "all": "Semua",
+        "pending": "Menunggu",
+        "overdue": "Terlambat",
+        "paid": "Lunas"
+      },
+      "status": {
+        "pending": "Belum Bayar",
+        "overdue": "Terlambat",
+        "paid": "Lunas",
+        "cancelled": "Dibatalkan"
+      }
+    },
+    "balance": {
+      "title": "Saldo",
+      "subtitle": "Kelola semua akun dan saldo Anda",
+      "totalBalance": "Total Saldo Semua Akun",
+      "addAccount": "Tambah Akun",
+      "editAccount": "Edit Akun",
+      "accountsRegistered": "akun terdaftar",
+      "quickAdd": "Tambah Cepat",
+      "noAccounts": "Belum Ada Akun",
+      "addAccountDesc": "Tambahkan akun bank, e-wallet, atau dompet tunai Anda",
+      "accountType": "Jenis Akun",
+      "accountName": "Nama Akun",
+      "bank": "Rekening Bank",
+      "cash": "Uang Tunai",
+      "ewallet": "E-Wallet",
+      "other": "Lainnya",
+      "initialBalance": "Saldo Awal",
+      "currentBalance": "Saldo Saat Ini",
+      "accountNumber": "Nomor Rekening (opsional)",
+      "color": "Warna",
+      "makeDefault": "Jadikan akun default",
+      "notes": "Catatan (opsional)",
+      "confirmDelete": "Yakin ingin menghapus akun ini?",
+      "deleteFailed": "Gagal menghapus. Akun mungkin masih memiliki transaksi.",
+      "nameRequired": "Nama akun harus diisi",
+      "saveFailed": "Gagal menyimpan",
+      "saving": "Menyimpan...",
+      "save": "Simpan",
+      "cancel": "Batal"
+    },
+    "income": {
+      "title": "Pemasukan",
+      "subtitle": "Catat dan kelola semua pemasukan Anda",
+      "addIncome": "Tambah Pemasukan",
+      "editIncome": "Edit Pemasukan",
+      "totalIncome": "Total Pemasukan",
+      "totalIncomeThisPage": "Total Pemasukan (halaman ini)",
+      "noIncome": "Belum Ada Pemasukan",
+      "addFirstIncome": "Catat pemasukan pertama Anda",
+      "allAccounts": "Semua Akun",
+      "allCategories": "Semua Kategori",
+      "selectAccount": "Pilih Akun",
+      "selectCategory": "Pilih Kategori",
+      "toAccount": "Masuk ke Akun",
+      "category": "Kategori",
+      "amount": "Jumlah",
+      "date": "Tanggal",
+      "description": "Deskripsi",
+      "notes": "Catatan (opsional)",
+      "previous": "Sebelumnya",
+      "next": "Selanjutnya",
+      "confirmDelete": "Yakin ingin menghapus transaksi ini?",
+      "deleteFailed": "Gagal menghapus",
+      "accountAmountRequired": "Akun dan jumlah harus diisi",
+      "saveFailed": "Gagal menyimpan",
+      "saving": "Menyimpan...",
+      "save": "Simpan",
+      "cancel": "Batal"
+    },
+    "expense": {
+      "title": "Pengeluaran",
+      "subtitle": "Catat dan kelola semua pengeluaran Anda",
+      "addExpense": "Tambah Pengeluaran",
+      "editExpense": "Edit Pengeluaran",
+      "totalExpense": "Total Pengeluaran",
+      "totalExpenseThisPage": "Total Pengeluaran (halaman ini)",
+      "noExpense": "Belum Ada Pengeluaran",
+      "addFirstExpense": "Catat pengeluaran pertama Anda",
+      "allAccounts": "Semua Akun",
+      "allCategories": "Semua Kategori",
+      "selectAccount": "Pilih Akun",
+      "selectCategory": "Pilih Kategori",
+      "fromAccount": "Dari Akun",
+      "category": "Kategori",
+      "amount": "Jumlah",
+      "date": "Tanggal",
+      "description": "Deskripsi",
+      "notes": "Catatan (opsional)",
+      "previous": "Sebelumnya",
+      "next": "Selanjutnya",
+      "confirmDelete": "Yakin ingin menghapus transaksi ini?",
+      "deleteFailed": "Gagal menghapus",
+      "accountAmountRequired": "Akun dan jumlah harus diisi",
+      "saveFailed": "Gagal menyimpan",
+      "saving": "Menyimpan...",
+      "save": "Simpan",
+      "cancel": "Batal"
+    },
+    "settings": {
+      "title": "Pengaturan Keuangan",
+      "subtitle": "Kelola kategori pemasukan dan pengeluaran"
+    },
+    "notes": {
+      "title": "Catatan Keuangan",
+      "subtitle": "Simpan catatan dan pengingat terkait keuangan",
+      "addNote": "Tambah Catatan",
+      "editNote": "Edit Catatan",
+      "noNotes": "Belum Ada Catatan",
+      "createFirst": "Buat catatan keuangan pertama Anda",
+      "titleLabel": "Judul",
+      "content": "Isi Catatan",
+      "type": "Jenis",
+      "color": "Warna",
+      "tags": "Tags",
+      "addTag": "Tambah tag",
+      "add": "Tambah",
+      "pinNote": "Sematkan catatan ini",
+      "active": "Aktif",
+      "pinned": "Disematkan",
+      "archived": "Arsip",
+      "others": "Lainnya",
+      "general": "Umum",
+      "transaction": "Transaksi",
+      "reminder": "Pengingat",
+      "goal": "Target",
+      "confirmDelete": "Yakin ingin menghapus catatan ini?",
+      "titleRequired": "Judul harus diisi",
+      "deleteFailed": "Gagal menghapus",
+      "saveFailed": "Gagal menyimpan",
+      "saving": "Menyimpan...",
+      "save": "Simpan",
+      "cancel": "Batal"
+    }
+  },
+  "social": {
+    "dashboard": {
+      "title": "Pusat Sosial",
+      "subtitle": "Kelola media sosial dan blog Anda",
+      "totalPosts": "Total Posting",
+      "scheduled": "Posting Terjadwal",
+      "published": "Posting Dipublikasikan",
+      "drafts": "Draft"
+    },
+    "connectedAccounts": "Akun Terhubung",
+    "quickActions": "Aksi Cepat",
+    "newSocialPost": "Posting Sosmed Baru",
+    "newBlogPost": "Posting Blog Baru",
+    "schedulePost": "Jadwalkan Posting",
+    "manageAccounts": "Kelola Akun",
+    "noAccountsYet": "Belum ada akun terhubung",
+    "connectAccount": "Hubungkan Akun",
+    "upcomingScheduled": "Jadwal Mendatang",
+    "noScheduledPosts": "Belum ada posting terjadwal",
+    "recentActivity": "Aktivitas Terbaru",
+    "noRecentActivity": "Belum ada aktivitas",
+    "blogOverview": "Ikhtisar Blog",
+    "manageBlogs": "Kelola Blog",
+    "connectedBlogs": "Blog Terhubung",
+    "totalPosts": "Total Posting",
+    "posting": {
+      "title": "Posting Media Sosial",
+      "subtitle": "Buat dan jadwalkan posting di semua platform sosial Anda",
+      "content": "Konten",
+      "platforms": "Platform",
+      "schedule": "Jadwalkan",
+      "publishNow": "Publikasikan Sekarang",
+      "saveDraft": "Simpan Draft",
+      "addMedia": "Tambah Media",
+      "preview": "Pratinjau"
+    },
+    "accounts": {
+      "title": "Akun Media Sosial",
+      "connect": "Hubungkan Akun",
+      "connected": "Terhubung",
+      "disconnected": "Terputus",
+      "reconnect": "Hubungkan Ulang",
+      "active": "Aktif",
+      "inactive": "Tidak Aktif"
+    },
+    "blogSettings": {
+      "title": "Pengaturan Blog",
+      "subtitle": "Hubungkan dan kelola platform blog Anda"
+    },
+    "sosmedSettings": {
+      "title": "Pengaturan Media Sosial",
+      "subtitle": "Hubungkan dan kelola akun media sosial Anda"
+    },
+    "schedule": {
+      "title": "Kalender Konten",
+      "subtitle": "Lihat dan kelola posting media sosial terjadwal Anda"
+    },
+    "settings": {
+      "title": "Pengaturan Sosial",
+      "subtitle": "Konfigurasi penyedia AI, prompt, dan notifikasi"
+    }
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "general": "Umum",
+    "appearance": "Tampilan",
+    "notifications": "Notifikasi",
+    "security": "Keamanan",
+    "language": "Bahasa",
+    "currency": "Mata Uang",
+    "timezone": "Zona Waktu",
+    "theme": "Tema",
+    "darkMode": "Mode Gelap",
+    "lightMode": "Mode Terang",
+    "systemDefault": "Ikuti Sistem"
+  },
+  "errors": {
+    "generic": "Terjadi kesalahan. Silakan coba lagi.",
+    "network": "Gagal terhubung ke server",
+    "unauthorized": "Anda tidak memiliki akses",
+    "notFound": "Data tidak ditemukan",
+    "validation": "Silakan periksa input Anda",
+    "serverError": "Terjadi kesalahan pada server"
+  },
+  "success": {
+    "saved": "Berhasil disimpan",
+    "deleted": "Berhasil dihapus",
+    "updated": "Berhasil diperbarui",
+    "created": "Berhasil dibuat"
+  },
+  "time": {
+    "today": "Hari Ini",
+    "yesterday": "Kemarin",
+    "tomorrow": "Besok",
+    "thisWeek": "Minggu Ini",
+    "lastWeek": "Minggu Lalu",
+    "thisMonth": "Bulan Ini",
+    "lastMonth": "Bulan Lalu",
+    "thisYear": "Tahun Ini"
+  },
+  "space": {
+    "dashboard": {
+      "title": "Dasbor Ruang",
+      "subtitle": "Perencanaan strategis dan pelacakan tujuan"
+    },
+    "assets": {
+      "title": "Aset Ruang",
+      "subtitle": "Kelola sumber daya untuk proyek pribadi Anda"
+    },
+    "budget": {
+      "title": "Anggaran Ruang",
+      "subtitle": "Alokasikan dan lacak anggaran untuk proyek Anda"
+    },
+    "calendar": {
+      "title": "Kalender Ruang",
+      "subtitle": "Jadwalkan capaian dan lacak tenggat waktu"
+    },
+    "settings": {
+      "title": "Pengaturan Ruang",
+      "subtitle": "Konfigurasi preferensi workspace proyek pribadi Anda"
+    },
+    "finance": {
+      "title": "Keuangan Ruang",
+      "subtitle": "Lacak pendapatan dan pengeluaran dari proyek yang diluncurkan"
+    },
+    "roadmap": {
+      "title": "Peta Jalan",
+      "subtitle": "Timeline visual untuk capaian proyek Anda"
+    },
+    "targeting": {
+      "title": "Penargetan",
+      "subtitle": "Tetapkan dan lacak tujuan untuk proyek Anda"
+    },
+    "projects": {
+      "title": "Rencana Proyek",
+      "subtitle": "Rencanakan dan luncurkan ide proyek Anda"
+    },
+    "newGoal": "Tujuan Baru",
+    "addMilestone": "Tambah Capaian",
+    "newMilestone": "Capaian Baru",
+    "quickTask": "Tugas Cepat",
+    "viewReports": "Lihat Laporan",
+    "confirmDeleteMilestone": "Hapus capaian ini?",
+    "confirmDeleteGoal": "Hapus tujuan ini?",
+    "validation": {
+      "titleDateRequired": "Silakan masukkan judul dan tanggal",
+      "nameTargetRequired": "Silakan masukkan nama dan target"
+    }
+  },
+  "currency": {
+    "idr": "Rupiah Indonesia",
+    "usd": "Dolar Amerika",
+    "format": {
+      "idr": "Rp {{amount}}",
+      "usd": "${{amount}}"
+    }
+  },
+  "system": {
+    "settings": {
+      "title": "Pengaturan Sistem",
+      "subtitle": "Panel admin untuk mengelola sistem",
+      "overview": "Ikhtisar",
+      "users": "Manajemen Pengguna",
+      "roles": "Peran",
+      "activity": "Log Aktivitas",
+      "systemSettings": "Pengaturan Sistem",
+      "integrations": "Integrasi"
+    }
+  },
+  "assets": {
+    "dashboard": {
+      "title": "Assets",
+      "subtitle": "Kelola akun, aset, dan bookmark Anda"
+    },
+    "accounts": {
+      "title": "Manajemen Akun",
+      "subtitle": "Simpan dan kelola semua akun Anda dengan aman"
+    },
+    "management": {
+      "title": "Manajemen Aset",
+      "subtitle": "Simpan teks, gambar, dan link penting"
+    },
+    "bookmark": {
+      "title": "Bookmark",
+      "subtitle": "Simpan link penting dan favorit Anda"
+    },
+    "notes": {
+      "title": "Catatan Update",
+      "subtitle": "Catat perubahan akun dan informasi penting"
+    }
+  },
+  "ai": {
+    "title": "Workspace AI",
+    "subtitle": "Asisten produktivitas Anda",
+    "greeting": "Halo! 👋",
+    "greetingSubtitle": "Saya Workspace AI, asisten produktivitas Anda.",
+    "placeholder": "Tanya sesuatu...",
+    "connectionError": "❌ Tidak dapat terhubung ke server.",
+    "noResponse": "Tidak ada respons",
+    "actions": {
+      "analyzeProjects": "Analisis Project",
+      "budgetReview": "Review Anggaran",
+      "financeAnalysis": "Analisis Keuangan",
+      "savingsTips": "Tips Menabung",
+      "ideaPriority": "Prioritaskan Ide",
+      "goalProgress": "Progress Goals",
+      "postingTime": "Waktu Posting Terbaik",
+      "contentIdeas": "Ide Konten",
+      "overview": "Ringkasan",
+      "priorities": "Prioritas Hari Ini"
+    },
+    "prompts": {
+      "analyzeProjects": "Analisis progress project saya dan berikan rekomendasi",
+      "budgetReview": "Review penggunaan anggaran dan pola pengeluaran saya",
+      "financeAnalysis": "Analisis keuangan saya bulan ini",
+      "savingsTips": "Berikan tips menghemat berdasarkan pengeluaran saya",
+      "ideaPriority": "Ide project mana yang harus saya prioritaskan?",
+      "goalProgress": "Analisis progress goals saya dan sarankan langkah selanjutnya",
+      "postingTime": "Kapan waktu terbaik untuk posting di Instagram?",
+      "contentIdeas": "Berikan ide konten untuk media sosial",
+      "overview": "Berikan ringkasan produktivitas saya hari ini",
+      "priorities": "Apa yang harus saya prioritaskan hari ini?"
+    }
+  }
+}

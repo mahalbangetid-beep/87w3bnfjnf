@@ -1,0 +1,78 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment files (PENTING - jangan push credentials!)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+.temp/
+*.tmp
+*.temp
+
+# Cache
+.cache/
+.npm/
+.eslintcache
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Uploads (if any user uploads)
+uploads/
+public/uploads/
+
+# Session files
+sessions/
+
+# SSL certificates (if local)
+*.pem
+*.key
+*.crt
+
+# Personal notes (tidak perlu di repo)
+selectbox.md
+wontfix.md
+tutor.md
+
+# PM2
+ecosystem.config.js
+
+# Test files
+*.test.js.snap

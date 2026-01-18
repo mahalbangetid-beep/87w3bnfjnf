@@ -1,0 +1,756 @@
+{
+    "common": {
+        "loading": "Loading...",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "create": "Create",
+        "search": "Search",
+        "filter": "Filter",
+        "all": "All",
+        "none": "None",
+        "yes": "Yes",
+        "no": "No",
+        "confirm": "Confirm",
+        "back": "Back",
+        "next": "Next",
+        "previous": "Previous",
+        "close": "Close",
+        "submit": "Submit",
+        "refresh": "Refresh",
+        "export": "Export",
+        "import": "Import",
+        "download": "Download",
+        "upload": "Upload",
+        "settings": "Settings",
+        "logout": "Logout",
+        "login": "Login",
+        "register": "Register",
+        "profile": "Profile",
+        "dashboard": "Dashboard",
+        "home": "Home",
+        "success": "Success",
+        "error": "Error",
+        "warning": "Warning",
+        "info": "Info"
+    },
+    "auth": {
+        "login": {
+            "title": "Sign In",
+            "subtitle": "Welcome back! Enter your credentials",
+            "email": "Email",
+            "password": "Password",
+            "rememberMe": "Remember me",
+            "forgotPassword": "Forgot password?",
+            "loginButton": "Sign In",
+            "noAccount": "Don't have an account?",
+            "registerLink": "Sign up now",
+            "loginSuccess": "Login successful!",
+            "loginError": "Invalid email or password"
+        },
+        "register": {
+            "title": "Create Account",
+            "subtitle": "Join Workspace and boost your productivity",
+            "name": "Full Name",
+            "email": "Email Address",
+            "phone": "Phone Number",
+            "phoneHint": "Used for password recovery",
+            "password": "Password",
+            "passwordPlaceholder": "Min. 6 characters",
+            "confirmPassword": "Confirm Password",
+            "confirmPasswordPlaceholder": "Re-enter password",
+            "termsAgree": "I agree to the terms and conditions",
+            "registerButton": "Create Account",
+            "haveAccount": "Already have an account?",
+            "loginLink": "Sign in",
+            "registerSuccess": "Registration successful!",
+            "registerError": "Registration failed. Please try again.",
+            "passwordMismatch": "Passwords do not match",
+            "passwordTooShort": "Password must be at least 6 characters",
+            "invalidPhone": "Please enter a valid Indonesian phone number (e.g., 08123456789)"
+        },
+        "forgotPassword": {
+            "title": "Reset Password",
+            "subtitle": "Enter your email to reset your password",
+            "step1Subtitle": "Enter your phone number to receive OTP",
+            "step2Subtitle": "Enter the OTP sent to your phone",
+            "step3Subtitle": "Create your new password",
+            "email": "Email",
+            "sendButton": "Send Reset Link",
+            "backToLogin": "Back to login",
+            "emailSent": "Reset email has been sent"
+        }
+    },
+    "placeholder": {
+        "comingSoon": "Coming Soon",
+        "comingSoonDesc": "We're working hard to bring you this feature. Stay tuned for updates!",
+        "goBack": "Go Back",
+        "notifyMe": "Notify Me"
+    },
+    "landing": {
+        "nav": {
+            "features": "Features",
+            "pricing": "Pricing",
+            "about": "About",
+            "contact": "Contact",
+            "login": "Login",
+            "getStarted": "Get Started Free"
+        },
+        "hero": {
+            "title": "Digital Workspace For Modern Creators",
+            "subtitle": "Manage projects, finances, and social media in one integrated platform",
+            "cta": "Get Started",
+            "watchDemo": "Watch Demo"
+        },
+        "features": {
+            "title": "Key Features",
+            "subtitle": "Everything you need for maximum productivity",
+            "work": {
+                "title": "Project Management",
+                "description": "Manage projects, tasks, and notes with ease"
+            },
+            "finance": {
+                "title": "Finance Tracking",
+                "description": "Track income, expenses, and bills"
+            },
+            "social": {
+                "title": "Social Media",
+                "description": "Schedule posts across platforms"
+            },
+            "ai": {
+                "title": "AI Assistant",
+                "description": "Smart assistance for content and analytics"
+            }
+        },
+        "pricing": {
+            "title": "Choose Your Plan",
+            "subtitle": "Start free, upgrade anytime",
+            "monthly": "Monthly",
+            "yearly": "Yearly",
+            "free": {
+                "name": "Free",
+                "price": "$0",
+                "period": "/month",
+                "features": [
+                    "3 Projects",
+                    "Basic finance tracking",
+                    "5 scheduled posts/month"
+                ],
+                "cta": "Start Free"
+            },
+            "pro": {
+                "name": "Pro",
+                "price": "$9.99",
+                "period": "/month",
+                "features": [
+                    "Unlimited projects",
+                    "Full financial reports",
+                    "100 scheduled posts/month",
+                    "AI integration"
+                ],
+                "cta": "Start Pro"
+            },
+            "enterprise": {
+                "name": "Enterprise",
+                "price": "$29.99",
+                "period": "/month",
+                "features": [
+                    "All Pro features",
+                    "Team collaboration",
+                    "API access",
+                    "Priority support"
+                ],
+                "cta": "Contact Us"
+            }
+        },
+        "cta": {
+            "title": "Ready to Boost Your Productivity?",
+            "subtitle": "Join thousands of creators already using Workspace",
+            "button": "Get Started - It's Free"
+        },
+        "footer": {
+            "description": "All-in-one platform for modern creators and professionals",
+            "product": "Product",
+            "company": "Company",
+            "resources": "Resources",
+            "legal": "Legal",
+            "copyright": "© 2026 Workspace. All rights reserved."
+        }
+    },
+    "sidebar": {
+        "work": "Work",
+        "space": "Space",
+        "social": "Social",
+        "finance": "Finance",
+        "assets": "Assets",
+        "system": "System",
+        "dashboard": "Dashboard",
+        "projects": "Projects",
+        "tasks": "Tasks",
+        "notes": "Notes",
+        "calendar": "Calendar",
+        "targeting": "Targeting",
+        "reporting": "Reporting",
+        "settings": "Settings",
+        "accounts": "Accounts",
+        "posting": "Posting",
+        "schedule": "Schedule",
+        "blog": "Blog",
+        "balance": "Balance",
+        "income": "Income",
+        "expense": "Expense",
+        "bills": "Bills",
+        "budget": "Budget",
+        "report": "Report",
+        "management": "Management",
+        "bookmarks": "Bookmarks",
+        "users": "Users",
+        "projectsPlan": "Projects Plan",
+        "roadmap": "Roadmap",
+        "sosmedSettings": "Sosmed Settings",
+        "blogSettings": "Blog/Web Settings",
+        "overview": "Overview",
+        "roleManagement": "Role Management",
+        "activityLogs": "Activity Logs",
+        "integrations": "Integrations",
+        "invitations": "Invitations",
+        "analytics": "Analytics",
+        "userSettings": "Settings",
+        "profile": "Profile",
+        "account": "Account",
+        "aiConfig": "AI Configuration",
+        "notifications": "Notifications",
+        "preferences": "Preferences",
+        "suggestions": "Suggest Feature",
+        "security": "Security"
+    },
+    "work": {
+        "dashboard": {
+            "title": "Work Dashboard",
+            "welcome": "Welcome",
+            "subtitle": "Here is your productivity summary",
+            "activeProjects": "Active Projects",
+            "pendingTasks": "Pending Tasks",
+            "completedThisWeek": "Completed This Week",
+            "upcomingDeadlines": "Upcoming Deadlines"
+        },
+        "projects": {
+            "title": "Projects",
+            "newProject": "New Project",
+            "allProjects": "All Projects",
+            "active": "Active",
+            "completed": "Completed",
+            "archived": "Archived",
+            "noProjects": "No projects yet",
+            "createFirst": "Create your first project",
+            "subtitle": "Manage and track all your projects"
+        },
+        "tasks": {
+            "title": "Tasks",
+            "newTask": "New Task",
+            "allTasks": "All Tasks",
+            "todo": "To Do",
+            "inProgress": "In Progress",
+            "done": "Done",
+            "priority": "Priority",
+            "dueDate": "Due Date",
+            "assignee": "Assignee"
+        },
+        "calendar": {
+            "title": "Calendar",
+            "subtitle": "Schedule tasks and track project timelines",
+            "newTask": "New Task",
+            "todaysTasks": "Today's Tasks",
+            "upcoming": "Upcoming",
+            "activeProjects": "Active Projects",
+            "goToToday": "Go to Today"
+        },
+        "notes": {
+            "title": "Notes",
+            "newNote": "New Note",
+            "allNotes": "All Notes",
+            "noNotes": "No notes yet",
+            "searchNotes": "Search notes...",
+            "subtitle": "Capture ideas and keep track of important information"
+        },
+        "budget": {
+            "title": "Budget",
+            "subtitle": "Track and manage project budgets and expenses"
+        },
+        "assets": {
+            "title": "Assets",
+            "subtitle": "Manage project files and documents"
+        },
+        "reporting": {
+            "title": "Reporting",
+            "subtitle": "Generate and view project reports"
+        },
+        "settings": {
+            "title": "Work Settings",
+            "subtitle": "Configure your work module preferences"
+        }
+    },
+    "finance": {
+        "dashboard": {
+            "title": "Finance Dashboard",
+            "subtitle": "Your financial summary",
+            "totalBalance": "Total Balance",
+            "totalBudget": "Total Budget",
+            "totalExpenses": "Total Expenses",
+            "netProfit": "Net Profit",
+            "income": "Income",
+            "expense": "Expense",
+            "thisMonth": "This Month",
+            "lastMonth": "Last Month"
+        },
+        "profit": "Profit",
+        "loss": "Loss",
+        "accountsConnected": "accounts connected",
+        "incomeThisMonth": "Income This Month",
+        "expenseThisMonth": "Expense This Month",
+        "cashflowLast6Months": "Cash Flow Last 6 Months",
+        "noData": "No data available",
+        "upcomingBills": "Upcoming Bills",
+        "recentTransactions": "Recent Transactions",
+        "viewAll": "View All",
+        "noBills": "No bills",
+        "noTransactionsYet": "No transactions yet",
+        "addFirstTransaction": "Add First Transaction",
+        "quickActions": {
+            "title": "Quick Actions",
+            "viewBalance": "View Balance"
+        },
+        "transactions": {
+            "title": "Transactions",
+            "newTransaction": "Add Transaction",
+            "allTransactions": "All Transactions",
+            "income": "Income",
+            "expense": "Expense",
+            "transfer": "Transfer",
+            "category": "Category",
+            "amount": "Amount",
+            "date": "Date",
+            "description": "Description",
+            "noTransactions": "No transactions yet"
+        },
+        "reports": {
+            "title": "Financial Reports",
+            "subtitle": "Analyze income, expenses, and cash flow",
+            "monthly": "Monthly",
+            "cashflow": "Cash Flow",
+            "previous": "← Previous",
+            "next": "Next →",
+            "totalIncome": "Total Income",
+            "totalExpense": "Total Expense",
+            "netProfitLoss": "Net Profit / Loss",
+            "incomeByCategory": "Income by Category",
+            "expenseByCategory": "Expense by Category",
+            "cashflowLast12Months": "Cash Flow Last 12 Months",
+            "noData": "No data",
+            "period": "Period",
+            "net": "Net",
+            "total": "Total",
+            "other": "Other"
+        },
+        "bills": {
+            "title": "Bills",
+            "subtitle": "Manage all bills and recurring payments",
+            "newBill": "New Bill",
+            "addBill": "Add Bill",
+            "editBill": "Edit Bill",
+            "allBills": "All Bills",
+            "upcoming": "Upcoming",
+            "overdue": "Overdue",
+            "paid": "Paid",
+            "pending": "Pending",
+            "cancelled": "Cancelled",
+            "dueDate": "Due Date",
+            "amount": "Amount",
+            "markAsPaid": "Mark as Paid",
+            "pay": "Pay",
+            "totalUnpaid": "Total Unpaid",
+            "waiting": "Waiting",
+            "noBills": "No Bills Yet",
+            "addYourBills": "Add your recurring bills",
+            "quickAdd": "Quick Add",
+            "confirmDelete": "Are you sure you want to delete this bill?",
+            "deleteFailed": "Failed to delete",
+            "dueDateLabel": "Due date",
+            "monthly": "Monthly",
+            "weekly": "Weekly",
+            "yearly": "Yearly",
+            "payBill": "Pay Bill",
+            "selectAccount": "Select account",
+            "paidAmount": "Amount paid",
+            "category": "Category",
+            "billName": "Bill name",
+            "recurring": "Recurring",
+            "reminder": "Reminder",
+            "reminderDays": "Remind before (days)",
+            "notes": "Notes",
+            "saving": "Saving...",
+            "save": "Save",
+            "cancel": "Cancel",
+            "filter": {
+                "all": "All",
+                "pending": "Waiting",
+                "overdue": "Overdue",
+                "paid": "Paid"
+            },
+            "status": {
+                "pending": "Unpaid",
+                "overdue": "Overdue",
+                "paid": "Paid",
+                "cancelled": "Cancelled"
+            }
+        },
+        "balance": {
+            "title": "Balance",
+            "subtitle": "Manage all your accounts and balances",
+            "totalBalance": "Total Balance All Accounts",
+            "addAccount": "Add Account",
+            "editAccount": "Edit Account",
+            "accountsRegistered": "accounts registered",
+            "quickAdd": "Quick Add",
+            "noAccounts": "No Accounts Yet",
+            "addAccountDesc": "Add your bank account, e-wallet, or cash wallet",
+            "accountType": "Account Type",
+            "accountName": "Account Name",
+            "bank": "Bank Account",
+            "cash": "Cash",
+            "ewallet": "E-Wallet",
+            "other": "Other",
+            "initialBalance": "Initial Balance",
+            "currentBalance": "Current Balance",
+            "accountNumber": "Account Number (optional)",
+            "color": "Color",
+            "makeDefault": "Make default account",
+            "notes": "Notes (optional)",
+            "confirmDelete": "Are you sure you want to delete this account?",
+            "deleteFailed": "Failed to delete. Account may still have transactions.",
+            "nameRequired": "Account name is required",
+            "saveFailed": "Failed to save",
+            "saving": "Saving...",
+            "save": "Save",
+            "cancel": "Cancel"
+        },
+        "income": {
+            "title": "Income",
+            "subtitle": "Record and manage all your income",
+            "addIncome": "Add Income",
+            "editIncome": "Edit Income",
+            "totalIncome": "Total Income",
+            "totalIncomeThisPage": "Total Income (this page)",
+            "noIncome": "No Income Yet",
+            "addFirstIncome": "Record your first income",
+            "allAccounts": "All Accounts",
+            "allCategories": "All Categories",
+            "selectAccount": "Select Account",
+            "selectCategory": "Select Category",
+            "toAccount": "To Account",
+            "category": "Category",
+            "amount": "Amount",
+            "date": "Date",
+            "description": "Description",
+            "notes": "Notes (optional)",
+            "previous": "Previous",
+            "next": "Next",
+            "confirmDelete": "Are you sure you want to delete this transaction?",
+            "deleteFailed": "Failed to delete",
+            "accountAmountRequired": "Account and amount are required",
+            "saveFailed": "Failed to save",
+            "saving": "Saving...",
+            "save": "Save",
+            "cancel": "Cancel"
+        },
+        "expense": {
+            "title": "Expense",
+            "subtitle": "Record and manage all your expenses",
+            "addExpense": "Add Expense",
+            "editExpense": "Edit Expense",
+            "totalExpense": "Total Expense",
+            "totalExpenseThisPage": "Total Expense (this page)",
+            "noExpense": "No Expense Yet",
+            "addFirstExpense": "Record your first expense",
+            "allAccounts": "All Accounts",
+            "allCategories": "All Categories",
+            "selectAccount": "Select Account",
+            "selectCategory": "Select Category",
+            "fromAccount": "From Account",
+            "category": "Category",
+            "amount": "Amount",
+            "date": "Date",
+            "description": "Description",
+            "notes": "Notes (optional)",
+            "previous": "Previous",
+            "next": "Next",
+            "confirmDelete": "Are you sure you want to delete this transaction?",
+            "deleteFailed": "Failed to delete",
+            "accountAmountRequired": "Account and amount are required",
+            "saveFailed": "Failed to save",
+            "saving": "Saving...",
+            "save": "Save",
+            "cancel": "Cancel"
+        },
+        "settings": {
+            "title": "Finance Settings",
+            "subtitle": "Manage income and expense categories"
+        },
+        "notes": {
+            "title": "Finance Notes",
+            "subtitle": "Save notes and reminders related to finance",
+            "addNote": "Add Note",
+            "editNote": "Edit Note",
+            "noNotes": "No Notes Yet",
+            "createFirst": "Create your first finance note",
+            "titleLabel": "Title",
+            "content": "Note Content",
+            "type": "Type",
+            "color": "Color",
+            "tags": "Tags",
+            "addTag": "Add tag",
+            "add": "Add",
+            "pinNote": "Pin this note",
+            "active": "Active",
+            "pinned": "Pinned",
+            "archived": "Archived",
+            "others": "Others",
+            "general": "General",
+            "transaction": "Transaction",
+            "reminder": "Reminder",
+            "goal": "Goal",
+            "confirmDelete": "Are you sure you want to delete this note?",
+            "titleRequired": "Title is required",
+            "deleteFailed": "Failed to delete",
+            "saveFailed": "Failed to save",
+            "saving": "Saving...",
+            "save": "Save",
+            "cancel": "Cancel"
+        }
+    },
+    "social": {
+        "dashboard": {
+            "title": "Social Stack",
+            "subtitle": "Manage your social media and blog presence",
+            "totalPosts": "Total Posts",
+            "scheduled": "Scheduled Posts",
+            "published": "Published Posts",
+            "drafts": "Drafts"
+        },
+        "connectedAccounts": "Connected Accounts",
+        "quickActions": "Quick Actions",
+        "newSocialPost": "New Social Post",
+        "newBlogPost": "New Blog Post",
+        "schedulePost": "Schedule Post",
+        "manageAccounts": "Manage Accounts",
+        "noAccountsYet": "No accounts connected yet",
+        "connectAccount": "Connect Account",
+        "upcomingScheduled": "Upcoming Scheduled",
+        "noScheduledPosts": "No scheduled posts",
+        "recentActivity": "Recent Activity",
+        "noRecentActivity": "No recent activity",
+        "blogOverview": "Blog Overview",
+        "manageBlogs": "Manage Blogs",
+        "connectedBlogs": "Connected Blogs",
+        "totalPosts": "Total Posts",
+        "posting": {
+            "title": "Social Media Posting",
+            "subtitle": "Create and schedule posts across all your social platforms",
+            "content": "Content",
+            "platforms": "Platforms",
+            "schedule": "Schedule",
+            "publishNow": "Publish Now",
+            "saveDraft": "Save Draft",
+            "addMedia": "Add Media",
+            "preview": "Preview"
+        },
+        "accounts": {
+            "title": "Social Media Accounts",
+            "connect": "Connect Account",
+            "connected": "Connected",
+            "disconnected": "Disconnected",
+            "reconnect": "Reconnect",
+            "active": "Active",
+            "inactive": "Inactive"
+        },
+        "blogSettings": {
+            "title": "Blog Settings",
+            "subtitle": "Connect and manage your blog platforms"
+        },
+        "sosmedSettings": {
+            "title": "Social Media Settings",
+            "subtitle": "Connect and manage your social media accounts"
+        },
+        "schedule": {
+            "title": "Content Calendar",
+            "subtitle": "View and manage your scheduled social media posts"
+        },
+        "settings": {
+            "title": "Social Settings",
+            "subtitle": "Configure AI providers, prompts, and notifications"
+        }
+    },
+    "settings": {
+        "title": "Settings",
+        "general": "General",
+        "appearance": "Appearance",
+        "notifications": "Notifications",
+        "security": "Security",
+        "language": "Language",
+        "currency": "Currency",
+        "timezone": "Timezone",
+        "theme": "Theme",
+        "darkMode": "Dark Mode",
+        "lightMode": "Light Mode",
+        "systemDefault": "System Default"
+    },
+    "errors": {
+        "generic": "An error occurred. Please try again.",
+        "network": "Failed to connect to server",
+        "unauthorized": "You don't have access",
+        "notFound": "Data not found",
+        "validation": "Please check your input",
+        "serverError": "Server error occurred"
+    },
+    "success": {
+        "saved": "Successfully saved",
+        "deleted": "Successfully deleted",
+        "updated": "Successfully updated",
+        "created": "Successfully created"
+    },
+    "time": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "tomorrow": "Tomorrow",
+        "thisWeek": "This Week",
+        "lastWeek": "Last Week",
+        "thisMonth": "This Month",
+        "lastMonth": "Last Month",
+        "thisYear": "This Year"
+    },
+    "space": {
+        "dashboard": {
+            "title": "Space Dashboard",
+            "subtitle": "Strategic planning and goal tracking"
+        },
+        "assets": {
+            "title": "Space Assets",
+            "subtitle": "Manage resources for your personal projects"
+        },
+        "budget": {
+            "title": "Space Budget",
+            "subtitle": "Allocate and track budgets for your projects"
+        },
+        "calendar": {
+            "title": "Space Calendar",
+            "subtitle": "Schedule milestones and track deadlines"
+        },
+        "settings": {
+            "title": "Space Settings",
+            "subtitle": "Configure your personal project workspace preferences"
+        },
+        "finance": {
+            "title": "Space Finance",
+            "subtitle": "Track income and expenses from your launched projects"
+        },
+        "roadmap": {
+            "title": "Roadmap",
+            "subtitle": "Visual timeline for your project milestones"
+        },
+        "targeting": {
+            "title": "Targeting",
+            "subtitle": "Set and track goals for your projects"
+        },
+        "projects": {
+            "title": "Projects Plan",
+            "subtitle": "Plan and launch your project ideas"
+        },
+        "newGoal": "New Goal",
+        "addMilestone": "Add Milestone",
+        "newMilestone": "New Milestone",
+        "quickTask": "Quick Task",
+        "viewReports": "View Reports",
+        "confirmDeleteMilestone": "Delete this milestone?",
+        "confirmDeleteGoal": "Delete this goal?",
+        "validation": {
+            "titleDateRequired": "Please enter a title and date",
+            "nameTargetRequired": "Please enter a name and target"
+        }
+    },
+    "currency": {
+        "idr": "Indonesian Rupiah",
+        "usd": "US Dollar",
+        "format": {
+            "idr": "Rp {{amount}}",
+            "usd": "${{amount}}"
+        }
+    },
+    "system": {
+        "settings": {
+            "title": "System Settings",
+            "subtitle": "Admin panel to manage the system",
+            "overview": "Overview",
+            "users": "User Management",
+            "roles": "Roles",
+            "activity": "Activity Logs",
+            "systemSettings": "System Settings",
+            "integrations": "Integrations"
+        }
+    },
+    "assets": {
+        "dashboard": {
+            "title": "Assets",
+            "subtitle": "Manage your accounts, assets, and bookmarks"
+        },
+        "accounts": {
+            "title": "Account Management",
+            "subtitle": "Store and manage all your accounts securely"
+        },
+        "management": {
+            "title": "Asset Management",
+            "subtitle": "Store text, images, and important links"
+        },
+        "bookmark": {
+            "title": "Bookmark",
+            "subtitle": "Save your important and favorite links"
+        },
+        "notes": {
+            "title": "Update Notes",
+            "subtitle": "Record account changes and important information"
+        }
+    },
+    "ai": {
+        "title": "Workspace AI",
+        "subtitle": "Your productivity assistant",
+        "greeting": "Hello! 👋",
+        "greetingSubtitle": "I'm Workspace AI, your productivity assistant.",
+        "placeholder": "Ask something...",
+        "connectionError": "❌ Cannot connect to server.",
+        "noResponse": "No response",
+        "actions": {
+            "analyzeProjects": "Analyze Projects",
+            "budgetReview": "Budget Review",
+            "financeAnalysis": "Finance Analysis",
+            "savingsTips": "Savings Tips",
+            "ideaPriority": "Prioritize Ideas",
+            "goalProgress": "Goal Progress",
+            "postingTime": "Best Posting Time",
+            "contentIdeas": "Content Ideas",
+            "overview": "Overview",
+            "priorities": "Today's Priorities"
+        },
+        "prompts": {
+            "analyzeProjects": "Analyze my projects progress and give recommendations",
+            "budgetReview": "Review my budget utilization and spending patterns",
+            "financeAnalysis": "Analyze my finances this month",
+            "savingsTips": "Give me tips to save money based on my spending",
+            "ideaPriority": "Which project ideas should I prioritize?",
+            "goalProgress": "Analyze my goals progress and suggest next steps",
+            "postingTime": "When is the best time to post on Instagram?",
+            "contentIdeas": "Give me content ideas for social media",
+            "overview": "Give me an overview of my productivity today",
+            "priorities": "What should I prioritize today?"
+        }
+    }
+}
