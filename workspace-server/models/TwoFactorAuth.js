@@ -13,7 +13,7 @@ const TwoFactorAuth = sequelize.define('TwoFactorAuth', {
         allowNull: false,
         unique: true,
         references: {
-            model: 'Users',
+            model: 'users',
             key: 'id'
         }
     },

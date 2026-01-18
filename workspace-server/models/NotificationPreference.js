@@ -12,7 +12,7 @@ const NotificationPreference = sequelize.define('NotificationPreference', {
         allowNull: false,
         unique: true,
         references: {
-            model: 'Users',
+            model: 'users',
             key: 'id'
         }
     },

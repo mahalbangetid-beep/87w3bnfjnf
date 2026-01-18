@@ -11,7 +11,7 @@ const PushSubscription = sequelize.define('PushSubscription', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Users',
+            model: 'users',
             key: 'id'
         }
     },

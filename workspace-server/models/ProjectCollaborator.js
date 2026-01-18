@@ -11,7 +11,7 @@ const ProjectCollaborator = sequelize.define('ProjectCollaborator', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Projects',
+            model: 'projects',
             key: 'id'
         }
     },
@@ -19,7 +19,7 @@ const ProjectCollaborator = sequelize.define('ProjectCollaborator', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Users',
+            model: 'users',
             key: 'id'
         }
     },
@@ -27,7 +27,7 @@ const ProjectCollaborator = sequelize.define('ProjectCollaborator', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Users',
+            model: 'users',
             key: 'id'
         }
     },

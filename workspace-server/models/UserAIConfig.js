@@ -46,7 +46,7 @@ const UserAIConfig = sequelize.define('UserAIConfig', {
         allowNull: false,
         unique: true, // One config per user
         references: {
-            model: 'Users',
+            model: 'users',
             key: 'id'
         }
     },

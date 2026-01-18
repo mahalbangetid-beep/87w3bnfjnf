@@ -11,7 +11,7 @@ const ProjectActivity = sequelize.define('ProjectActivity', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Projects',
+            model: 'projects',
             key: 'id'
         }
     },
@@ -19,7 +19,7 @@ const ProjectActivity = sequelize.define('ProjectActivity', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Users',
+            model: 'users',
             key: 'id'
         }
     },
