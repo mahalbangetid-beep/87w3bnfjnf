@@ -6,15 +6,7 @@ import {
     HiOutlineX, HiOutlineTrendingDown, HiOutlineFilter
 } from 'react-icons/hi';
 import { financeAPI } from '../../services/api';
-
-const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(amount);
-};
+import { TransactionsEmptyState } from '../../components/UI';
 
 const Pengeluaran = () => {
     const { t, i18n } = useTranslation();
@@ -259,17 +251,11 @@ const Pengeluaran = () => {
                 {loading ? (
                     <div style={{ textAlign: 'center', padding: '40px', color: '#6b7280' }}>{t('common.loading')}</div>
                 ) : transactions.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '48px' }}>
-                        <HiOutlineTrendingDown style={{ width: '64px', height: '64px', color: '#6b7280', margin: '0 auto 16px' }} />
-                        <h3 style={{ fontSize: '18px', color: 'white', marginBottom: '8px' }}>{t('finance.expense.noExpense')}</h3>
-                        <p style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '20px' }}>{t('finance.expense.addFirstExpense')}</p>
-                        <button
-                            onClick={() => { resetForm(); setShowModal(true); }}
-                            style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', backgroundColor: '#ef4444', color: 'white', cursor: 'pointer', fontSize: '14px' }}
-                        >
-                            {t('finance.expense.addExpense')}
-                        </button>
-                    </div>
+                    <TransactionsEmptyState
+                        type="expense"
+                        onAction={() => { resetForm(); setShowModal(true); }}
+                        isFiltered={!!(filters.accountId || filters.categoryId || filters.startDate || filters.endDate)}
+                    />
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         {transactions.map((tx, index) => (

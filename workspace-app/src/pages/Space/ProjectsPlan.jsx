@@ -61,6 +61,9 @@ const ProjectsPlan = () => {
     const editorRef = useRef(null);
     const descriptionRef = useRef(''); // Store description separately to avoid re-renders
     const [editorKey, setEditorKey] = useState(0); // Key to force re-mount editor
+    const [confirmDelete, setConfirmDelete] = useState(null);
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [insertImageUrl, setInsertImageUrl] = useState('');
 
     const [formData, setFormData] = useState({
         name: '',
@@ -76,6 +79,8 @@ const ProjectsPlan = () => {
 
     const [newTag, setNewTag] = useState('');
     const [newLink, setNewLink] = useState({ title: '', url: '' });
+    const [showLinkModal, setShowLinkModal] = useState(false);
+    const [insertLinkData, setInsertLinkData] = useState({ url: '', text: '' });
 
     // Fetch projects
     const fetchProjects = async () => {
@@ -83,7 +88,7 @@ const ProjectsPlan = () => {
             setLoading(true);
             const data = await projectPlansAPI.getAll();
             setProjects(data || []);
-        } catch (err) {
+        } catch {
             setErrorWithTimeout(t('errors.generic', 'Failed to load project plans'));
         } finally {
             setLoading(false);
@@ -127,7 +132,7 @@ const ProjectsPlan = () => {
             setProjects(projects.map(p =>
                 p.id === projectId ? { ...p, progress: value } : p
             ));
-        } catch (err) {
+        } catch {
             setErrorWithTimeout(t('errors.generic', 'Failed to update progress'));
         }
     };
@@ -210,38 +215,54 @@ const ProjectsPlan = () => {
         }
     };
 
-    // Delete project
-    const handleDeleteProject = async (id) => {
-        if (confirm(t('space.confirmDeleteProject', 'Delete this project plan?'))) {
+    // Delete project - show confirmation modal
+    const handleDeleteProject = (id) => {
+        setConfirmDelete(id);
+        setActiveMenu(null);
+    };
+
+    const confirmDeleteAction = async () => {
+        if (confirmDelete) {
             try {
-                await projectPlansAPI.delete(id);
-                setProjects(projects.filter(p => p.id !== id));
-            } catch (err) {
+                await projectPlansAPI.delete(confirmDelete);
+                setProjects(projects.filter(p => p.id !== confirmDelete));
+            } catch {
                 setErrorWithTimeout(t('errors.generic', 'Failed to delete project'));
+            } finally {
+                setConfirmDelete(null);
             }
         }
-        setActiveMenu(null);
     };
 
     // Editor functions
     const insertImage = () => {
-        const url = prompt('Enter image URL:');
-        if (url && editorRef.current) {
+        setShowImageModal(true);
+        setInsertImageUrl('');
+    };
+
+    const confirmInsertImage = () => {
+        if (insertImageUrl && editorRef.current) {
             const img = document.createElement('img');
-            img.src = url;
+            img.src = insertImageUrl;
             img.style.maxWidth = '100%';
             img.style.borderRadius = '8px';
             img.style.margin = '8px 0';
             editorRef.current.appendChild(img);
         }
+        setShowImageModal(false);
     };
 
     const insertLink = () => {
-        const url = prompt('Enter link URL:');
-        const text = prompt('Enter link text:') || url;
-        if (url && editorRef.current) {
-            document.execCommand('insertHTML', false, `<a href="${url}" target="_blank" style="color:#a78bfa;text-decoration:underline;">${text}</a>`);
+        setShowLinkModal(true);
+        setInsertLinkData({ url: '', text: '' });
+    };
+
+    const confirmInsertLink = () => {
+        if (insertLinkData.url && editorRef.current) {
+            const text = insertLinkData.text || insertLinkData.url;
+            document.execCommand('insertHTML', false, `<a href="${insertLinkData.url}" target="_blank" style="color:#a78bfa;text-decoration:underline;">${text}</a>`);
         }
+        setShowLinkModal(false);
     };
 
     // Tag management
@@ -1026,6 +1047,146 @@ const ProjectsPlan = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Insert Link Modal */}
+            <AnimatePresence>
+                {showLinkModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
+                        onClick={() => setShowLinkModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="glass-card"
+                            style={{ width: '100%', maxWidth: '400px', padding: '24px' }}
+                        >
+                            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', margin: '0 0 20px 0' }}>Insert Link</h3>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '12px', color: '#9ca3af', marginBottom: '6px' }}>Link URL *</label>
+                                    <input
+                                        type="url"
+                                        value={insertLinkData.url}
+                                        onChange={(e) => setInsertLinkData({ ...insertLinkData, url: e.target.value })}
+                                        placeholder="https://example.com"
+                                        style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', color: 'white', fontSize: '14px', outline: 'none' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '12px', color: '#9ca3af', marginBottom: '6px' }}>Link Text (optional)</label>
+                                    <input
+                                        type="text"
+                                        value={insertLinkData.text}
+                                        onChange={(e) => setInsertLinkData({ ...insertLinkData, text: e.target.value })}
+                                        placeholder="Click here"
+                                        style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', color: 'white', fontSize: '14px', outline: 'none' }}
+                                    />
+                                </div>
+                                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                                    <button onClick={() => setShowLinkModal(false)} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'transparent', color: '#9ca3af', fontSize: '14px', cursor: 'pointer' }}>
+                                        Cancel
+                                    </button>
+                                    <button onClick={confirmInsertLink} disabled={!insertLinkData.url} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', backgroundColor: '#8b5cf6', color: 'white', fontSize: '14px', fontWeight: '500', cursor: 'pointer', opacity: insertLinkData.url ? 1 : 0.5 }}>
+                                        Insert
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Delete Confirmation Modal */}
+            <AnimatePresence>
+                {confirmDelete && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
+                        onClick={() => setConfirmDelete(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="glass-card"
+                            style={{ width: '100%', maxWidth: '400px', padding: '24px', textAlign: 'center' }}
+                        >
+                            <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                                <HiOutlineTrash style={{ width: '28px', height: '28px', color: '#ef4444' }} />
+                            </div>
+                            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', margin: '0 0 8px 0' }}>{t('space.confirmDeleteProject', 'Delete Project Plan?')}</h3>
+                            <p style={{ fontSize: '14px', color: '#9ca3af', margin: '0 0 24px 0' }}>This action cannot be undone.</p>
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button onClick={() => setConfirmDelete(null)} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'transparent', color: '#9ca3af', fontSize: '14px', cursor: 'pointer' }}>
+                                    Cancel
+                                </button>
+                                <button onClick={confirmDeleteAction} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', backgroundColor: '#ef4444', color: 'white', fontSize: '14px', fontWeight: '500', cursor: 'pointer' }}>
+                                    Delete
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Insert Image Modal */}
+            <AnimatePresence>
+                {showImageModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
+                        onClick={() => setShowImageModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="glass-card"
+                            style={{ width: '100%', maxWidth: '400px', padding: '24px' }}
+                        >
+                            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', margin: '0 0 20px 0' }}>Insert Image</h3>
+                            <div>
+                                <label style={{ display: 'block', fontSize: '12px', color: '#9ca3af', marginBottom: '6px' }}>Image URL *</label>
+                                <input
+                                    type="url"
+                                    value={insertImageUrl}
+                                    onChange={(e) => setInsertImageUrl(e.target.value)}
+                                    placeholder="https://example.com/image.jpg"
+                                    style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.03)', color: 'white', fontSize: '14px', outline: 'none' }}
+                                />
+                            </div>
+                            <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+                                <button onClick={() => setShowImageModal(false)} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'transparent', color: '#9ca3af', fontSize: '14px', cursor: 'pointer' }}>
+                                    Cancel
+                                </button>
+                                <button onClick={confirmInsertImage} disabled={!insertImageUrl} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', backgroundColor: '#8b5cf6', color: 'white', fontSize: '14px', fontWeight: '500', cursor: 'pointer', opacity: insertImageUrl ? 1 : 0.5 }}>
+                                    Insert
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Responsive Styles */}
+            <style>{`
+                @media (max-width: 1023px) {
+                    div[style*="grid-template-columns: 1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+                    div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };

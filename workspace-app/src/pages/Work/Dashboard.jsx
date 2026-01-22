@@ -488,9 +488,9 @@ const WorkDashboard = () => {
 
                 {/* Metrics */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 30 }}>
-                    <GlowMetricCard title="Active Projects" value={activeProjects} icon={HiOutlineFolder} color="violet" trend={12} loading={loading} delay={0} />
-                    <GlowMetricCard title="Total Budget" value={formatBudget(totalBudget)} icon={HiOutlineCurrencyDollar} color="emerald" trend={8} loading={loading} delay={0.1} />
-                    <GlowMetricCard title="Tasks Done" value={completedTasks} icon={HiOutlineCheckCircle} color="cyan" trend={-5} loading={loading} delay={0.2} />
+                    <GlowMetricCard title="Active Projects" value={activeProjects} icon={HiOutlineFolder} color="violet" loading={loading} delay={0} />
+                    <GlowMetricCard title="Total Budget" value={formatBudget(totalBudget)} icon={HiOutlineCurrencyDollar} color="emerald" loading={loading} delay={0.1} />
+                    <GlowMetricCard title="Tasks Done" value={completedTasks} icon={HiOutlineCheckCircle} color="cyan" loading={loading} delay={0.2} />
                     <GlowMetricCard title="Productivity" value={`${taskProgress}%`} icon={HiOutlineLightningBolt} color="orange" loading={loading} delay={0.3} />
                 </div>
 

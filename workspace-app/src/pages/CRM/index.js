@@ -1,0 +1,9 @@
+export { default as CRMDashboard } from './Dashboard';
+export { default as ClientsPage } from './Clients';
+export { default as ClientDetail } from './ClientDetail';
+export { default as ClientForm } from './ClientForm';
+export { default as RemindersPage } from './Reminders';
+export { default as CRMSettings } from './Settings';
+export { default as AnalyticsPage } from './Analytics';
+export { default as ReportsPage } from './Reports';
+export { default as DuplicatesPage } from './Duplicates';

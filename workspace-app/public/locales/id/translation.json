@@ -99,7 +99,7 @@
     },
     "hero": {
       "title": "Ruang Kerja Digital Untuk Kreator Modern",
-      "subtitle": "Kelola proyek, keuangan, dan media sosial dalam satu platform terintegrasi",
+      "subtitle": "Kelola project, keuangan, dan media sosial dalam satu platform terintegrasi",
       "cta": "Mulai Sekarang",
       "watchDemo": "Lihat Demo"
     },
@@ -107,8 +107,8 @@
       "title": "Fitur Unggulan",
       "subtitle": "Semua yang Anda butuhkan untuk produktivitas maksimal",
       "work": {
-        "title": "Manajemen Proyek",
-        "description": "Kelola proyek, tugas, dan catatan dengan mudah"
+        "title": "Management Project",
+        "description": "Kelola project, tugas, dan catatan dengan mudah"
       },
       "finance": {
         "title": "Pelacakan Keuangan",
@@ -133,7 +133,7 @@
         "price": "Rp 0",
         "period": "/bulan",
         "features": [
-          "3 Proyek",
+          "3 Project",
           "Pelacakan keuangan dasar",
           "5 posting terjadwal/bulan"
         ],
@@ -144,7 +144,7 @@
         "price": "Rp 99.000",
         "period": "/bulan",
         "features": [
-          "Proyek tak terbatas",
+          "Project tak terbatas",
           "Laporan keuangan lengkap",
           "100 posting terjadwal/bulan",
           "Integrasi AI"
@@ -211,7 +211,7 @@
     "sosmedSettings": "Pengaturan Sosmed",
     "blogSettings": "Pengaturan Blog/Web",
     "overview": "Ringkasan",
-    "roleManagement": "Manajemen Peran",
+    "roleManagement": "Management Role",
     "activityLogs": "Log Aktivitas",
     "integrations": "Integrasi",
     "invitations": "Undangan",
@@ -230,21 +230,21 @@
       "title": "Dasbor Kerja",
       "welcome": "Selamat datang",
       "subtitle": "Berikut ringkasan produktivitas Anda",
-      "activeProjects": "Proyek Aktif",
+      "activeProjects": "Project Aktif",
       "pendingTasks": "Tugas Tertunda",
       "completedThisWeek": "Selesai Minggu Ini",
       "upcomingDeadlines": "Deadline Mendatang"
     },
     "projects": {
-      "title": "Proyek",
-      "newProject": "Proyek Baru",
-      "allProjects": "Semua Proyek",
+      "title": "Project",
+      "newProject": "Project Baru",
+      "allProjects": "Semua Project",
       "active": "Aktif",
       "completed": "Selesai",
       "archived": "Diarsipkan",
-      "noProjects": "Belum ada proyek",
-      "createFirst": "Buat proyek pertama Anda",
-      "subtitle": "Kelola dan lacak semua proyek Anda"
+      "noProjects": "Belum ada project",
+      "createFirst": "Buat project pertama Anda",
+      "subtitle": "Kelola dan lacak semua project Anda"
     },
     "tasks": {
       "title": "Tugas",
@@ -259,11 +259,11 @@
     },
     "calendar": {
       "title": "Kalender",
-      "subtitle": "Jadwalkan tugas dan lacak timeline proyek",
+      "subtitle": "Jadwalkan tugas dan lacak timeline project",
       "newTask": "Tugas Baru",
       "todaysTasks": "Tugas Hari Ini",
       "upcoming": "Mendatang",
-      "activeProjects": "Proyek Aktif",
+      "activeProjects": "Project Aktif",
       "goToToday": "Ke Hari Ini"
     },
     "notes": {
@@ -276,15 +276,15 @@
     },
     "budget": {
       "title": "Anggaran",
-      "subtitle": "Lacak dan kelola anggaran dan pengeluaran proyek"
+      "subtitle": "Lacak dan kelola anggaran dan pengeluaran project"
     },
     "assets": {
       "title": "Aset",
-      "subtitle": "Kelola file dan dokumen proyek"
+      "subtitle": "Kelola file dan dokumen project"
     },
     "reporting": {
       "title": "Pelaporan",
-      "subtitle": "Buat dan lihat laporan proyek"
+      "subtitle": "Buat dan lihat laporan project"
     },
     "settings": {
       "title": "Pengaturan Kerja",
@@ -636,11 +636,11 @@
     },
     "assets": {
       "title": "Aset Ruang",
-      "subtitle": "Kelola sumber daya untuk proyek pribadi Anda"
+      "subtitle": "Kelola sumber daya untuk project pribadi Anda"
     },
     "budget": {
       "title": "Anggaran Ruang",
-      "subtitle": "Alokasikan dan lacak anggaran untuk proyek Anda"
+      "subtitle": "Alokasikan dan lacak anggaran untuk project Anda"
     },
     "calendar": {
       "title": "Kalender Ruang",
@@ -648,23 +648,23 @@
     },
     "settings": {
       "title": "Pengaturan Ruang",
-      "subtitle": "Konfigurasi preferensi workspace proyek pribadi Anda"
+      "subtitle": "Konfigurasi preferensi workspace project pribadi Anda"
     },
     "finance": {
       "title": "Keuangan Ruang",
-      "subtitle": "Lacak pendapatan dan pengeluaran dari proyek yang diluncurkan"
+      "subtitle": "Lacak pendapatan dan pengeluaran dari project yang diluncurkan"
     },
     "roadmap": {
       "title": "Peta Jalan",
-      "subtitle": "Timeline visual untuk capaian proyek Anda"
+      "subtitle": "Timeline visual untuk capaian project Anda"
     },
     "targeting": {
       "title": "Penargetan",
-      "subtitle": "Tetapkan dan lacak tujuan untuk proyek Anda"
+      "subtitle": "Tetapkan dan lacak tujuan untuk project Anda"
     },
     "projects": {
-      "title": "Rencana Proyek",
-      "subtitle": "Rencanakan dan luncurkan ide proyek Anda"
+      "title": "Rencana Project",
+      "subtitle": "Rencanakan dan luncurkan ide project Anda"
     },
     "newGoal": "Tujuan Baru",
     "addMilestone": "Tambah Capaian",
@@ -691,8 +691,8 @@
       "title": "Pengaturan Sistem",
       "subtitle": "Panel admin untuk mengelola sistem",
       "overview": "Ikhtisar",
-      "users": "Manajemen Pengguna",
-      "roles": "Peran",
+      "users": "Management Pengguna",
+      "roles": "Role",
       "activity": "Log Aktivitas",
       "systemSettings": "Pengaturan Sistem",
       "integrations": "Integrasi"
@@ -704,11 +704,11 @@
       "subtitle": "Kelola akun, aset, dan bookmark Anda"
     },
     "accounts": {
-      "title": "Manajemen Akun",
+      "title": "Management Akun",
       "subtitle": "Simpan dan kelola semua akun Anda dengan aman"
     },
     "management": {
-      "title": "Manajemen Aset",
+      "title": "Management Aset",
       "subtitle": "Simpan teks, gambar, dan link penting"
     },
     "bookmark": {

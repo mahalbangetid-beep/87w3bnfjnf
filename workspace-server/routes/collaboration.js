@@ -61,7 +61,7 @@ router.get('/project/:projectId', authenticateToken, async (req, res) => {
 
         const collaborators = await ProjectCollaborator.findAll({
             where: { projectId },
-            include: [{ model: User, as: 'user', attributes: ['id', 'name', 'email', 'avatar'] }],
+            include: [{ model: User, as: 'user', attributes: ['id', 'name', 'email', 'avatar'], required: false }],
             order: [['createdAt', 'ASC']]
         });
 
@@ -74,7 +74,8 @@ router.get('/project/:projectId', authenticateToken, async (req, res) => {
             owner: project.User,
             collaborators: collaborators.map(c => ({
                 id: c.id,
-                user: c.user,
+                user: c.user || { email: c.invitedEmail, name: c.invitedEmail?.split('@')[0], pending: true },
+                invitedEmail: c.invitedEmail,
                 status: c.status,
                 role: c.role,
                 invitedAt: c.invitedAt,
@@ -97,31 +98,43 @@ router.post('/invite', authenticateToken, async (req, res) => {
             return res.status(400).json({ error: 'Project ID and email required' });
         }
 
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ error: 'Invalid email format' });
+        }
+
+        const normalizedEmail = email.toLowerCase().trim();
+
         const { access, role, project, error } = await checkProjectAccess(projectId, req.user.id);
         if (!access) return res.status(403).json({ error });
 
-        // Find user by email
-        const invitee = await User.findOne({ where: { email: email.toLowerCase() } });
-        if (!invitee) {
-            return res.status(404).json({ error: 'User not found with this email' });
-        }
-
         // Can't invite yourself
-        if (invitee.id === req.user.id) {
+        if (normalizedEmail === req.user.email?.toLowerCase()) {
             return res.status(400).json({ error: "You can't invite yourself" });
         }
 
-        // Check if already invited
-        const existing = await ProjectCollaborator.findOne({
-            where: { projectId, userId: invitee.id }
-        });
+        // Find user by email (may or may not exist)
+        const invitee = await User.findOne({ where: { email: normalizedEmail } });
+
+        // Check if already invited (by userId if exists, or by email if not)
+        let existing;
+        if (invitee) {
+            existing = await ProjectCollaborator.findOne({
+                where: { projectId, userId: invitee.id }
+            });
+        } else {
+            existing = await ProjectCollaborator.findOne({
+                where: { projectId, invitedEmail: normalizedEmail }
+            });
+        }
 
         if (existing) {
             if (existing.status === 'accepted') {
                 return res.status(400).json({ error: 'User is already a collaborator' });
             }
             if (existing.status === 'pending') {
-                return res.status(400).json({ error: 'Invitation already sent' });
+                return res.status(400).json({ error: 'Invitation already sent to this email' });
             }
             // Re-invite if declined/removed
             existing.status = 'pending';
@@ -129,11 +142,17 @@ router.post('/invite', authenticateToken, async (req, res) => {
             existing.invitedAt = new Date();
             existing.inviteToken = crypto.randomBytes(32).toString('hex');
             existing.inviteExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+            if (invitee) {
+                existing.userId = invitee.id;
+                existing.invitedEmail = null;
+            }
             await existing.save();
         } else {
+            // Create new invitation
             await ProjectCollaborator.create({
                 projectId,
-                userId: invitee.id,
+                userId: invitee ? invitee.id : null,
+                invitedEmail: invitee ? null : normalizedEmail,
                 invitedById: req.user.id,
                 status: 'pending',
                 inviteToken: crypto.randomBytes(32).toString('hex'),
@@ -141,24 +160,28 @@ router.post('/invite', authenticateToken, async (req, res) => {
             });
         }
 
-        // Create notification
-        await Notification.create({
-            userId: invitee.id,
-            type: 'collaboration',
-            title: 'Project Invitation',
-            message: `${req.user.name || 'Someone'} invited you to collaborate on "${project.name}"`,
-            data: JSON.stringify({ projectId, invitedBy: req.user.id })
-        });
+        // Create notification only if user exists
+        if (invitee) {
+            await Notification.create({
+                userId: invitee.id,
+                type: 'collaboration',
+                title: 'Project Invitation',
+                message: `${req.user.name || 'Someone'} invited you to collaborate on "${project.name}"`,
+                data: JSON.stringify({ projectId, invitedBy: req.user.id })
+            });
+        }
 
         // Log activity
-        await logActivity(projectId, req.user.id, 'collaborator_invited', 'user', invitee.id, invitee.name);
-
-        const inviter = await User.findByPk(req.user.id, { attributes: ['name'] });
+        await logActivity(projectId, req.user.id, 'collaborator_invited', 'user', invitee?.id || null, invitee?.name || normalizedEmail);
 
         res.json({
             success: true,
-            message: `Invitation sent to ${invitee.email}`,
-            invitee: { id: invitee.id, name: invitee.name, email: invitee.email }
+            message: invitee
+                ? `Invitation sent to ${invitee.email}`
+                : `Invitation sent to ${normalizedEmail}. They will see it when they register.`,
+            invitee: invitee
+                ? { id: invitee.id, name: invitee.name, email: invitee.email }
+                : { email: normalizedEmail, pending: true }
         });
     } catch (error) {
         console.error('Invite error:', error);

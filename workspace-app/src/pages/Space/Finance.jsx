@@ -13,7 +13,7 @@ import {
     HiOutlineArrowDown,
     HiOutlineCalendar,
 } from 'react-icons/hi';
-import { projectPlansAPI } from '../../services/api';
+import { projectPlansAPI, spaceAPI } from '../../services/api';
 
 const transactionTypes = {
     income: { label: 'Income', color: '#10b981', icon: HiOutlineArrowUp },
@@ -87,14 +87,14 @@ const SpaceFinance = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const [projectsData, storedTransactions] = await Promise.all([
+            const [projectsData, transactionsData] = await Promise.all([
                 projectPlansAPI.getAll(),
-                Promise.resolve(JSON.parse(localStorage.getItem('spaceFinance') || '[]')),
+                spaceAPI.getTransactions(),
             ]);
             // Filter only launched projects
             setProjects((projectsData || []).filter(p => p.status === 'launched'));
-            setTransactions(storedTransactions);
-        } catch (err) {
+            setTransactions(transactionsData || []);
+        } catch {
             setErrorWithTimeout(t('errors.generic', 'Failed to load transactions'));
         } finally {
             setLoading(false);
@@ -105,24 +105,21 @@ const SpaceFinance = () => {
         fetchData();
     }, []);
 
-    // Save to localStorage
-    const saveTransactions = (newTransactions) => {
-        localStorage.setItem('spaceFinance', JSON.stringify(newTransactions));
-        setTransactions(newTransactions);
-    };
+    // Confirm delete state
+    const [confirmDelete, setConfirmDelete] = useState(null);
 
     // Filter transactions
     const filteredTransactions = transactions.filter(t => {
         const matchType = filterType === 'all' || t.type === filterType;
         const matchProject = filterProject === 'all' || t.projectId === parseInt(filterProject);
-        const matchMonth = filterMonth === 'all' || t.date.startsWith(filterMonth);
+        const matchMonth = filterMonth === 'all' || (t.date && t.date.startsWith(filterMonth));
         return matchType && matchProject && matchMonth;
     }).sort((a, b) => new Date(b.date) - new Date(a.date));
 
     // Calculate stats
     const currentMonthTransactions = transactions.filter(t => {
         const now = new Date();
-        return t.date.startsWith(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`);
+        return t.date && t.date.startsWith(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`);
     });
 
     const stats = {
@@ -136,32 +133,28 @@ const SpaceFinance = () => {
     stats.monthlyProfit = stats.monthlyIncome - stats.monthlyExpense;
 
     // Handle save
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!formData.name.trim()) {
             setError('Please enter a description');
             return;
         }
 
         setSaving(true);
+        setError('');
 
         try {
-            let newTransactions;
             if (editingTransaction) {
-                newTransactions = transactions.map(t => t.id === editingTransaction.id ? { ...formData, id: editingTransaction.id, amount: parseFloat(formData.amount) || 0 } : t);
+                const updated = await spaceAPI.updateTransaction(editingTransaction.id, formData);
+                setTransactions(transactions.map(t => t.id === editingTransaction.id ? updated : t));
             } else {
-                const newTransaction = {
-                    ...formData,
-                    id: Date.now(),
-                    amount: parseFloat(formData.amount) || 0,
-                };
-                newTransactions = [newTransaction, ...transactions];
+                const created = await spaceAPI.createTransaction(formData);
+                setTransactions([created, ...transactions]);
             }
-            saveTransactions(newTransactions);
             setShowModal(false);
             setEditingTransaction(null);
             setFormData({ name: '', amount: '', type: 'income', category: 'sales', projectId: null, date: new Date().toISOString().split('T')[0], notes: '' });
         } catch (err) {
-            setError('Failed to save transaction');
+            setErrorWithTimeout(err.message || 'Failed to save transaction');
         } finally {
             setSaving(false);
         }
@@ -183,10 +176,14 @@ const SpaceFinance = () => {
     };
 
     // Handle delete
-    const handleDelete = (id) => {
-        if (confirm(t('space.confirmDeleteTransaction', 'Delete this transaction?'))) {
-            const newTransactions = transactions.filter(t => t.id !== id);
-            saveTransactions(newTransactions);
+    const handleConfirmDelete = async () => {
+        if (!confirmDelete) return;
+        try {
+            await spaceAPI.deleteTransaction(confirmDelete);
+            setTransactions(transactions.filter(t => t.id !== confirmDelete));
+            setConfirmDelete(null);
+        } catch (err) {
+            setErrorWithTimeout(err.message || 'Failed to delete transaction');
         }
     };
 
@@ -394,7 +391,7 @@ const SpaceFinance = () => {
                                     <button onClick={() => handleEdit(transaction)} style={{ padding: '6px', borderRadius: '6px', border: 'none', background: 'transparent', color: '#9ca3af', cursor: 'pointer' }}>
                                         <HiOutlinePencil style={{ width: '14px', height: '14px' }} />
                                     </button>
-                                    <button onClick={() => handleDelete(transaction.id)} style={{ padding: '6px', borderRadius: '6px', border: 'none', background: 'transparent', color: '#f87171', cursor: 'pointer' }}>
+                                    <button onClick={() => setConfirmDelete(transaction.id)} style={{ padding: '6px', borderRadius: '6px', border: 'none', background: 'transparent', color: '#f87171', cursor: 'pointer' }}>
                                         <HiOutlineTrash style={{ width: '14px', height: '14px' }} />
                                     </button>
                                 </div>
@@ -533,6 +530,53 @@ const SpaceFinance = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Confirm Delete Modal */}
+            <AnimatePresence>
+                {confirmDelete && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
+                        onClick={() => setConfirmDelete(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="glass-card"
+                            style={{ width: '100%', maxWidth: '400px', padding: '24px', textAlign: 'center' }}
+                        >
+                            <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                                <HiOutlineTrash style={{ width: '28px', height: '28px', color: '#ef4444' }} />
+                            </div>
+                            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', margin: '0 0 8px 0' }}>{t('common.confirmDelete', 'Delete Transaction?')}</h3>
+                            <p style={{ fontSize: '14px', color: '#9ca3af', margin: '0 0 24px 0' }}>{t('space.finance.deleteWarning', 'This action cannot be undone.')}</p>
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button onClick={() => setConfirmDelete(null)} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'transparent', color: '#9ca3af', fontSize: '14px', cursor: 'pointer' }}>
+                                    {t('common.cancel', 'Cancel')}
+                                </button>
+                                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={handleConfirmDelete} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', backgroundColor: '#ef4444', color: 'white', fontSize: '14px', fontWeight: '500', cursor: 'pointer' }}>
+                                    {t('common.delete', 'Delete')}
+                                </motion.button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Responsive Styles */}
+            <style>{`
+                @media (max-width: 1023px) {
+                    div[style*="grid-template-columns: repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; }
+                    div[style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+                }
+                @media (max-width: 767px) {
+                    div[style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };

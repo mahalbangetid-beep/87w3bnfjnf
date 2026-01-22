@@ -176,7 +176,7 @@ const SystemSettings = () => {
 
     const getRoleColor = (roleName) => {
         switch (roleName) {
-            case 'master_admin': return '#ef4444';
+            case 'superadmin': return '#ef4444';
             case 'admin': return '#f59e0b';
             case 'monitoring': return '#10b981';
             default: return '#6b7280';

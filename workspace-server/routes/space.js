@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
-const { Milestone, Goal, Project } = require('../models');
+const { Milestone, Goal, Project, IdeaProject, SpaceTransaction, SpaceAsset, SpaceBudget } = require('../models');
 const { authenticate, logActivity } = require('../middleware/auth');
 const logger = require('../utils/logger');
 
@@ -427,4 +427,365 @@ router.get('/stats', authenticate, async (req, res) => {
     }
 });
 
+// ==================== SPACE TRANSACTIONS (Finance) ====================
+
+// Validation rules for transaction
+const transactionValidation = [
+    body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 255 }),
+    body('amount').notEmpty().isFloat({ min: 0 }).withMessage('Valid amount is required'),
+    body('type').isIn(['income', 'expense']).withMessage('Invalid type'),
+    body('category').optional().trim().isLength({ max: 50 }),
+    body('date').optional().isISO8601().toDate(),
+    body('notes').optional().trim().isLength({ max: 5000 }),
+    body('projectId').optional({ nullable: true }).isInt()
+];
+
+// @route   GET /api/space/transactions
+router.get('/transactions', authenticate, async (req, res) => {
+    try {
+        const { type, projectId, month } = req.query;
+        const where = { userId: req.user.id };
+
+        if (type) where.type = type;
+        if (projectId) where.projectId = parseInt(projectId);
+
+        const transactions = await SpaceTransaction.findAll({
+            where,
+            include: [{ model: IdeaProject, as: 'Project', attributes: ['id', 'name', 'color'] }],
+            order: [['date', 'DESC'], ['createdAt', 'DESC']]
+        });
+
+        // Filter by month if specified
+        let filtered = transactions;
+        if (month) {
+            filtered = transactions.filter(t => t.date && t.date.startsWith(month));
+        }
+
+        res.json(filtered);
+    } catch (error) {
+        logger.error('Get transactions error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// @route   POST /api/space/transactions
+router.post('/transactions', authenticate, transactionValidation, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { name, amount, type, category, date, notes, projectId } = req.body;
+
+        const transaction = await SpaceTransaction.create({
+            name,
+            amount: parseFloat(amount),
+            type: type || 'income',
+            category: category || 'other',
+            date: date || new Date().toISOString().split('T')[0],
+            notes,
+            projectId: projectId || null,
+            userId: req.user.id
+        });
+
+        const result = await SpaceTransaction.findByPk(transaction.id, {
+            include: [{ model: IdeaProject, as: 'Project', attributes: ['id', 'name', 'color'] }]
+        });
+
+        res.status(201).json(result);
+    } catch (error) {
+        logger.error('Create transaction error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// @route   PUT /api/space/transactions/:id
+router.put('/transactions/:id', authenticate, transactionValidation, async (req, res) => {
+    try {
+        const transaction = await SpaceTransaction.findOne({
+            where: { id: req.params.id, userId: req.user.id }
+        });
+
+        if (!transaction) {
+            return res.status(404).json({ message: 'Transaction not found' });
+        }
+
+        const { name, amount, type, category, date, notes, projectId } = req.body;
+
+        await transaction.update({
+            name,
+            amount: parseFloat(amount),
+            type,
+            category,
+            date,
+            notes,
+            projectId: projectId || null
+        });
+
+        const result = await SpaceTransaction.findByPk(transaction.id, {
+            include: [{ model: IdeaProject, as: 'Project', attributes: ['id', 'name', 'color'] }]
+        });
+
+        res.json(result);
+    } catch (error) {
+        logger.error('Update transaction error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// @route   DELETE /api/space/transactions/:id
+router.delete('/transactions/:id', authenticate, async (req, res) => {
+    try {
+        const transaction = await SpaceTransaction.findOne({
+            where: { id: req.params.id, userId: req.user.id }
+        });
+
+        if (!transaction) {
+            return res.status(404).json({ message: 'Transaction not found' });
+        }
+
+        await transaction.destroy();
+        res.json({ message: 'Transaction deleted' });
+    } catch (error) {
+        logger.error('Delete transaction error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// ==================== SPACE ASSETS ====================
+
+// Validation rules for asset
+const assetValidation = [
+    body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 255 }),
+    body('type').optional().isIn(['image', 'document', 'link', 'code', 'other']),
+    body('url').optional().trim().isLength({ max: 2048 }),
+    body('description').optional().trim().isLength({ max: 5000 }),
+    body('projectId').optional({ nullable: true }).isInt()
+];
+
+// @route   GET /api/space/assets
+router.get('/assets', authenticate, async (req, res) => {
+    try {
+        const { type, projectId } = req.query;
+        const where = { userId: req.user.id };
+
+        if (type) where.type = type;
+        if (projectId) where.projectId = parseInt(projectId);
+
+        const assets = await SpaceAsset.findAll({
+            where,
+            include: [{ model: IdeaProject, as: 'Project', attributes: ['id', 'name', 'color'] }],
+            order: [['createdAt', 'DESC']]
+        });
+
+        res.json(assets);
+    } catch (error) {
+        logger.error('Get assets error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// @route   POST /api/space/assets
+router.post('/assets', authenticate, assetValidation, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { name, type, url, description, projectId } = req.body;
+
+        const asset = await SpaceAsset.create({
+            name,
+            type: type || 'link',
+            url,
+            description,
+            projectId: projectId || null,
+            userId: req.user.id
+        });
+
+        const result = await SpaceAsset.findByPk(asset.id, {
+            include: [{ model: IdeaProject, as: 'Project', attributes: ['id', 'name', 'color'] }]
+        });
+
+        res.status(201).json(result);
+    } catch (error) {
+        logger.error('Create asset error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// @route   PUT /api/space/assets/:id
+router.put('/assets/:id', authenticate, assetValidation, async (req, res) => {
+    try {
+        const asset = await SpaceAsset.findOne({
+            where: { id: req.params.id, userId: req.user.id }
+        });
+
+        if (!asset) {
+            return res.status(404).json({ message: 'Asset not found' });
+        }
+
+        const { name, type, url, description, projectId } = req.body;
+
+        await asset.update({
+            name,
+            type,
+            url,
+            description,
+            projectId: projectId || null
+        });
+
+        const result = await SpaceAsset.findByPk(asset.id, {
+            include: [{ model: IdeaProject, as: 'Project', attributes: ['id', 'name', 'color'] }]
+        });
+
+        res.json(result);
+    } catch (error) {
+        logger.error('Update asset error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// @route   DELETE /api/space/assets/:id
+router.delete('/assets/:id', authenticate, async (req, res) => {
+    try {
+        const asset = await SpaceAsset.findOne({
+            where: { id: req.params.id, userId: req.user.id }
+        });
+
+        if (!asset) {
+            return res.status(404).json({ message: 'Asset not found' });
+        }
+
+        await asset.destroy();
+        res.json({ message: 'Asset deleted' });
+    } catch (error) {
+        logger.error('Delete asset error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// ==================== SPACE BUDGETS ====================
+
+// Validation rules for budget
+const budgetValidation = [
+    body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 255 }),
+    body('amount').notEmpty().isFloat({ min: 0 }).withMessage('Valid amount is required'),
+    body('spent').optional().isFloat({ min: 0 }),
+    body('category').optional().trim().isLength({ max: 50 }),
+    body('date').optional().isISO8601().toDate(),
+    body('notes').optional().trim().isLength({ max: 5000 }),
+    body('projectId').optional({ nullable: true }).isInt()
+];
+
+// @route   GET /api/space/budgets
+router.get('/budgets', authenticate, async (req, res) => {
+    try {
+        const { category, projectId } = req.query;
+        const where = { userId: req.user.id };
+
+        if (category) where.category = category;
+        if (projectId) where.projectId = parseInt(projectId);
+
+        const budgets = await SpaceBudget.findAll({
+            where,
+            include: [{ model: IdeaProject, as: 'Project', attributes: ['id', 'name', 'color'] }],
+            order: [['createdAt', 'DESC']]
+        });
+
+        res.json(budgets);
+    } catch (error) {
+        logger.error('Get budgets error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// @route   POST /api/space/budgets
+router.post('/budgets', authenticate, budgetValidation, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { name, amount, spent, category, date, notes, projectId } = req.body;
+
+        const budget = await SpaceBudget.create({
+            name,
+            amount: parseFloat(amount),
+            spent: parseFloat(spent) || 0,
+            category: category || 'development',
+            date,
+            notes,
+            projectId: projectId || null,
+            userId: req.user.id
+        });
+
+        const result = await SpaceBudget.findByPk(budget.id, {
+            include: [{ model: IdeaProject, as: 'Project', attributes: ['id', 'name', 'color'] }]
+        });
+
+        res.status(201).json(result);
+    } catch (error) {
+        logger.error('Create budget error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// @route   PUT /api/space/budgets/:id
+router.put('/budgets/:id', authenticate, budgetValidation, async (req, res) => {
+    try {
+        const budget = await SpaceBudget.findOne({
+            where: { id: req.params.id, userId: req.user.id }
+        });
+
+        if (!budget) {
+            return res.status(404).json({ message: 'Budget not found' });
+        }
+
+        const { name, amount, spent, category, date, notes, projectId } = req.body;
+
+        await budget.update({
+            name,
+            amount: parseFloat(amount),
+            spent: parseFloat(spent) || 0,
+            category,
+            date,
+            notes,
+            projectId: projectId || null
+        });
+
+        const result = await SpaceBudget.findByPk(budget.id, {
+            include: [{ model: IdeaProject, as: 'Project', attributes: ['id', 'name', 'color'] }]
+        });
+
+        res.json(result);
+    } catch (error) {
+        logger.error('Update budget error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// @route   DELETE /api/space/budgets/:id
+router.delete('/budgets/:id', authenticate, async (req, res) => {
+    try {
+        const budget = await SpaceBudget.findOne({
+            where: { id: req.params.id, userId: req.user.id }
+        });
+
+        if (!budget) {
+            return res.status(404).json({ message: 'Budget not found' });
+        }
+
+        await budget.destroy();
+        res.json({ message: 'Budget deleted' });
+    } catch (error) {
+        logger.error('Delete budget error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 module.exports = router;
+

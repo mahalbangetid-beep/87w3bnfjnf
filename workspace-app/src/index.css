@@ -983,3 +983,130 @@ html.light-mode select option:hover,
 html.light-mode select option:checked {
   background-color: rgba(139, 92, 246, 0.1) !important;
 }
+
+/* ===== Focus Mode Styles ===== */
+/* Hide elements when focus mode is active */
+body.focus-mode-active .sidebar,
+body.focus-mode-active .mobile-sidebar,
+body.focus-mode-active .sidebar-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-100%);
+  transition: all 0.3s ease;
+}
+
+body.focus-mode-active .main-content {
+  margin-left: 0 !important;
+  max-width: 100% !important;
+  transition: all 0.3s ease;
+}
+
+/* Hide navigation elements */
+body.focus-mode-active .notification-bell,
+body.focus-mode-active .user-menu,
+body.focus-mode-active .breadcrumb-nav,
+body.focus-mode-active .mobile-menu-toggle {
+  opacity: 0.3;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Hide FAB in focus mode */
+body.focus-mode-active .floating-action-button {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+
+/* Reduce header prominence */
+body.focus-mode-active .page-header {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+body.focus-mode-active .page-header:hover {
+  opacity: 1;
+}
+
+/* Center content better */
+body.focus-mode-active .content-container {
+  max-width: 900px;
+  margin: 0 auto;
+  transition: max-width 0.3s ease;
+}
+
+/* Enhanced typing experience */
+body.focus-mode-active textarea,
+body.focus-mode-active [contenteditable="true"],
+body.focus-mode-active .editor-content {
+  font-size: 1.1em;
+  line-height: 1.8;
+  transition: all 0.3s ease;
+}
+
+/* Subtle vignette effect for immersion */
+body.focus-mode-active::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  z-index: 9998;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+/* Focus mode indicator animation */
+@keyframes focus-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(139, 92, 246, 0);
+  }
+}
+
+.focus-mode-indicator {
+  animation: focus-pulse 2s infinite;
+}
+
+/* Smooth transitions for focus mode toggle */
+.sidebar,
+.main-content,
+.notification-bell,
+.user-menu,
+.floating-action-button,
+.page-header {
+  transition: all 0.3s ease;
+}
+
+/* Desktop - wider content area in focus mode */
+@media (min-width: 1024px) {
+  body.focus-mode-active .content-container {
+    max-width: 1000px;
+    padding: 0 40px;
+  }
+}
+
+/* Mobile - full width in focus mode */
+@media (max-width: 768px) {
+  body.focus-mode-active .content-container {
+    max-width: 100%;
+    padding: 0 16px;
+  }
+  
+  body.focus-mode-active .bottom-nav {
+    opacity: 0.5;
+    transform: translateY(50%);
+  }
+  
+  body.focus-mode-active .bottom-nav:hover {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

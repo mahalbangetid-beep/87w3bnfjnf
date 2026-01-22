@@ -57,7 +57,6 @@ const SpaceDashboard = () => {
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [deleting, setDeleting] = useState(null);
     const [error, setError] = useState('');
 
     // Auto-clear error after 5 seconds
@@ -108,7 +107,7 @@ const SpaceDashboard = () => {
             const defaultStats = { activeStrategies: 0, goalsAchieved: 0, inProgress: 0, completionRate: 0 };
             setStats({ ...defaultStats, ...(statsData || {}) });
             setProjects(projectsData || []);
-        } catch (err) {
+        } catch {
             setErrorWithTimeout(t('errors.generic', 'Failed to load space data'));
         } finally {
             setLoading(false);
@@ -162,17 +161,12 @@ const SpaceDashboard = () => {
     };
 
     const handleDeleteMilestone = async (id) => {
-        if (confirm(t('space.confirmDeleteMilestone', 'Delete this milestone?'))) {
-            setDeleting(id);
-            try {
-                await spaceAPI.deleteMilestone(id);
-                setMilestones(milestones.filter(m => m.id !== id));
-                fetchData(); // Refresh stats
-            } catch (err) {
-                setErrorWithTimeout(t('errors.generic', 'Failed to delete milestone'));
-            } finally {
-                setDeleting(null);
-            }
+        try {
+            await spaceAPI.deleteMilestone(id);
+            setMilestones(milestones.filter(m => m.id !== id));
+            fetchData(); // Refresh stats
+        } catch {
+            setErrorWithTimeout(t('errors.generic', 'Failed to delete milestone'));
         }
     };
 
@@ -226,17 +220,12 @@ const SpaceDashboard = () => {
     };
 
     const handleDeleteGoal = async (id) => {
-        if (confirm(t('space.confirmDeleteGoal', 'Delete this goal?'))) {
-            setDeleting(`goal-${id}`);
-            try {
-                await spaceAPI.deleteGoal(id);
-                setGoals(goals.filter(g => g.id !== id));
-                fetchData(); // Refresh stats
-            } catch (err) {
-                setErrorWithTimeout(t('errors.generic', 'Failed to delete goal'));
-            } finally {
-                setDeleting(null);
-            }
+        try {
+            await spaceAPI.deleteGoal(id);
+            setGoals(goals.filter(g => g.id !== id));
+            fetchData(); // Refresh stats
+        } catch {
+            setErrorWithTimeout(t('errors.generic', 'Failed to delete goal'));
         }
     };
 
@@ -466,10 +455,10 @@ const SpaceDashboard = () => {
             {/* Stats Overview */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
                 {[
-                    { label: 'Active Strategies', value: stats.activeStrategies?.toString() || '0', change: '+2', color: '#8b5cf6' },
-                    { label: 'Goals Achieved', value: stats.goalsAchieved?.toString() || '0', change: '+5', color: '#10b981' },
-                    { label: 'In Progress', value: stats.inProgress?.toString() || '0', change: '+3', color: '#06b6d4' },
-                    { label: 'Completion Rate', value: `${stats.completionRate || 0}%`, change: '+12%', color: '#ec4899' },
+                    { label: 'Active Strategies', value: stats.activeStrategies?.toString() || '0', color: '#8b5cf6' },
+                    { label: 'Goals Achieved', value: stats.goalsAchieved?.toString() || '0', color: '#10b981' },
+                    { label: 'In Progress', value: stats.inProgress?.toString() || '0', color: '#06b6d4' },
+                    { label: 'Completion Rate', value: `${stats.completionRate || 0}%`, color: '#ec4899' },
                 ].map((stat, index) => (
                     <motion.div
                         key={stat.label}
@@ -481,13 +470,12 @@ const SpaceDashboard = () => {
                     >
                         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
                             <p style={{ fontSize: '28px', fontWeight: '700', color: 'white', margin: 0 }}>{stat.value}</p>
-                            <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '20px', backgroundColor: 'rgba(16,185,129,0.2)', color: '#34d399' }}>{stat.change}</span>
                         </div>
                         <p style={{ fontSize: '13px', color: '#9ca3af', margin: 0 }}>{stat.label}</p>
                         <div style={{ marginTop: '12px', height: '4px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '10px', overflow: 'hidden' }}>
                             <motion.div
                                 initial={{ width: 0 }}
-                                animate={{ width: '70%' }}
+                                animate={{ width: stat.label === 'Completion Rate' ? `${stats.completionRate || 0}%` : '70%' }}
                                 transition={{ delay: 0.6 + index * 0.1, duration: 1 }}
                                 style={{ height: '100%', backgroundColor: stat.color, borderRadius: '10px' }}
                             />
@@ -709,6 +697,17 @@ const SpaceDashboard = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Responsive Styles */}
+            <style>{`
+                @media (max-width: 1023px) {
+                    div[style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+                    div[style*="grid-template-columns: 2fr 1fr"] { grid-template-columns: 1fr !important; }
+                }
+                @media (max-width: 767px) {
+                    div[style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };

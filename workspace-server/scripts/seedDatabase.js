@@ -4,7 +4,7 @@ const { sequelize, Role, User } = require('../models');
 const roles = [
     {
         id: 1,
-        name: 'master_admin',
+        name: 'superadmin',
         displayName: 'Master Admin',
         description: 'Full access to all features and settings',
         permissions: {

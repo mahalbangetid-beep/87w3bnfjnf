@@ -333,7 +333,7 @@ router.post('/test', async (req, res) => {
 router.post('/trigger-job', async (req, res) => {
     try {
         // Check if user is admin
-        if (req.user.Role?.name !== 'master_admin') {
+        if (req.user.Role?.name !== 'superadmin') {
             return res.status(403).json({ message: 'Admin access required' });
         }
 

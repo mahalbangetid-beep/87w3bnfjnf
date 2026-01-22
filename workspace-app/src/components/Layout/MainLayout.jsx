@@ -4,12 +4,19 @@ import Sidebar from './Sidebar';
 import MobileBottomNav from './MobileBottomNav';
 import ParticlesBackground from '../UI/ParticlesBackground';
 import { AIChatWidget } from '../AI';
+import FocusModeToggle, { FocusModeIndicator } from './FocusModeToggle';
+import { useFocusMode } from '../../contexts/FocusModeContext';
 
 const MainLayout = () => {
+    const { isFocusMode } = useFocusMode();
+
     return (
         <div style={{ minHeight: '100dvh', position: 'relative' }}>
             {/* Particles Background */}
             <ParticlesBackground />
+
+            {/* Focus Mode Indicator - shows at top when active */}
+            <FocusModeIndicator />
 
             {/* Sidebar */}
             <Sidebar />
@@ -20,15 +27,35 @@ const MainLayout = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
                 style={{
-                    marginLeft: '280px',
+                    marginLeft: isFocusMode ? '0' : '280px',
                     minHeight: '100dvh',
                     padding: '24px 32px',
                     position: 'relative',
                     zIndex: 10,
+                    transition: 'margin-left 0.3s ease',
                 }}
                 className="main-content"
             >
-                <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                {/* Focus Mode Toggle - Fixed position in top right */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    style={{
+                        position: 'fixed',
+                        top: '20px',
+                        right: '24px',
+                        zIndex: 100,
+                    }}
+                    className="focus-toggle-container"
+                >
+                    <FocusModeToggle />
+                </motion.div>
+
+                <div
+                    style={{ maxWidth: '1400px', margin: '0 auto' }}
+                    className="content-container"
+                >
                     <Outlet />
                 </div>
             </motion.main>
@@ -47,6 +74,10 @@ const MainLayout = () => {
                         margin-left: 0 !important;
                         padding: 20px !important;
                     }
+                    .focus-toggle-container {
+                        top: 16px !important;
+                        right: 16px !important;
+                    }
                 }
                 
                 /* Mobile breakpoint */
@@ -55,6 +86,10 @@ const MainLayout = () => {
                         margin-left: 0 !important;
                         padding: 16px !important;
                         padding-bottom: calc(90px + env(safe-area-inset-bottom)) !important;
+                    }
+                    .focus-toggle-container {
+                        top: 12px !important;
+                        right: 12px !important;
                     }
                 }
                 
@@ -71,4 +106,3 @@ const MainLayout = () => {
 };
 
 export default MainLayout;
-

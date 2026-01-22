@@ -45,6 +45,7 @@ const Budget = () => {
     const [showExpenseModal, setShowExpenseModal] = useState(false);
     const [editingBudget, setEditingBudget] = useState(null);
     const [editingExpense, setEditingExpense] = useState(null);
+    const [confirmDelete, setConfirmDelete] = useState({ show: false, type: null, id: null });
     const [error, setError] = useState('');
 
     // Helper to set error with auto-clear timeout
@@ -198,13 +199,24 @@ const Budget = () => {
     };
 
     const handleDeleteBudget = async (budgetId) => {
-        if (confirm('Delete this budget allocation?')) {
-            try {
-                await budgetsAPI.delete(budgetId);
-                setBudgets(budgets.filter((b) => b.id !== budgetId));
-            } catch (err) {
-                console.error('Error deleting budget:', err);
+        setConfirmDelete({ show: true, type: 'budget', id: budgetId });
+    };
+
+    const handleConfirmDelete = async () => {
+        const { type, id } = confirmDelete;
+        try {
+            if (type === 'budget') {
+                await budgetsAPI.delete(id);
+                setBudgets(budgets.filter((b) => b.id !== id));
+            } else if (type === 'expense') {
+                await budgetsAPI.deleteExpense(id);
+                setExpenses(expenses.filter((e) => e.id !== id));
             }
+        } catch (err) {
+            console.error('Error deleting:', err);
+            setErrorWithTimeout('Failed to delete item');
+        } finally {
+            setConfirmDelete({ show: false, type: null, id: null });
         }
     };
 
@@ -259,14 +271,7 @@ const Budget = () => {
     };
 
     const handleDeleteExpense = async (expenseId) => {
-        if (confirm('Delete this expense?')) {
-            try {
-                await budgetsAPI.deleteExpense(expenseId);
-                setExpenses(expenses.filter((e) => e.id !== expenseId));
-            } catch (err) {
-                console.error('Error deleting expense:', err);
-            }
-        }
+        setConfirmDelete({ show: true, type: 'expense', id: expenseId });
     };
 
     // Get project by ID
@@ -813,6 +818,54 @@ const Budget = () => {
                                         {saving ? 'Saving...' : editingExpense ? 'Update' : 'Add Expense'}
                                     </motion.button>
                                 </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Confirm Delete Modal */}
+            <AnimatePresence>
+                {confirmDelete.show && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
+                        onClick={() => setConfirmDelete({ show: false, type: null, id: null })}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="glass-card"
+                            style={{ width: '100%', maxWidth: '400px', padding: '24px', textAlign: 'center' }}
+                        >
+                            <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: 'rgba(239,68,68,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                                <HiOutlineTrash style={{ width: '28px', height: '28px', color: '#f87171' }} />
+                            </div>
+                            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '8px' }}>
+                                Delete {confirmDelete.type === 'budget' ? 'Budget' : 'Expense'}?
+                            </h3>
+                            <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '24px' }}>
+                                This action cannot be undone. Are you sure you want to delete this {confirmDelete.type}?
+                            </p>
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button
+                                    onClick={() => setConfirmDelete({ show: false, type: null, id: null })}
+                                    style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'transparent', color: '#9ca3af', fontSize: '14px', cursor: 'pointer' }}
+                                >
+                                    Cancel
+                                </button>
+                                <motion.button
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    onClick={handleConfirmDelete}
+                                    style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', backgroundColor: '#ef4444', color: 'white', fontSize: '14px', cursor: 'pointer', fontWeight: '500' }}
+                                >
+                                    Delete
+                                </motion.button>
                             </div>
                         </motion.div>
                     </motion.div>

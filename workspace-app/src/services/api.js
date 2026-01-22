@@ -143,6 +143,30 @@ export const spaceAPI = {
     deleteGoal: (id) => apiRequest(`/space/goals/${id}`, { method: 'DELETE' }),
     // Stats
     getStats: () => apiRequest('/space/stats'),
+    // Transactions (Finance)
+    getTransactions: (params = {}) => {
+        const query = new URLSearchParams(params).toString();
+        return apiRequest(`/space/transactions${query ? `?${query}` : ''}`);
+    },
+    createTransaction: (data) => apiRequest('/space/transactions', { method: 'POST', body: data }),
+    updateTransaction: (id, data) => apiRequest(`/space/transactions/${id}`, { method: 'PUT', body: data }),
+    deleteTransaction: (id) => apiRequest(`/space/transactions/${id}`, { method: 'DELETE' }),
+    // Assets
+    getAssets: (params = {}) => {
+        const query = new URLSearchParams(params).toString();
+        return apiRequest(`/space/assets${query ? `?${query}` : ''}`);
+    },
+    createAsset: (data) => apiRequest('/space/assets', { method: 'POST', body: data }),
+    updateAsset: (id, data) => apiRequest(`/space/assets/${id}`, { method: 'PUT', body: data }),
+    deleteAsset: (id) => apiRequest(`/space/assets/${id}`, { method: 'DELETE' }),
+    // Budgets
+    getBudgets: (params = {}) => {
+        const query = new URLSearchParams(params).toString();
+        return apiRequest(`/space/budgets${query ? `?${query}` : ''}`);
+    },
+    createBudget: (data) => apiRequest('/space/budgets', { method: 'POST', body: data }),
+    updateBudget: (id, data) => apiRequest(`/space/budgets/${id}`, { method: 'PUT', body: data }),
+    deleteBudget: (id) => apiRequest(`/space/budgets/${id}`, { method: 'DELETE' }),
 };
 
 // Idea Projects API (Space module)
@@ -602,10 +626,140 @@ export const pagesAPI = {
     reset: (slug) => apiRequest(`/pages/admin/${slug}/reset`, { method: 'POST' })
 };
 
+// Work Files API (File Manager)
+export const workFilesAPI = {
+    // Get files/folders in directory
+    getAll: (params = {}) => {
+        const query = new URLSearchParams(params).toString();
+        return apiRequest(`/work-files${query ? `?${query}` : ''}`);
+    },
+
+    // Get file tree structure
+    getTree: () => apiRequest('/work-files/tree'),
+
+    // Get recent files
+    getRecent: () => apiRequest('/work-files/recent'),
+
+    // Get stats
+    getStats: () => apiRequest('/work-files/stats/summary'),
+
+    // Get single file
+    getOne: (id) => apiRequest(`/work-files/${id}`),
+
+    // Get folder contents
+    getFolderContents: (id) => apiRequest(`/work-files/${id}/contents`),
+
+    // Create file/folder
+    create: (data) => apiRequest('/work-files', { method: 'POST', body: data }),
+
+    // Update file/folder
+    update: (id, data) => apiRequest(`/work-files/${id}`, { method: 'PUT', body: data }),
+
+    // Move file/folder
+    move: (id, parentId) => apiRequest(`/work-files/${id}/move`, { method: 'PUT', body: { parentId } }),
+
+    // Toggle star
+    toggleStar: (id) => apiRequest(`/work-files/${id}/star`, { method: 'PUT' }),
+
+    // Delete file/folder
+    delete: (id) => apiRequest(`/work-files/${id}`, { method: 'DELETE' })
+};
+
+// CRM API
+export const crmAPI = {
+    // ========== CLIENTS ==========
+    getClients: (params = {}) => {
+        const query = new URLSearchParams(params).toString();
+        return apiRequest(`/crm/clients${query ? `?${query}` : ''}`);
+    },
+    getClient: (id) => apiRequest(`/crm/clients/${id}`),
+    createClient: (data) => apiRequest('/crm/clients', { method: 'POST', body: data }),
+    updateClient: (id, data) => apiRequest(`/crm/clients/${id}`, { method: 'PUT', body: data }),
+    changeClientStage: (id, stageId) => apiRequest(`/crm/clients/${id}/stage`, { method: 'PATCH', body: { stageId } }),
+    deleteClient: (id) => apiRequest(`/crm/clients/${id}`, { method: 'DELETE' }),
+    restoreClient: (id) => apiRequest(`/crm/clients/${id}/restore`, { method: 'POST' }),
+    permanentDeleteClient: (id) => apiRequest(`/crm/clients/${id}/permanent`, { method: 'DELETE' }),
+    getClientActivities: (id, params = {}) => {
+        const query = new URLSearchParams(params).toString();
+        return apiRequest(`/crm/clients/${id}/activities${query ? `?${query}` : ''}`);
+    },
+
+    // ========== PIPELINE STAGES ==========
+    getPipelineStages: () => apiRequest('/crm/pipeline/stages'),
+    createPipelineStage: (data) => apiRequest('/crm/pipeline/stages', { method: 'POST', body: data }),
+    updatePipelineStage: (id, data) => apiRequest(`/crm/pipeline/stages/${id}`, { method: 'PUT', body: data }),
+    reorderPipelineStages: (stageIds) => apiRequest('/crm/pipeline/stages/reorder', { method: 'PATCH', body: { stageIds } }),
+    deletePipelineStage: (id) => apiRequest(`/crm/pipeline/stages/${id}`, { method: 'DELETE' }),
+
+    // ========== CONTACTS ==========
+    getClientContacts: (clientId) => apiRequest(`/crm/contacts/client/${clientId}`),
+    createContact: (data) => apiRequest('/crm/contacts', { method: 'POST', body: data }),
+    updateContact: (id, data) => apiRequest(`/crm/contacts/${id}`, { method: 'PUT', body: data }),
+    deleteContact: (id) => apiRequest(`/crm/contacts/${id}`, { method: 'DELETE' }),
+
+    // ========== ACTIVITIES ==========
+    createActivity: (data) => apiRequest('/crm/activities', { method: 'POST', body: data }),
+    deleteActivity: (id) => apiRequest(`/crm/activities/${id}`, { method: 'DELETE' }),
+
+    // ========== REMINDERS ==========
+    getReminders: (status = 'pending') => apiRequest(`/crm/reminders?status=${status}`),
+    createReminder: (data) => apiRequest('/crm/reminders', { method: 'POST', body: data }),
+    updateReminder: (id, data) => apiRequest(`/crm/reminders/${id}`, { method: 'PUT', body: data }),
+    completeReminder: (id) => apiRequest(`/crm/reminders/${id}/complete`, { method: 'PATCH' }),
+    snoozeReminder: (id, snoozedUntil) => apiRequest(`/crm/reminders/${id}/snooze`, { method: 'PATCH', body: { snoozedUntil } }),
+    deleteReminder: (id) => apiRequest(`/crm/reminders/${id}`, { method: 'DELETE' }),
+
+    // ========== TAGS ==========
+    getTags: () => apiRequest('/crm/tags'),
+    createTag: (data) => apiRequest('/crm/tags', { method: 'POST', body: data }),
+    updateTag: (id, data) => apiRequest(`/crm/tags/${id}`, { method: 'PUT', body: data }),
+    deleteTag: (id) => apiRequest(`/crm/tags/${id}`, { method: 'DELETE' }),
+
+    // ========== CUSTOM FIELDS ==========
+    getCustomFields: () => apiRequest('/crm/custom-fields'),
+    createCustomField: (data) => apiRequest('/crm/custom-fields', { method: 'POST', body: data }),
+    updateCustomField: (id, data) => apiRequest(`/crm/custom-fields/${id}`, { method: 'PUT', body: data }),
+    deleteCustomField: (id) => apiRequest(`/crm/custom-fields/${id}`, { method: 'DELETE' }),
+
+    // ========== ANALYTICS ==========
+    getAnalyticsOverview: () => apiRequest('/crm/analytics/overview'),
+    getAnalyticsFunnel: () => apiRequest('/crm/analytics/funnel'),
+
+    // ========== DOCUMENTS ==========
+    getDocuments: (clientId) => apiRequest(`/crm/clients/${clientId}/documents`),
+    uploadDocument: async (clientId, file, description = '') => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('description', description);
+
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/crm/clients/${clientId}/documents`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Upload failed');
+        }
+
+        return response.json();
+    },
+    downloadDocument: (id) => `${API_BASE_URL}/crm/documents/${id}/download`,
+    deleteDocument: (id) => apiRequest(`/crm/documents/${id}`, { method: 'DELETE' }),
+
+    // ========== ADVANCED ANALYTICS ==========
+    getConversionRates: () => apiRequest('/crm/analytics/conversion'),
+    getTrends: (period = 'week') => apiRequest(`/crm/analytics/trends?period=${period}`),
+    getActivityStats: (days = 30) => apiRequest(`/crm/analytics/activity-stats?days=${days}`),
+
+    // ========== DUPLICATES ==========
+    getDuplicates: () => apiRequest('/crm/duplicates'),
+    mergeClients: (keepId, mergeId) => apiRequest('/crm/clients/merge', { method: 'POST', body: { keepId, mergeId } })
+};
+
 export default apiRequest;
-
-
-
-
-
 

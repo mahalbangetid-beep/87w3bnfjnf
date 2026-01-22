@@ -64,6 +64,24 @@ const BlogComment = require('./BlogComment');
 // Page Content Model
 const PageContent = require('./PageContent');
 
+// Space Module Models
+const SpaceTransaction = require('./SpaceTransaction');
+const SpaceAsset = require('./SpaceAsset');
+const SpaceBudget = require('./SpaceBudget');
+
+// Work File Manager
+const WorkFile = require('./WorkFile');
+
+// CRM Models
+const Client = require('./Client')(sequelize);
+const ClientContact = require('./ClientContact')(sequelize);
+const ClientPipelineStage = require('./ClientPipelineStage')(sequelize);
+const ClientActivity = require('./ClientActivity')(sequelize);
+const ClientReminder = require('./ClientReminder')(sequelize);
+const ClientCustomField = require('./ClientCustomField')(sequelize);
+const ClientTag = require('./ClientTag')(sequelize);
+const ClientDocument = require('./ClientDocument')(sequelize);
+
 // Define relationships
 
 // User - Role
@@ -158,6 +176,76 @@ IdeaProject.belongsTo(User, { foreignKey: 'userId' });
 // User - Project Plans (Space module)
 User.hasMany(ProjectPlan, { foreignKey: 'userId' });
 ProjectPlan.belongsTo(User, { foreignKey: 'userId' });
+
+// User - Space Transactions
+User.hasMany(SpaceTransaction, { foreignKey: 'userId' });
+SpaceTransaction.belongsTo(User, { foreignKey: 'userId' });
+IdeaProject.hasMany(SpaceTransaction, { foreignKey: 'projectId' });
+SpaceTransaction.belongsTo(IdeaProject, { foreignKey: 'projectId', as: 'Project' });
+
+// User - Space Assets
+User.hasMany(SpaceAsset, { foreignKey: 'userId' });
+SpaceAsset.belongsTo(User, { foreignKey: 'userId' });
+IdeaProject.hasMany(SpaceAsset, { foreignKey: 'projectId' });
+SpaceAsset.belongsTo(IdeaProject, { foreignKey: 'projectId', as: 'Project' });
+
+// User - Space Budgets
+User.hasMany(SpaceBudget, { foreignKey: 'userId' });
+SpaceBudget.belongsTo(User, { foreignKey: 'userId' });
+IdeaProject.hasMany(SpaceBudget, { foreignKey: 'projectId' });
+SpaceBudget.belongsTo(IdeaProject, { foreignKey: 'projectId', as: 'Project' });
+
+// User - Work Files (File Manager)
+User.hasMany(WorkFile, { foreignKey: 'userId' });
+WorkFile.belongsTo(User, { foreignKey: 'userId' });
+Project.hasMany(WorkFile, { foreignKey: 'projectId' });
+WorkFile.belongsTo(Project, { foreignKey: 'projectId' });
+
+// ============ CRM RELATIONSHIPS ============
+
+// User - Clients
+User.hasMany(Client, { foreignKey: 'userId' });
+Client.belongsTo(User, { foreignKey: 'userId' });
+
+// Client - Pipeline Stage
+ClientPipelineStage.hasMany(Client, { foreignKey: 'stageId', as: 'clients' });
+Client.belongsTo(ClientPipelineStage, { foreignKey: 'stageId', as: 'stage' });
+
+// User - Pipeline Stages
+User.hasMany(ClientPipelineStage, { foreignKey: 'userId' });
+ClientPipelineStage.belongsTo(User, { foreignKey: 'userId' });
+
+// Client - Contacts (Multi-contact)
+Client.hasMany(ClientContact, { foreignKey: 'clientId', as: 'contacts' });
+ClientContact.belongsTo(Client, { foreignKey: 'clientId' });
+User.hasMany(ClientContact, { foreignKey: 'userId' });
+ClientContact.belongsTo(User, { foreignKey: 'userId' });
+
+// Client - Activities
+Client.hasMany(ClientActivity, { foreignKey: 'clientId', as: 'activities' });
+ClientActivity.belongsTo(Client, { foreignKey: 'clientId' });
+User.hasMany(ClientActivity, { foreignKey: 'userId' });
+ClientActivity.belongsTo(User, { foreignKey: 'userId' });
+
+// Client - Reminders
+Client.hasMany(ClientReminder, { foreignKey: 'clientId', as: 'reminders' });
+ClientReminder.belongsTo(Client, { foreignKey: 'clientId' });
+User.hasMany(ClientReminder, { foreignKey: 'userId' });
+ClientReminder.belongsTo(User, { foreignKey: 'userId' });
+
+// User - Custom Fields
+User.hasMany(ClientCustomField, { foreignKey: 'userId' });
+ClientCustomField.belongsTo(User, { foreignKey: 'userId' });
+
+// User - Tags
+User.hasMany(ClientTag, { foreignKey: 'userId' });
+ClientTag.belongsTo(User, { foreignKey: 'userId' });
+
+// User - Documents
+User.hasMany(ClientDocument, { foreignKey: 'userId' });
+ClientDocument.belongsTo(User, { foreignKey: 'userId' });
+Client.hasMany(ClientDocument, { foreignKey: 'clientId' });
+ClientDocument.belongsTo(Client, { foreignKey: 'clientId' });
 
 // ============ SOCIAL STACK RELATIONSHIPS ============
 
@@ -352,5 +440,20 @@ module.exports = {
     // Page Content
     PageContent,
     // AI Configuration
-    UserAIConfig
+    UserAIConfig,
+    // Space Module
+    SpaceTransaction,
+    SpaceAsset,
+    SpaceBudget,
+    // Work File Manager
+    WorkFile,
+    // CRM
+    Client,
+    ClientContact,
+    ClientPipelineStage,
+    ClientActivity,
+    ClientReminder,
+    ClientCustomField,
+    ClientTag,
+    ClientDocument
 };

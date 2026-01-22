@@ -16,15 +16,6 @@ import {
 } from 'react-icons/hi';
 import { spaceAPI, projectPlansAPI } from '../../services/api';
 
-const phaseColors = {
-    research: { color: '#6366f1', bg: 'rgba(99,102,241,0.2)' },
-    planning: { color: '#f59e0b', bg: 'rgba(245,158,11,0.2)' },
-    development: { color: '#8b5cf6', bg: 'rgba(139,92,246,0.2)' },
-    testing: { color: '#06b6d4', bg: 'rgba(6,182,212,0.2)' },
-    launch: { color: '#10b981', bg: 'rgba(16,185,129,0.2)' },
-    maintenance: { color: '#ec4899', bg: 'rgba(236,72,153,0.2)' },
-};
-
 const Roadmap = () => {
     const { t } = useTranslation();
     const [milestones, setMilestones] = useState([]);
@@ -42,6 +33,7 @@ const Roadmap = () => {
     const [editingMilestone, setEditingMilestone] = useState(null);
     const [selectedProject, setSelectedProject] = useState('all');
     const [viewMode, setViewMode] = useState('timeline'); // timeline, kanban
+    const [confirmDelete, setConfirmDelete] = useState(null);
 
     const [formData, setFormData] = useState({
         title: '',
@@ -80,7 +72,7 @@ const Roadmap = () => {
             ]);
             setMilestones(milestonesData || []);
             setProjects(projectsData || []);
-        } catch (err) {
+        } catch {
             setErrorWithTimeout(t('errors.generic', 'Failed to load roadmap data'));
         } finally {
             setLoading(false);
@@ -151,14 +143,20 @@ const Roadmap = () => {
         setShowModal(true);
     };
 
-    // Handle delete
-    const handleDelete = async (id) => {
-        if (confirm(t('space.confirmDeleteMilestone', 'Delete this milestone?'))) {
+    // Handle delete - show confirmation modal
+    const handleDelete = (id) => {
+        setConfirmDelete(id);
+    };
+
+    const confirmDeleteAction = async () => {
+        if (confirmDelete) {
             try {
-                await spaceAPI.deleteMilestone(id);
-                setMilestones(milestones.filter(m => m.id !== id));
-            } catch (err) {
+                await spaceAPI.deleteMilestone(confirmDelete);
+                setMilestones(milestones.filter(m => m.id !== confirmDelete));
+            } catch {
                 setErrorWithTimeout(t('errors.generic', 'Failed to delete milestone'));
+            } finally {
+                setConfirmDelete(null);
             }
         }
     };
@@ -168,7 +166,7 @@ const Roadmap = () => {
         try {
             await spaceAPI.updateMilestone(id, { status });
             setMilestones(milestones.map(m => m.id === id ? { ...m, status } : m));
-        } catch (err) {
+        } catch {
             setErrorWithTimeout(t('errors.generic', 'Failed to update status'));
         }
     };
@@ -273,7 +271,7 @@ const Roadmap = () => {
                 <div className="glass-card" style={{ padding: '24px', overflowX: 'auto' }}>
                     {/* Timeline Header */}
                     <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '12px', marginBottom: '20px', minWidth: '800px' }}>
-                        {timelineMonths.map((month, index) => {
+                        {timelineMonths.map((month) => {
                             const isCurrentMonth = month.month === new Date().getMonth() && month.year === new Date().getFullYear();
                             return (
                                 <div
@@ -510,6 +508,49 @@ const Roadmap = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Delete Confirmation Modal */}
+            <AnimatePresence>
+                {confirmDelete && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
+                        onClick={() => setConfirmDelete(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="glass-card"
+                            style={{ width: '100%', maxWidth: '400px', padding: '24px', textAlign: 'center' }}
+                        >
+                            <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                                <HiOutlineTrash style={{ width: '28px', height: '28px', color: '#ef4444' }} />
+                            </div>
+                            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', margin: '0 0 8px 0' }}>{t('space.confirmDeleteMilestone', 'Delete Milestone?')}</h3>
+                            <p style={{ fontSize: '14px', color: '#9ca3af', margin: '0 0 24px 0' }}>This action cannot be undone.</p>
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button onClick={() => setConfirmDelete(null)} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'transparent', color: '#9ca3af', fontSize: '14px', cursor: 'pointer' }}>
+                                    Cancel
+                                </button>
+                                <button onClick={confirmDeleteAction} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', backgroundColor: '#ef4444', color: 'white', fontSize: '14px', fontWeight: '500', cursor: 'pointer' }}>
+                                    Delete
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Responsive Styles */}
+            <style>{`
+                @media (max-width: 1023px) {
+                    div[style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };

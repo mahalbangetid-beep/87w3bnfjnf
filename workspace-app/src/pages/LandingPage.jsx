@@ -8,7 +8,7 @@ import {
     HiOutlineCreditCard, HiOutlineChartBar, HiOutlineFolder, HiOutlineDocumentText,
     HiOutlineCalendar, HiOutlineCollection, HiOutlineShare, HiOutlinePencilAlt,
     HiOutlineMap, HiOutlineTrendingUp, HiOutlineShieldCheck,
-    HiOutlineUsers, HiOutlineChip, HiOutlineBookmark, HiOutlineUserCircle,
+    HiOutlineUsers, HiOutlineChip, HiOutlineBookmark, HiOutlineUserCircle, HiOutlineUserGroup,
     HiOutlinePlay, HiOutlineArrowRight, HiOutlineCheck,
     HiOutlineMenu, HiOutlineX, HiOutlineRefresh, HiOutlineInformationCircle,
     HiOutlineMail, HiOutlineDocument, HiOutlineLockClosed, HiOutlineGlobeAlt,
@@ -98,12 +98,12 @@ const modules = [
         features: ['Accounts', 'Passwords', 'Notes', 'Bookmarks']
     },
     {
-        id: 'system',
-        name: 'System',
-        icon: HiOutlineShieldCheck,
+        id: 'crm',
+        name: 'CRM',
+        icon: HiOutlineUserGroup,
         color: '#6366f1',
-        description: 'Admin panel with user management and system settings',
-        features: ['Users', 'Roles', 'Activity Logs', 'Settings']
+        description: 'Complete client relationship management with pipeline and analytics',
+        features: ['Clients', 'Pipeline', 'Documents', 'Analytics', 'Reports']
     }
 ];
 

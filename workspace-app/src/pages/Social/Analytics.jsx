@@ -93,8 +93,8 @@ const SocialAnalytics = () => {
         fetchData();
     }, []);
 
-    // Mock data for visualization
-    const totalFollowers = accounts.reduce((s, a) => s + (a.followers || Math.floor(Math.random() * 10000)), 0);
+    // Mock data for visualization - use stable fallback values (not random)
+    const totalFollowers = accounts.reduce((s, a, i) => s + (a.followers || (5000 + i * 1000)), 0) || 15000;
     const avgEngagement = 4.7;
     const totalPosts = posts.length || 24;
     const totalReach = totalFollowers * 3;

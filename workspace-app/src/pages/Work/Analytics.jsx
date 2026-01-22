@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
@@ -91,7 +91,7 @@ const ChartCard = ({ title, icon: Icon, children, delay, height = 'auto' }) => (
 );
 
 const WorkAnalytics = () => {
-    const { t } = useTranslation();
+    useTranslation();
     const [projects, setProjects] = useState([]);
     const [tasks, setTasks] = useState([]);
 
@@ -108,15 +108,17 @@ const WorkAnalytics = () => {
     const completedProjects = projects.filter(p => p.status === 'completed').length;
     const completedTasks = tasks.filter(t => t.completed).length;
     const overdueTasks = tasks.filter(t => !t.completed && new Date(t.date) < new Date()).length;
-    const avgProgress = projects.length > 0 ? Math.round(projects.reduce((s, p) => s + (p.progress || 0), 0) / projects.length) : 0;
     const productivityScore = Math.min(100, Math.round((completedTasks / (tasks.length || 1)) * 100));
 
-    // Gantt-like Timeline data (rangeBar)
-    const ganttData = projects.slice(0, 5).map(p => ({
-        x: p.name?.slice(0, 15) || 'Project',
-        y: [new Date(p.startDate || Date.now()).getTime(), new Date(p.endDate || Date.now() + 30 * 24 * 60 * 60 * 1000).getTime()],
-        fillColor: p.color || '#8b5cf6'
-    }));
+    // Gantt-like Timeline data (rangeBar) - memoized to avoid impure function calls
+    const ganttData = useMemo(() => {
+        const now = Date.now();
+        return projects.slice(0, 5).map(p => ({
+            x: p.name?.slice(0, 15) || 'Project',
+            y: [new Date(p.startDate || now).getTime(), new Date(p.endDate || now + 30 * 24 * 60 * 60 * 1000).getTime()],
+            fillColor: p.color || '#8b5cf6'
+        }));
+    }, [projects]);
 
     const ganttOptions = {
         chart: { type: 'rangeBar', toolbar: { show: false }, background: 'transparent', animations: { enabled: true, speed: 800 } },

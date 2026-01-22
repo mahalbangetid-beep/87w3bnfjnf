@@ -17,11 +17,16 @@ const ProjectCollaborator = sequelize.define('ProjectCollaborator', {
     },
     userId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true, // Nullable for external email invites (user not registered yet)
         references: {
             model: 'users',
             key: 'id'
         }
+    },
+    // Email for external invites (when user doesn't exist yet)
+    invitedEmail: {
+        type: DataTypes.STRING(255),
+        allowNull: true
     },
     invitedById: {
         type: DataTypes.INTEGER,

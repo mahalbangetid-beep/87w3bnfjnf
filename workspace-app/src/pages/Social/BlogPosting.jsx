@@ -120,7 +120,7 @@ const BlogPosting = () => {
         setAiAction(action);
         try {
             switch (action) {
-                case 'outline':
+                case 'outline': {
                     if (!title) {
                         setErrorWithTimeout(t('blog.errors.enterTitleFirst', 'Please enter a title first'));
                         break;
@@ -133,8 +133,9 @@ const BlogPosting = () => {
                     setContent(outlineResult.content || '');
                     setSuccessWithTimeout(t('blog.success.outlineGenerated', 'Outline generated successfully'));
                     break;
+                }
 
-                case 'expand':
+                case 'expand': {
                     if (!content) {
                         setErrorWithTimeout(t('blog.errors.writeContentFirst', 'Please write some content first'));
                         break;
@@ -147,8 +148,9 @@ const BlogPosting = () => {
                     setContent(expandResult.content || '');
                     setSuccessWithTimeout(t('blog.success.contentExpanded', 'Content expanded successfully'));
                     break;
+                }
 
-                case 'improve':
+                case 'improve': {
                     if (!content) {
                         setErrorWithTimeout(t('blog.errors.writeContentFirst', 'Please write some content first'));
                         break;
@@ -160,8 +162,9 @@ const BlogPosting = () => {
                     setContent(improveResult.content || content);
                     setSuccessWithTimeout(t('blog.success.contentImproved', 'Content improved successfully'));
                     break;
+                }
 
-                case 'seo':
+                case 'seo': {
                     const seoResult = await aiAPI.generateSEO({
                         title,
                         content: content.substring(0, 1000)
@@ -176,6 +179,7 @@ const BlogPosting = () => {
                         setSuccessWithTimeout(t('blog.success.seoGenerated', 'SEO metadata generated. Check the content for suggestions.'));
                     }
                     break;
+                }
 
                 default:
                     break;

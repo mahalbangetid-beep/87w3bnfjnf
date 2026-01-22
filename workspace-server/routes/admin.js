@@ -9,7 +9,7 @@ const { Op } = require('sequelize');
 // @route   GET /api/admin/users
 // @desc    Get all users
 // @access  Master Admin, Monitoring
-router.get('/users', authenticate, authorize('master_admin', 'monitoring'), async (req, res) => {
+router.get('/users', authenticate, authorize('superadmin', 'monitoring'), async (req, res) => {
     try {
         const { role, search, isActive } = req.query;
         const where = {};
@@ -39,7 +39,7 @@ router.get('/users', authenticate, authorize('master_admin', 'monitoring'), asyn
 // @route   GET /api/admin/users/:id
 // @desc    Get single user
 // @access  Master Admin, Monitoring
-router.get('/users/:id', authenticate, authorize('master_admin', 'monitoring'), async (req, res) => {
+router.get('/users/:id', authenticate, authorize('superadmin', 'monitoring'), async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id, {
             include: [{ model: Role }]
@@ -59,7 +59,7 @@ router.get('/users/:id', authenticate, authorize('master_admin', 'monitoring'), 
 // @route   POST /api/admin/users
 // @desc    Create user (Admin creates)
 // @access  Master Admin
-router.post('/users', authenticate, authorize('master_admin'), async (req, res) => {
+router.post('/users', authenticate, authorize('superadmin'), async (req, res) => {
     try {
         const { name, email, password, roleId } = req.body;
 
@@ -85,7 +85,7 @@ router.post('/users', authenticate, authorize('master_admin'), async (req, res) 
 // @route   PUT /api/admin/users/:id
 // @desc    Update user
 // @access  Master Admin
-router.put('/users/:id', authenticate, authorize('master_admin'), async (req, res) => {
+router.put('/users/:id', authenticate, authorize('superadmin'), async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id);
 
@@ -106,7 +106,7 @@ router.put('/users/:id', authenticate, authorize('master_admin'), async (req, re
 // @route   DELETE /api/admin/users/:id
 // @desc    Delete user
 // @access  Master Admin
-router.delete('/users/:id', authenticate, authorize('master_admin'), async (req, res) => {
+router.delete('/users/:id', authenticate, authorize('superadmin'), async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id);
 
@@ -132,7 +132,7 @@ router.delete('/users/:id', authenticate, authorize('master_admin'), async (req,
 // @route   GET /api/admin/activities
 // @desc    Get activity logs
 // @access  Master Admin, Monitoring
-router.get('/activities', authenticate, authorize('master_admin', 'monitoring'), async (req, res) => {
+router.get('/activities', authenticate, authorize('superadmin', 'monitoring'), async (req, res) => {
     try {
         const { userId, module, action, startDate, endDate, limit = 100 } = req.query;
         const where = {};
@@ -163,7 +163,7 @@ router.get('/activities', authenticate, authorize('master_admin', 'monitoring'),
 // @route   GET /api/admin/roles
 // @desc    Get all roles
 // @access  Master Admin
-router.get('/roles', authenticate, authorize('master_admin'), async (req, res) => {
+router.get('/roles', authenticate, authorize('superadmin'), async (req, res) => {
     try {
         const roles = await Role.findAll({
             order: [['id', 'ASC']]
@@ -180,7 +180,7 @@ router.get('/roles', authenticate, authorize('master_admin'), async (req, res) =
 // @route   GET /api/admin/stats
 // @desc    Get dashboard stats
 // @access  Master Admin, Monitoring
-router.get('/stats', authenticate, authorize('master_admin', 'monitoring'), async (req, res) => {
+router.get('/stats', authenticate, authorize('superadmin', 'monitoring'), async (req, res) => {
     try {
         const totalUsers = await User.count();
         const activeUsers = await User.count({ where: { isActive: true } });

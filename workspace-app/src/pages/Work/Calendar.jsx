@@ -268,7 +268,7 @@ const Calendar = () => {
                 </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '20px' }}>
+            <div className="calendar-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '20px' }}>
                 {/* Calendar Grid */}
                 <div className="glass-card" style={{ padding: '24px' }}>
                     {/* Month Navigation */}
@@ -385,7 +385,7 @@ const Calendar = () => {
                 </div>
 
                 {/* Sidebar */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div className="calendar-sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     {/* Today's Tasks */}
                     <div className="glass-card" style={{ padding: '20px' }}>
                         <h3 style={{ fontSize: '16px', fontWeight: '600', color: 'white', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -712,6 +712,28 @@ const Calendar = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Responsive Styles */}
+            <style>{`
+                @media (max-width: 1023px) {
+                    .calendar-layout {
+                        grid-template-columns: 1fr !important;
+                    }
+                    .calendar-sidebar {
+                        display: grid !important;
+                        grid-template-columns: repeat(3, 1fr) !important;
+                        gap: 12px !important;
+                    }
+                }
+                @media (max-width: 767px) {
+                    .calendar-sidebar {
+                        grid-template-columns: 1fr !important;
+                    }
+                    .calendar-day-cell {
+                        min-height: 80px !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 };

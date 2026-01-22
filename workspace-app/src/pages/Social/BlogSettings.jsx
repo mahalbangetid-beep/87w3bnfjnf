@@ -7,6 +7,7 @@ import {
     HiOutlineGlobeAlt
 } from 'react-icons/hi';
 import { blogAPI } from '../../services/api';
+import EmptyState from '../../components/UI/EmptyState';
 
 const PLATFORMS = {
     wordpress: {
@@ -434,24 +435,15 @@ const BlogSettings = () => {
 
             {/* Empty State */}
             {!loading && connections.length === 0 && (
-                <div className="glass-card" style={{ padding: '48px', textAlign: 'center' }}>
-                    <HiOutlineGlobeAlt style={{ width: '64px', height: '64px', color: '#6b7280', margin: '0 auto 16px' }} />
-                    <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '8px' }}>
-                        No Blog Connections Yet
-                    </h3>
-                    <p style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '24px' }}>
-                        Connect your first blog platform to start publishing content
-                    </p>
-                    <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => openAddModal()}
-                        className="btn-glow"
-                    >
-                        <HiOutlinePlus style={{ display: 'inline', marginRight: '8px' }} />
-                        Add Your First Connection
-                    </motion.button>
-                </div>
+                <EmptyState
+                    icon="🌐"
+                    title="No Blog Connections Yet"
+                    description="Connect your first blog platform to start publishing content directly from Workspace"
+                    actionLabel="Add Your First Connection"
+                    onAction={() => openAddModal()}
+                    color="#8b5cf6"
+                    variant="card"
+                />
             )}
 
             {/* Add/Edit Modal */}

@@ -24,7 +24,7 @@ router.post('/', authenticate, async (req, res) => {
 
         // Create notification for all admins
         const admins = await User.findAll({
-            include: [{ model: require('../models').Role, where: { name: ['admin', 'master_admin'] } }]
+            include: [{ model: require('../models').Role, where: { name: ['admin', 'superadmin'] } }]
         });
         for (const admin of admins) {
             await Notification.create({
@@ -54,7 +54,7 @@ router.get('/', authenticate, async (req, res) => {
 
         // Regular users only see their own suggestions
         const userRole = req.user.Role?.name || '';
-        const isAdmin = userRole === 'admin' || userRole === 'master_admin';
+        const isAdmin = userRole === 'admin' || userRole === 'superadmin';
         if (!isAdmin) {
             where.userId = req.user.id;
         }
@@ -91,7 +91,7 @@ router.get('/:id', authenticate, async (req, res) => {
 
         // Non-admins can only view their own suggestions
         const userRole = req.user.Role?.name || '';
-        const isAdmin = userRole === 'admin' || userRole === 'master_admin';
+        const isAdmin = userRole === 'admin' || userRole === 'superadmin';
         if (!isAdmin && suggestion.userId !== req.user.id) {
             return res.status(403).json({ message: 'Access denied' });
         }
@@ -165,7 +165,7 @@ router.delete('/:id', authenticate, async (req, res) => {
         }
 
         const userRole = req.user.Role?.name || '';
-        const isAdmin = userRole === 'admin' || userRole === 'master_admin';
+        const isAdmin = userRole === 'admin' || userRole === 'superadmin';
         if (!isAdmin && suggestion.userId !== req.user.id) {
             return res.status(403).json({ message: 'Access denied' });
         }

@@ -26,21 +26,26 @@ const AnimatedValue = ({ value, prefix = '', suffix = '', duration = 2000 }) => 
     return <>{prefix}{count.toLocaleString('id-ID')}{suffix}</>;
 };
 
-// Floating Particles
+// Floating Particles - pre-generated positions
+const particlePositions = [...Array(20)].map((_, i) => ({
+    duration: 3 + (i * 0.1),
+    left: `${(i * 5) % 100}%`
+}));
+
 const FloatingParticles = () => (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-        {[...Array(20)].map((_, i) => (
+        {particlePositions.map((p, i) => (
             <motion.div
                 key={i}
                 animate={{ y: [0, -100, 0], x: [0, Math.sin(i) * 30, 0], opacity: [0, 1, 0] }}
-                transition={{ duration: 3 + Math.random() * 2, repeat: Infinity, delay: i * 0.2 }}
+                transition={{ duration: p.duration, repeat: Infinity, delay: i * 0.2 }}
                 style={{
                     position: 'absolute',
                     width: 4,
                     height: 4,
                     borderRadius: '50%',
                     background: ['#8b5cf6', '#06b6d4', '#10b981', '#f59e0b'][i % 4],
-                    left: `${Math.random() * 100}%`,
+                    left: p.left,
                     bottom: 0,
                 }}
             />
@@ -49,7 +54,7 @@ const FloatingParticles = () => (
 );
 
 // Stat Card with Glow
-const StatCard = ({ title, value, change, icon: Icon, color, delay = 0 }) => {
+const StatCard = ({ title, value, change, icon: IconComponent, color, delay = 0 }) => {
     const colors = {
         violet: { bg: 'rgba(139,92,246,0.15)', glow: '#8b5cf6', text: '#a78bfa' },
         emerald: { bg: 'rgba(16,185,129,0.15)', glow: '#10b981', text: '#34d399' },
@@ -100,7 +105,7 @@ const StatCard = ({ title, value, change, icon: Icon, color, delay = 0 }) => {
                             alignItems: 'center', justifyContent: 'center',
                         }}
                     >
-                        <Icon style={{ width: 24, height: 24, color: c.text }} />
+                        <IconComponent style={{ width: 24, height: 24, color: c.text }} />
                     </motion.div>
                     {change !== undefined && (
                         <motion.div
@@ -162,8 +167,8 @@ const ChartCard = ({ title, subtitle, children, delay = 0, icon: Icon }) => (
 );
 
 const FinanceAnalytics = () => {
-    const { t, i18n } = useTranslation();
-    const [loading, setLoading] = useState(true);
+    useTranslation(); // Keep for future i18n
+    const [, setLoading] = useState(true);
     const [transactions, setTransactions] = useState([]);
     const [monthlyData, setMonthlyData] = useState([]);
 

@@ -17,13 +17,7 @@ import {
     HiOutlinePrinter,
     HiOutlineEye,
 } from 'react-icons/hi';
-
-// Storage keys
-const PROJECTS_STORAGE_KEY = 'workspace_projects';
-const BUDGET_STORAGE_KEY = 'workspace_budgets';
-const EXPENSES_STORAGE_KEY = 'workspace_expenses';
-const TASKS_STORAGE_KEY = 'workspace_tasks';
-const REPORTS_STORAGE_KEY = 'workspace_reports';
+import { projectsAPI, tasksAPI, budgetsAPI } from '../../services/api';
 
 // Format currency to Rupiah
 const formatRupiah = (amount) => {
@@ -33,17 +27,6 @@ const formatRupiah = (amount) => {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
     }).format(amount);
-};
-
-// Load functions
-const loadData = (key, defaultValue = []) => {
-    try {
-        const saved = localStorage.getItem(key);
-        if (saved) return JSON.parse(saved);
-    } catch (error) {
-        console.error(`Error loading ${key}:`, error);
-    }
-    return defaultValue;
 };
 
 const Reporting = () => {
@@ -57,20 +40,45 @@ const Reporting = () => {
     const [dateRange, setDateRange] = useState('month');
     const [showPreview, setShowPreview] = useState(false);
     const [generatingReport, setGeneratingReport] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    // Load all data
+    // Load all data from API
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const [projectsData, budgetsData, expensesData, tasksData] = await Promise.all([
+                projectsAPI.getAll(),
+                budgetsAPI.getAll(),
+                budgetsAPI.getExpenses(),
+                tasksAPI.getAll(),
+            ]);
+            setProjects(projectsData || []);
+            setBudgets(budgetsData || []);
+            setExpenses(expensesData || []);
+            setTasks(tasksData || []);
+
+            // Load cached reports from localStorage (reports are session-based)
+            try {
+                const savedReports = localStorage.getItem('workspace_reports');
+                if (savedReports) setReports(JSON.parse(savedReports));
+            } catch (e) {
+                // Ignore parse errors
+            }
+        } catch (err) {
+            console.error('Failed to load reporting data:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        setProjects(loadData(PROJECTS_STORAGE_KEY));
-        setBudgets(loadData(BUDGET_STORAGE_KEY));
-        setExpenses(loadData(EXPENSES_STORAGE_KEY));
-        setTasks(loadData(TASKS_STORAGE_KEY));
-        setReports(loadData(REPORTS_STORAGE_KEY));
+        fetchData();
     }, []);
 
-    // Save reports
+    // Save reports to localStorage (reports are local/session-based)
     useEffect(() => {
         if (reports.length > 0) {
-            localStorage.setItem(REPORTS_STORAGE_KEY, JSON.stringify(reports));
+            localStorage.setItem('workspace_reports', JSON.stringify(reports));
         }
     }, [reports]);
 

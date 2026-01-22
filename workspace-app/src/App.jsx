@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { FocusModeProvider } from './contexts/FocusModeContext';
 import MainLayout from './components/Layout/MainLayout';
 
 // Auth Pages
@@ -65,6 +66,9 @@ import {
   AssetNotes,
   Bookmark
 } from './pages/Assets';
+
+// CRM Module
+import { CRMDashboard, ClientsPage, ClientDetail, ClientForm, RemindersPage, CRMSettings, AnalyticsPage, ReportsPage, DuplicatesPage } from './pages/CRM';
 
 // System Module
 import SystemSettings from './pages/System/Settings';
@@ -169,7 +173,7 @@ const SmartRedirect = () => {
   const userRole = user?.Role?.name?.toLowerCase();
 
   // Admin/Master Admin goes to System
-  if (userRole === 'admin' || userRole === 'master_admin') {
+  if (userRole === 'admin' || userRole === 'superadmin') {
     return <Navigate to="/system" replace />;
   }
 
@@ -193,7 +197,7 @@ const BlogRoute = ({ children }) => {
   }
 
   const userRole = user?.Role?.name?.toLowerCase();
-  const hasBlogAccess = userRole === 'blog' || userRole === 'admin' || userRole === 'master_admin';
+  const hasBlogAccess = userRole === 'blog' || userRole === 'admin' || userRole === 'superadmin';
 
   if (!hasBlogAccess) {
     return <Navigate to="/work" replace />;
@@ -309,6 +313,18 @@ function AppRoutes() {
         <Route path="assets/notes" element={<AssetNotes />} />
         <Route path="assets/bookmark" element={<Bookmark />} />
 
+        {/* CRM Module */}
+        <Route path="crm" element={<CRMDashboard />} />
+        <Route path="crm/clients" element={<ClientsPage />} />
+        <Route path="crm/clients/new" element={<ClientForm />} />
+        <Route path="crm/clients/:id" element={<ClientDetail />} />
+        <Route path="crm/clients/:id/edit" element={<ClientForm />} />
+        <Route path="crm/reminders" element={<RemindersPage />} />
+        <Route path="crm/settings" element={<CRMSettings />} />
+        <Route path="crm/analytics" element={<AnalyticsPage />} />
+        <Route path="crm/reports" element={<ReportsPage />} />
+        <Route path="crm/duplicates" element={<DuplicatesPage />} />
+
         {/* System Module - Admin Only */}
         <Route path="system" element={<AdminRoute><SystemSettings /></AdminRoute>} />
         <Route path="system/users" element={<AdminRoute><SystemSettings /></AdminRoute>} />
@@ -361,9 +377,11 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <AuthProvider>
-          <AppRoutes />
-        </AuthProvider>
+        <FocusModeProvider>
+          <AuthProvider>
+            <AppRoutes />
+          </AuthProvider>
+        </FocusModeProvider>
       </ThemeProvider>
     </BrowserRouter>
   );

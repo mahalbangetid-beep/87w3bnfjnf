@@ -108,8 +108,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     // Check if user is admin
-    const isAdmin = () => user?.Role?.name === 'master_admin';
-    const isMonitoring = () => ['master_admin', 'monitoring'].includes(user?.Role?.name);
+    const isAdmin = () => user?.Role?.name === 'superadmin';
+    const isMonitoring = () => ['superadmin', 'monitoring'].includes(user?.Role?.name);
 
     const value = {
         user,

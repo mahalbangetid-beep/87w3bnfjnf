@@ -21,6 +21,7 @@ import {
 } from 'react-icons/hi';
 import { projectsAPI, spaceAPI } from '../../services/api';
 import { CollaborationPanel } from '../../components/Collaboration';
+import { ProjectsEmptyState } from '../../components/UI';
 
 const colorOptions = ['#8b5cf6', '#06b6d4', '#ec4899', '#10b981', '#f59e0b', '#ef4444'];
 const reportingOptions = ['daily', 'weekly', 'monthly', 'daily,weekly', 'daily,monthly', 'weekly,monthly', 'daily,weekly,monthly'];
@@ -672,23 +673,10 @@ const Projects = () => {
 
             {/* Empty State */}
             {filteredProjects.length === 0 && !loading && (
-                <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>📂</div>
-                    <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '8px' }}>No projects found</h3>
-                    <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '24px' }}>
-                        {searchTerm || filterStatus !== 'All' ? 'Try adjusting your filters' : 'Create your first project to get started'}
-                    </p>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={handleNewProject}
-                        className="btn-glow"
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}
-                    >
-                        <HiOutlinePlus style={{ width: '18px', height: '18px' }} />
-                        Create Project
-                    </motion.button>
-                </div>
+                <ProjectsEmptyState
+                    onAction={handleNewProject}
+                    isFiltered={!!(searchTerm || filterStatus !== 'all')}
+                />
             )}
 
             {/* Create/Edit Modal */}

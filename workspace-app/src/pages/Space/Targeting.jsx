@@ -34,6 +34,7 @@ const Targeting = () => {
     const [showModal, setShowModal] = useState(false);
     const [editingGoal, setEditingGoal] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const [confirmDelete, setConfirmDelete] = useState(null);
 
     // Auto-clear error after 5 seconds
     const setErrorWithTimeout = (message) => {
@@ -63,7 +64,7 @@ const Targeting = () => {
             ]);
             setGoals(goalsData || []);
             setProjects(projectsData || []);
-        } catch (err) {
+        } catch {
             setErrorWithTimeout(t('errors.generic', 'Failed to load goals'));
         } finally {
             setLoading(false);
@@ -139,14 +140,20 @@ const Targeting = () => {
         setShowModal(true);
     };
 
-    // Handle delete
-    const handleDelete = async (id) => {
-        if (confirm(t('space.confirmDeleteGoal', 'Delete this goal?'))) {
+    // Handle delete - show confirmation modal
+    const handleDelete = (id) => {
+        setConfirmDelete(id);
+    };
+
+    const confirmDeleteAction = async () => {
+        if (confirmDelete) {
             try {
-                await spaceAPI.deleteGoal(id);
-                setGoals(goals.filter(g => g.id !== id));
-            } catch (err) {
+                await spaceAPI.deleteGoal(confirmDelete);
+                setGoals(goals.filter(g => g.id !== confirmDelete));
+            } catch {
                 setErrorWithTimeout(t('errors.generic', 'Failed to delete goal'));
+            } finally {
+                setConfirmDelete(null);
             }
         }
     };
@@ -156,7 +163,7 @@ const Targeting = () => {
         try {
             await spaceAPI.updateGoalProgress(id, newCurrent);
             setGoals(goals.map(g => g.id === id ? { ...g, current: newCurrent } : g));
-        } catch (err) {
+        } catch {
             setErrorWithTimeout(t('errors.generic', 'Failed to update progress'));
         }
     };
@@ -543,6 +550,52 @@ const Targeting = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Delete Confirmation Modal */}
+            <AnimatePresence>
+                {confirmDelete && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
+                        onClick={() => setConfirmDelete(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="glass-card"
+                            style={{ width: '100%', maxWidth: '400px', padding: '24px', textAlign: 'center' }}
+                        >
+                            <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                                <HiOutlineTrash style={{ width: '28px', height: '28px', color: '#ef4444' }} />
+                            </div>
+                            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', margin: '0 0 8px 0' }}>{t('space.confirmDeleteGoal', 'Delete Goal?')}</h3>
+                            <p style={{ fontSize: '14px', color: '#9ca3af', margin: '0 0 24px 0' }}>This action cannot be undone.</p>
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button onClick={() => setConfirmDelete(null)} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'transparent', color: '#9ca3af', fontSize: '14px', cursor: 'pointer' }}>
+                                    Cancel
+                                </button>
+                                <button onClick={confirmDeleteAction} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', backgroundColor: '#ef4444', color: 'white', fontSize: '14px', fontWeight: '500', cursor: 'pointer' }}>
+                                    Delete
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Responsive Styles */}
+            <style>{`
+                @media (max-width: 1023px) {
+                    div[style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+                }
+                @media (max-width: 767px) {
+                    div[style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };

@@ -10,7 +10,9 @@ import {
     HiOutlineBell,
     HiOutlineColorSwatch,
     HiOutlineDatabase,
+    HiOutlineExclamation,
 } from 'react-icons/hi';
+import { spaceAPI, ideaProjectsAPI } from '../../services/api';
 
 const SpaceSettings = () => {
     const { t } = useTranslation();
@@ -25,6 +27,7 @@ const SpaceSettings = () => {
     });
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         projects: 0,
         milestones: 0,
@@ -35,46 +38,40 @@ const SpaceSettings = () => {
     });
 
     useEffect(() => {
-        // Load settings from localStorage
-        try {
-            const storedSettings = localStorage.getItem('spaceSettings');
-            if (storedSettings) {
-                setSettings(JSON.parse(storedSettings));
+        const fetchStats = async () => {
+            try {
+                setLoading(true);
+                // Load settings from localStorage (settings still local)
+                const storedSettings = localStorage.getItem('spaceSettings');
+                if (storedSettings) {
+                    setSettings(JSON.parse(storedSettings));
+                }
+
+                // Fetch stats from API
+                const [projects, assets, budgets, transactions, spaceStats] = await Promise.all([
+                    ideaProjectsAPI.getAll().catch(() => []),
+                    spaceAPI.getAssets().catch(() => []),
+                    spaceAPI.getBudgets().catch(() => []),
+                    spaceAPI.getTransactions().catch(() => []),
+                    spaceAPI.getStats().catch(() => ({})),
+                ]);
+
+                setStats({
+                    projects: projects?.length || 0,
+                    milestones: spaceStats?.totalMilestones || 0,
+                    goals: spaceStats?.totalGoals || 0,
+                    assets: assets?.length || 0,
+                    budgets: budgets?.length || 0,
+                    transactions: transactions?.length || 0,
+                });
+            } catch {
+                // Stats load error - use defaults
+            } finally {
+                setLoading(false);
             }
-        } catch (error) {
-            // Settings load error - use defaults
-        }
+        };
 
-        // Calculate stats with error handling
-        let projects = [];
-        let assets = [];
-        let budgets = [];
-        let transactions = [];
-
-        try {
-            projects = JSON.parse(localStorage.getItem('projectPlans') || '[]');
-        } catch (e) { /* Parse error - use empty array */ }
-
-        try {
-            assets = JSON.parse(localStorage.getItem('spaceAssets') || '[]');
-        } catch (e) { /* Parse error - use empty array */ }
-
-        try {
-            budgets = JSON.parse(localStorage.getItem('spaceBudgets') || '[]');
-        } catch (e) { /* Parse error - use empty array */ }
-
-        try {
-            transactions = JSON.parse(localStorage.getItem('spaceFinance') || '[]');
-        } catch (e) { /* Parse error - use empty array */ }
-
-        setStats({
-            projects: projects.length,
-            milestones: 0, // Would need API call
-            goals: 0, // Would need API call
-            assets: assets.length,
-            budgets: budgets.length,
-            transactions: transactions.length,
-        });
+        fetchStats();
     }, []);
 
     const handleSave = () => {
@@ -87,26 +84,8 @@ const SpaceSettings = () => {
         }, 500);
     };
 
-    const handleClearData = (key, label) => {
-        if (confirm(t('space.settings.confirmClearData', `Are you sure you want to clear all ${label}? This cannot be undone.`))) {
-            localStorage.removeItem(key);
-            // Reset state instead of full page reload
-            setSaved(false);
-            alert(t('space.settings.dataClearedSuccess', `${label} data cleared successfully. Please refresh or navigate away to see changes.`));
-        }
-    };
-
-    const handleClearAllData = () => {
-        if (confirm(t('space.settings.confirmClearAllData', 'Are you sure you want to clear ALL Space data? This includes projects, assets, budgets, and transactions. This cannot be undone.'))) {
-            localStorage.removeItem('spaceAssets');
-            localStorage.removeItem('spaceBudgets');
-            localStorage.removeItem('spaceFinance');
-            localStorage.removeItem('spaceSettings');
-            // Reset state instead of full page reload
-            setSaved(false);
-            alert(t('space.settings.allDataClearedSuccess', 'All Space data cleared successfully. Please refresh or navigate away to see changes.'));
-        }
-    };
+    // Note: Data clearing would require API calls to delete all items
+    // For now, we show a message explaining the data is stored in the database
 
     const colorOptions = ['#8b5cf6', '#06b6d4', '#ec4899', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#6366f1'];
 
@@ -292,47 +271,38 @@ const SpaceSettings = () => {
                 {/* Storage Stats */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '20px' }}>
                     {[
-                        { label: 'Assets', value: stats.assets, key: 'spaceAssets' },
-                        { label: 'Budgets', value: stats.budgets, key: 'spaceBudgets' },
-                        { label: 'Transactions', value: stats.transactions, key: 'spaceFinance' },
-                    ].map((item) => (
-                        <div key={item.key} style={{ padding: '16px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.03)', textAlign: 'center' }}>
-                            <p style={{ fontSize: '24px', fontWeight: '700', color: 'white', margin: 0 }}>{item.value}</p>
+                        { label: 'Assets', value: stats.assets },
+                        { label: 'Budgets', value: stats.budgets },
+                        { label: 'Transactions', value: stats.transactions },
+                        { label: 'Projects', value: stats.projects },
+                        { label: 'Milestones', value: stats.milestones },
+                        { label: 'Goals', value: stats.goals },
+                    ].map((item, idx) => (
+                        <div key={idx} style={{ padding: '16px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.03)', textAlign: 'center' }}>
+                            <p style={{ fontSize: '24px', fontWeight: '700', color: 'white', margin: 0 }}>{loading ? '-' : item.value}</p>
                             <p style={{ fontSize: '12px', color: '#6b7280', margin: '4px 0 0 0' }}>{item.label}</p>
                         </div>
                     ))}
                 </div>
 
-                {/* Clear Data Buttons */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <button
-                        onClick={() => handleClearData('spaceAssets', 'assets')}
-                        style={{ padding: '12px 16px', borderRadius: '10px', border: '1px solid rgba(239,68,68,0.3)', backgroundColor: 'rgba(239,68,68,0.1)', color: '#f87171', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}
-                    >
-                        <HiOutlineTrash style={{ width: '16px', height: '16px' }} />
-                        Clear All Assets
-                    </button>
-                    <button
-                        onClick={() => handleClearData('spaceBudgets', 'budgets')}
-                        style={{ padding: '12px 16px', borderRadius: '10px', border: '1px solid rgba(239,68,68,0.3)', backgroundColor: 'rgba(239,68,68,0.1)', color: '#f87171', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}
-                    >
-                        <HiOutlineTrash style={{ width: '16px', height: '16px' }} />
-                        Clear All Budgets
-                    </button>
-                    <button
-                        onClick={() => handleClearData('spaceFinance', 'transactions')}
-                        style={{ padding: '12px 16px', borderRadius: '10px', border: '1px solid rgba(239,68,68,0.3)', backgroundColor: 'rgba(239,68,68,0.1)', color: '#f87171', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}
-                    >
-                        <HiOutlineTrash style={{ width: '16px', height: '16px' }} />
-                        Clear All Transactions
-                    </button>
-                    <button
-                        onClick={handleClearAllData}
-                        style={{ marginTop: '8px', padding: '14px 16px', borderRadius: '10px', border: 'none', backgroundColor: '#ef4444', color: 'white', fontSize: '14px', fontWeight: '500', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}
-                    >
-                        <HiOutlineTrash style={{ width: '16px', height: '16px' }} />
-                        Clear All Space Data
-                    </button>
+                {/* Database Storage Info */}
+                <div style={{
+                    padding: '16px',
+                    borderRadius: '10px',
+                    backgroundColor: 'rgba(16,185,129,0.1)',
+                    border: '1px solid rgba(16,185,129,0.3)',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '12px',
+                }}>
+                    <HiOutlineDatabase style={{ width: '20px', height: '20px', color: '#10b981', flexShrink: 0, marginTop: '2px' }} />
+                    <div>
+                        <p style={{ fontWeight: '500', color: '#34d399', fontSize: '13px', margin: 0 }}>Data Stored Securely</p>
+                        <p style={{ fontSize: '12px', color: '#9ca3af', margin: '4px 0 0 0' }}>
+                            Your Space data (assets, budgets, transactions, projects, milestones, goals) is stored securely in the database.
+                            To delete individual items, use the respective pages.
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -359,6 +329,13 @@ const SpaceSettings = () => {
                     </>
                 )}
             </motion.button>
+
+            {/* Responsive Styles */}
+            <style>{`
+                @media (max-width: 767px) {
+                    div[style*="grid-template-columns: repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; }
+                }
+            `}</style>
         </div>
     );
 };

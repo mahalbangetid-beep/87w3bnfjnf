@@ -44,8 +44,8 @@ const authorize = (...allowedRoles) => {
 
         const userRole = req.user.Role.name;
 
-        // Master Admin has access to everything
-        if (userRole === 'master_admin') {
+        // Super Admin has access to everything
+        if (userRole === 'superadmin') {
             return next();
         }
 
@@ -57,7 +57,7 @@ const authorize = (...allowedRoles) => {
     };
 };
 
-// Require admin middleware (master_admin or admin)
+// Require admin middleware (superadmin or admin)
 const requireAdmin = (req, res, next) => {
     if (!req.user || !req.user.Role) {
         return res.status(403).json({ message: 'Access denied.' });
@@ -65,7 +65,7 @@ const requireAdmin = (req, res, next) => {
 
     const userRole = req.user.Role.name;
 
-    if (userRole !== 'master_admin' && userRole !== 'admin') {
+    if (userRole !== 'superadmin' && userRole !== 'admin') {
         return res.status(403).json({ message: 'Admin access required.' });
     }
 
@@ -104,7 +104,7 @@ const logActivity = (action, module) => {
     };
 };
 
-// Require blog role middleware (blog, admin, or master_admin)
+// Require blog role middleware (blog, admin, or superadmin)
 const requireBlogRole = (req, res, next) => {
     if (!req.user || !req.user.Role) {
         return res.status(403).json({ message: 'Access denied.' });
@@ -112,7 +112,7 @@ const requireBlogRole = (req, res, next) => {
 
     const userRole = req.user.Role.name;
 
-    if (userRole !== 'master_admin' && userRole !== 'admin' && userRole !== 'blog') {
+    if (userRole !== 'superadmin' && userRole !== 'admin' && userRole !== 'blog') {
         return res.status(403).json({ message: 'Blog writer access required.' });
     }
 

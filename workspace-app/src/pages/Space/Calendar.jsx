@@ -17,12 +17,9 @@ const SpaceCalendar = () => {
     const { t } = useTranslation();
     const [currentDate, setCurrentDate] = useState(new Date());
     const [events, setEvents] = useState([]);
-    const [milestones, setMilestones] = useState([]);
-    const [goals, setGoals] = useState([]);
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedDate, setSelectedDate] = useState(null);
-    const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         date: '',
@@ -41,8 +38,6 @@ const SpaceCalendar = () => {
                 spaceAPI.getGoals(),
                 projectPlansAPI.getAll(),
             ]);
-            setMilestones(milestonesData || []);
-            setGoals(goalsData || []);
             setProjects(projectsData || []);
 
             // Combine all events
@@ -89,7 +84,7 @@ const SpaceCalendar = () => {
             });
 
             setEvents(allEvents);
-        } catch (err) {
+        } catch {
             // Error handled silently - events will be empty
         } finally {
             setLoading(false);
@@ -165,10 +160,6 @@ const SpaceCalendar = () => {
             ...formData,
             date: date.toISOString().split('T')[0],
         });
-    };
-
-    const handleAddEvent = () => {
-        setShowModal(true);
     };
 
     const days = getDaysInMonth(currentDate);
@@ -371,6 +362,16 @@ const SpaceCalendar = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Responsive Styles */}
+            <style>{`
+                @media (max-width: 1023px) {
+                    div[style*="grid-template-columns: 1fr 300px"] { grid-template-columns: 1fr !important; }
+                }
+                @media (max-width: 767px) {
+                    div[style*="grid-template-columns: repeat(7"] { gap: 2px !important; }
+                }
+            `}</style>
         </div>
     );
 };

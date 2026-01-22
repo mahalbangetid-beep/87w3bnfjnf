@@ -21,18 +21,9 @@ import {
     HiOutlineTrash,
     HiOutlineExternalLink,
     HiOutlineCheck,
+    HiOutlineStar,
 } from 'react-icons/hi';
-
-// Storage keys
-const ASSETS_STORAGE_KEY = 'workspace_assets';
-const PROJECTS_STORAGE_KEY = 'workspace_projects';
-const GDRIVE_CONFIG_KEY = 'workspace_gdrive_config';
-
-// Default assets structure
-const defaultAssets = {
-    folders: [],
-    files: [],
-};
+import { workFilesAPI, projectsAPI } from '../../services/api';
 
 // File type icons
 const getFileIcon = (type) => {
@@ -62,36 +53,21 @@ const getFileColor = (type) => {
     return colors[type] || '#9ca3af';
 };
 
-// Load & Save functions
-const loadAssets = () => {
-    try {
-        const saved = localStorage.getItem(ASSETS_STORAGE_KEY);
-        if (saved) return JSON.parse(saved);
-    } catch (error) {
-        console.error('Error loading assets:', error);
-    }
-    return defaultAssets;
-};
-
-const saveAssets = (assets) => {
-    try {
-        localStorage.setItem(ASSETS_STORAGE_KEY, JSON.stringify(assets));
-    } catch (error) {
-        console.error('Error saving assets:', error);
-    }
-};
-
 const Assets = () => {
     const { t } = useTranslation();
-    const [assets, setAssets] = useState(loadAssets);
+    const [files, setFiles] = useState([]);
     const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
-    const [currentPath, setCurrentPath] = useState([]);
+    const [currentPath, setCurrentPath] = useState([]); // Array of folder objects for breadcrumb
+    const [currentParentId, setCurrentParentId] = useState(null);
     const [showNewModal, setShowNewModal] = useState(false);
     const [showGDriveModal, setShowGDriveModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [confirmDelete, setConfirmDelete] = useState(null);
 
-    // Google Drive state
+    // Google Drive state (placeholder - still local)
     const [gDriveConfig, setGDriveConfig] = useState({
         connected: false,
         email: '',
@@ -103,129 +79,144 @@ const Assets = () => {
         type: 'folder',
         name: '',
         url: '',
+        fileType: 'document',
         projectId: null,
     });
 
-    // Save assets to localStorage
-    useEffect(() => {
-        saveAssets(assets);
-    }, [assets]);
+    // Auto-clear error
+    const setErrorWithTimeout = (message) => {
+        setError(message);
+        setTimeout(() => setError(''), 5000);
+    };
 
-    // Load projects
-    useEffect(() => {
+    // Fetch files from API
+    const fetchFiles = async (parentId = null) => {
         try {
-            const saved = localStorage.getItem(PROJECTS_STORAGE_KEY);
-            if (saved) setProjects(JSON.parse(saved));
-        } catch (error) {
-            console.error('Error loading projects:', error);
-        }
-    }, []);
-
-    // Load Google Drive config
-    useEffect(() => {
-        try {
-            const saved = localStorage.getItem(GDRIVE_CONFIG_KEY);
-            if (saved) setGDriveConfig(JSON.parse(saved));
-        } catch (error) {
-            console.error('Error loading GDrive config:', error);
-        }
-    }, []);
-
-    // Get current folder contents
-    const getCurrentContents = () => {
-        let current = assets;
-        for (const folder of currentPath) {
-            const found = current.folders?.find((f) => f.id === folder.id);
-            if (found) {
-                current = found;
+            setLoading(true);
+            const params = {};
+            if (parentId) {
+                params.parentId = parentId;
+            } else {
+                params.parentId = 'null';
             }
+            if (searchTerm) {
+                params.search = searchTerm;
+            }
+            const data = await workFilesAPI.getAll(params);
+            setFiles(data || []);
+        } catch {
+            setErrorWithTimeout('Failed to load files');
+        } finally {
+            setLoading(false);
         }
-        return current;
     };
 
-    // Filter contents
-    const filteredContents = () => {
-        const contents = getCurrentContents();
-        const folders = contents.folders?.filter((f) => f.name.toLowerCase().includes(searchTerm.toLowerCase())) || [];
-        const files = contents.files?.filter((f) => f.name.toLowerCase().includes(searchTerm.toLowerCase())) || [];
-        return { folders, files };
+    // Load projects from API
+    const fetchProjects = async () => {
+        try {
+            const data = await projectsAPI.getAll();
+            setProjects(data || []);
+        } catch {
+            // Silently fail - projects are optional
+        }
     };
+
+    useEffect(() => {
+        fetchFiles(currentParentId);
+        fetchProjects();
+    }, [currentParentId]);
+
+    // Debounced search
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            fetchFiles(currentParentId);
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [searchTerm]);
+
+    // Load Google Drive config from localStorage (still local for now)
+    useEffect(() => {
+        try {
+            const saved = localStorage.getItem('workspace_gdrive_config');
+            if (saved) setGDriveConfig(JSON.parse(saved));
+        } catch (err) {
+            // Ignore
+        }
+    }, []);
 
     // Navigate into folder
     const navigateToFolder = (folder) => {
         setCurrentPath([...currentPath, folder]);
+        setCurrentParentId(folder.id);
         setSelectedItem(null);
     };
 
     // Navigate back
     const navigateBack = (index = -1) => {
         if (index === -1) {
-            setCurrentPath(currentPath.slice(0, -1));
+            const newPath = currentPath.slice(0, -1);
+            setCurrentPath(newPath);
+            setCurrentParentId(newPath.length > 0 ? newPath[newPath.length - 1].id : null);
+        } else if (index === -2) {
+            // Go to root
+            setCurrentPath([]);
+            setCurrentParentId(null);
         } else {
-            setCurrentPath(currentPath.slice(0, index + 1));
+            const newPath = currentPath.slice(0, index + 1);
+            setCurrentPath(newPath);
+            setCurrentParentId(newPath.length > 0 ? newPath[newPath.length - 1].id : null);
         }
         setSelectedItem(null);
     };
 
-    // Create new folder
-    const handleCreateItem = () => {
+    // Create new folder/file
+    const handleCreateItem = async () => {
         if (!newItemForm.name.trim()) {
-            alert('Please enter a name');
+            setErrorWithTimeout('Please enter a name');
             return;
         }
 
-        const newItem = {
-            id: Date.now(),
-            name: newItemForm.name,
-            type: newItemForm.type,
-            createdAt: new Date().toISOString(),
-            projectId: newItemForm.projectId,
-            ...(newItemForm.type === 'folder' ? { folders: [], files: [] } : { url: newItemForm.url }),
-        };
-
-        const updateAssets = (current, path) => {
-            if (path.length === 0) {
-                if (newItemForm.type === 'folder') {
-                    return { ...current, folders: [...(current.folders || []), newItem] };
-                } else {
-                    return { ...current, files: [...(current.files || []), newItem] };
-                }
-            }
-
-            return {
-                ...current,
-                folders: current.folders.map((f) =>
-                    f.id === path[0].id ? updateAssets(f, path.slice(1)) : f
-                ),
+        try {
+            const data = {
+                name: newItemForm.name,
+                type: newItemForm.type,
+                fileType: newItemForm.type === 'folder' ? null : newItemForm.fileType,
+                url: newItemForm.type !== 'folder' ? newItemForm.url : null,
+                parentId: currentParentId,
+                projectId: newItemForm.projectId,
             };
-        };
 
-        setAssets(updateAssets(assets, currentPath));
-        setShowNewModal(false);
-        setNewItemForm({ type: 'folder', name: '', url: '', projectId: null });
+            await workFilesAPI.create(data);
+            await fetchFiles(currentParentId);
+            setShowNewModal(false);
+            setNewItemForm({ type: 'folder', name: '', url: '', fileType: 'document', projectId: null });
+        } catch (err) {
+            setErrorWithTimeout(err.message || 'Failed to create item');
+        }
     };
 
     // Delete item
-    const handleDeleteItem = (item, isFolder) => {
-        const updateAssets = (current, path) => {
-            if (path.length === 0) {
-                if (isFolder) {
-                    return { ...current, folders: current.folders.filter((f) => f.id !== item.id) };
-                } else {
-                    return { ...current, files: current.files.filter((f) => f.id !== item.id) };
-                }
-            }
+    const handleDeleteItem = async () => {
+        if (!confirmDelete) return;
 
-            return {
-                ...current,
-                folders: current.folders.map((f) =>
-                    f.id === path[0].id ? updateAssets(f, path.slice(1)) : f
-                ),
-            };
-        };
+        try {
+            await workFilesAPI.delete(confirmDelete.id);
+            await fetchFiles(currentParentId);
+            setConfirmDelete(null);
+            setSelectedItem(null);
+        } catch (err) {
+            setErrorWithTimeout('Failed to delete item');
+        }
+    };
 
-        setAssets(updateAssets(assets, currentPath));
-        setSelectedItem(null);
+    // Toggle star
+    const handleToggleStar = async (item) => {
+        try {
+            await workFilesAPI.toggleStar(item.id);
+            await fetchFiles(currentParentId);
+        } catch (err) {
+            setErrorWithTimeout('Failed to update item');
+        }
     };
 
     // Google Drive connect (placeholder - will need actual OAuth)
@@ -244,10 +235,35 @@ const Assets = () => {
         alert('Syncing with Google Drive...');
     };
 
-    const { folders, files } = filteredContents();
+    // Separate folders and files
+    const folders = files.filter(f => f.type === 'folder');
+    const regularFiles = files.filter(f => f.type !== 'folder');
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {/* Error Message */}
+            <AnimatePresence>
+                {error && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            padding: '12px 16px',
+                            borderRadius: '10px',
+                            backgroundColor: 'rgba(239,68,68,0.1)',
+                            border: '1px solid rgba(239,68,68,0.3)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                        }}
+                    >
+                        <span style={{ fontSize: '18px' }}>⚠️</span>
+                        <p style={{ color: '#f87171', fontSize: '13px', margin: 0 }}>{error}</p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Header */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
@@ -375,30 +391,25 @@ const Assets = () => {
                     <h2 style={{ fontSize: '14px', fontWeight: '600', color: '#9ca3af', marginBottom: '12px' }}>Project Folders</h2>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
                         {projects.map((project) => {
-                            // Count assets linked to this project
-                            const projectAssets = assets.folders?.filter((f) => f.projectId === project.id).length || 0;
-                            const projectFiles = assets.files?.filter((f) => f.projectId === project.id).length || 0;
+                            // Count items linked to this project
+                            const projectItems = files.filter((f) => f.projectId === project.id).length;
 
                             return (
                                 <motion.div
                                     key={project.id}
                                     whileHover={{ y: -3, scale: 1.02 }}
-                                    onClick={() => {
-                                        // Create or navigate to project folder
-                                        let projectFolder = assets.folders?.find((f) => f.projectId === project.id && f.type === 'project-folder');
-                                        if (!projectFolder) {
-                                            projectFolder = {
-                                                id: `project-${project.id}`,
-                                                name: project.name,
-                                                type: 'project-folder',
-                                                projectId: project.id,
-                                                folders: [],
-                                                files: [],
-                                                createdAt: new Date().toISOString(),
-                                            };
-                                            setAssets({ ...assets, folders: [...(assets.folders || []), projectFolder] });
+                                    onClick={async () => {
+                                        // Create project root folder if it doesn't exist, or filter by project
+                                        try {
+                                            // Fetch files for this project
+                                            const params = { projectId: project.id };
+                                            const data = await workFilesAPI.getAll(params);
+                                            setFiles(data || []);
+                                            setCurrentPath([{ id: `project-${project.id}`, name: project.name, projectId: project.id }]);
+                                            setCurrentParentId(null);
+                                        } catch {
+                                            setErrorWithTimeout('Failed to load project files');
                                         }
-                                        navigateToFolder(projectFolder);
                                     }}
                                     style={{
                                         padding: '16px',
@@ -414,7 +425,7 @@ const Assets = () => {
                                         </div>
                                         <div>
                                             <p style={{ fontWeight: '600', color: 'white', fontSize: '14px', margin: 0 }}>{project.name}</p>
-                                            <p style={{ fontSize: '11px', color: '#9ca3af', margin: '2px 0 0 0' }}>{projectAssets + projectFiles} items</p>
+                                            <p style={{ fontSize: '11px', color: '#9ca3af', margin: '2px 0 0 0' }}>{projectItems} items</p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -490,7 +501,7 @@ const Assets = () => {
                                     </div>
                                     <p style={{ fontWeight: '500', color: 'white', fontSize: '13px', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{folder.name}</p>
                                     <p style={{ fontSize: '11px', color: '#6b7280', margin: '4px 0 0 0' }}>
-                                        {(folder.folders?.length || 0) + (folder.files?.length || 0)} items
+                                        Folder
                                     </p>
 
                                     {/* Delete button on hover */}
@@ -498,7 +509,7 @@ const Assets = () => {
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                handleDeleteItem(folder, true);
+                                                setConfirmDelete(folder);
                                             }}
                                             style={{
                                                 position: 'absolute',
@@ -520,7 +531,7 @@ const Assets = () => {
                         })}
 
                         {/* Files */}
-                        {files.map((file) => {
+                        {regularFiles.map((file) => {
                             const Icon = getFileIcon(file.type);
                             const color = getFileColor(file.type);
 
@@ -570,7 +581,7 @@ const Assets = () => {
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    handleDeleteItem(file, false);
+                                                    setConfirmDelete(file);
                                                 }}
                                                 style={{
                                                     padding: '6px',
@@ -796,7 +807,7 @@ const Assets = () => {
                                     <button
                                         onClick={() => {
                                             setGDriveConfig({ connected: false, email: '', lastSync: null });
-                                            localStorage.removeItem(GDRIVE_CONFIG_KEY);
+                                            localStorage.removeItem('workspace_gdrive_config');
                                             setShowGDriveModal(false);
                                         }}
                                         style={{ flex: 1, padding: '14px', borderRadius: '10px', border: 'none', backgroundColor: 'rgba(239,68,68,0.2)', color: '#f87171', fontSize: '14px', cursor: 'pointer' }}
@@ -805,6 +816,51 @@ const Assets = () => {
                                     </button>
                                 </div>
                             )}
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Delete Confirmation Modal */}
+            <AnimatePresence>
+                {confirmDelete && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
+                        onClick={() => setConfirmDelete(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="glass-card"
+                            style={{ width: '100%', maxWidth: '400px', padding: '24px', textAlign: 'center' }}
+                        >
+                            <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                                <HiOutlineTrash style={{ width: '28px', height: '28px', color: '#ef4444' }} />
+                            </div>
+                            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', margin: '0 0 8px 0' }}>
+                                Delete {confirmDelete.type === 'folder' ? 'Folder' : 'File'}?
+                            </h3>
+                            <p style={{ fontSize: '14px', color: '#9ca3af', margin: '0 0 8px 0' }}>
+                                "{confirmDelete.name}"
+                            </p>
+                            {confirmDelete.type === 'folder' && (
+                                <p style={{ fontSize: '12px', color: '#f87171', margin: '0 0 24px 0' }}>
+                                    All contents inside will also be deleted!
+                                </p>
+                            )}
+                            <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+                                <button onClick={() => setConfirmDelete(null)} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'transparent', color: '#9ca3af', fontSize: '14px', cursor: 'pointer' }}>
+                                    Cancel
+                                </button>
+                                <button onClick={handleDeleteItem} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', backgroundColor: '#ef4444', color: 'white', fontSize: '14px', fontWeight: '500', cursor: 'pointer' }}>
+                                    Delete
+                                </button>
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}

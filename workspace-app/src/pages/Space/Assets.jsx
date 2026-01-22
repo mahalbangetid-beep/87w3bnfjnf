@@ -17,7 +17,7 @@ import {
     HiOutlineCode,
     HiOutlineFolder,
 } from 'react-icons/hi';
-import { projectPlansAPI } from '../../services/api';
+import { projectPlansAPI, spaceAPI } from '../../services/api';
 
 const typeConfig = {
     image: { label: 'Image', icon: HiOutlinePhotograph, color: '#ec4899' },
@@ -58,13 +58,13 @@ const SpaceAssets = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const [projectsData, storedAssets] = await Promise.all([
+            const [projectsData, assetsData] = await Promise.all([
                 projectPlansAPI.getAll(),
-                Promise.resolve(JSON.parse(localStorage.getItem('spaceAssets') || '[]')),
+                spaceAPI.getAssets(),
             ]);
             setProjects(projectsData || []);
-            setAssets(storedAssets);
-        } catch (err) {
+            setAssets(assetsData || []);
+        } catch {
             setErrorWithTimeout(t('errors.generic', 'Failed to load assets'));
         } finally {
             setLoading(false);
@@ -75,11 +75,8 @@ const SpaceAssets = () => {
         fetchData();
     }, []);
 
-    // Save to localStorage
-    const saveAssets = (newAssets) => {
-        localStorage.setItem('spaceAssets', JSON.stringify(newAssets));
-        setAssets(newAssets);
-    };
+    // Confirm delete state
+    const [confirmDelete, setConfirmDelete] = useState(null);
 
     // Filter assets
     const filteredAssets = assets.filter(asset => {
@@ -90,32 +87,28 @@ const SpaceAssets = () => {
     });
 
     // Handle save
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!formData.name.trim()) {
             setError('Please enter an asset name');
             return;
         }
 
         setSaving(true);
+        setError('');
 
         try {
-            let newAssets;
             if (editingAsset) {
-                newAssets = assets.map(a => a.id === editingAsset.id ? { ...formData, id: editingAsset.id, createdAt: editingAsset.createdAt } : a);
+                const updated = await spaceAPI.updateAsset(editingAsset.id, formData);
+                setAssets(assets.map(a => a.id === editingAsset.id ? updated : a));
             } else {
-                const newAsset = {
-                    ...formData,
-                    id: Date.now(),
-                    createdAt: new Date().toISOString(),
-                };
-                newAssets = [newAsset, ...assets];
+                const created = await spaceAPI.createAsset(formData);
+                setAssets([created, ...assets]);
             }
-            saveAssets(newAssets);
             setShowModal(false);
             setEditingAsset(null);
             setFormData({ name: '', type: 'link', url: '', description: '', projectId: null });
         } catch (err) {
-            setError('Failed to save asset');
+            setErrorWithTimeout(err.message || 'Failed to save asset');
         } finally {
             setSaving(false);
         }
@@ -135,10 +128,14 @@ const SpaceAssets = () => {
     };
 
     // Handle delete
-    const handleDelete = (id) => {
-        if (confirm(t('space.confirmDeleteAsset', 'Delete this asset?'))) {
-            const newAssets = assets.filter(a => a.id !== id);
-            saveAssets(newAssets);
+    const handleConfirmDelete = async () => {
+        if (!confirmDelete) return;
+        try {
+            await spaceAPI.deleteAsset(confirmDelete);
+            setAssets(assets.filter(a => a.id !== confirmDelete));
+            setConfirmDelete(null);
+        } catch (err) {
+            setErrorWithTimeout(err.message || 'Failed to delete asset');
         }
     };
 
@@ -148,10 +145,6 @@ const SpaceAssets = () => {
         return project?.name || null;
     };
 
-    const getProjectColor = (projectId) => {
-        const project = projects.find(p => p.id === projectId);
-        return project?.color || '#8b5cf6';
-    };
 
     // Stats
     const stats = {
@@ -311,7 +304,7 @@ const SpaceAssets = () => {
                                         <button onClick={() => handleEdit(asset)} style={{ padding: '6px', borderRadius: '6px', border: 'none', background: 'transparent', color: '#9ca3af', cursor: 'pointer' }}>
                                             <HiOutlinePencil style={{ width: '14px', height: '14px' }} />
                                         </button>
-                                        <button onClick={() => handleDelete(asset.id)} style={{ padding: '6px', borderRadius: '6px', border: 'none', background: 'transparent', color: '#f87171', cursor: 'pointer' }}>
+                                        <button onClick={() => setConfirmDelete(asset.id)} style={{ padding: '6px', borderRadius: '6px', border: 'none', background: 'transparent', color: '#f87171', cursor: 'pointer' }}>
                                             <HiOutlineTrash style={{ width: '14px', height: '14px' }} />
                                         </button>
                                     </div>
@@ -435,6 +428,52 @@ const SpaceAssets = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Confirm Delete Modal */}
+            <AnimatePresence>
+                {confirmDelete && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
+                        onClick={() => setConfirmDelete(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="glass-card"
+                            style={{ width: '100%', maxWidth: '400px', padding: '24px', textAlign: 'center' }}
+                        >
+                            <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                                <HiOutlineTrash style={{ width: '28px', height: '28px', color: '#ef4444' }} />
+                            </div>
+                            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', margin: '0 0 8px 0' }}>{t('common.confirmDelete', 'Delete Asset?')}</h3>
+                            <p style={{ fontSize: '14px', color: '#9ca3af', margin: '0 0 24px 0' }}>{t('space.assets.deleteWarning', 'This action cannot be undone.')}</p>
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button onClick={() => setConfirmDelete(null)} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'transparent', color: '#9ca3af', fontSize: '14px', cursor: 'pointer' }}>
+                                    {t('common.cancel', 'Cancel')}
+                                </button>
+                                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={handleConfirmDelete} style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'none', backgroundColor: '#ef4444', color: 'white', fontSize: '14px', fontWeight: '500', cursor: 'pointer' }}>
+                                    {t('common.delete', 'Delete')}
+                                </motion.button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Responsive Styles */}
+            <style>{`
+                @media (max-width: 1023px) {
+                    div[style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+                }
+                @media (max-width: 767px) {
+                    div[style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </div>
     );
 };

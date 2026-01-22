@@ -295,7 +295,7 @@ const requireBlogRole = async (req, res, next) => {
             include: [{ model: Role }]
         });
 
-        const allowedRoles = ['master_admin', 'admin', 'blog', 'blogger'];
+        const allowedRoles = ['superadmin', 'admin', 'blog', 'blogger'];
         if (!userWithRole?.Role || !allowedRoles.includes(userWithRole.Role.name)) {
             return res.status(403).json({ error: 'Access denied. Blog role required.' });
         }
@@ -316,7 +316,7 @@ router.get('/admin/articles', authenticate, requireBlogRole, async (req, res) =>
 
         // Non-admin can only see their own articles
         const userRole = await User.findByPk(req.user.id, { include: [{ model: Role }] });
-        if (!['master_admin', 'admin'].includes(userRole?.Role?.name)) {
+        if (!['superadmin', 'admin'].includes(userRole?.Role?.name)) {
             where.authorId = req.user.id;
         }
 
@@ -475,7 +475,7 @@ router.put('/admin/articles/:id', authenticate, requireBlogRole, async (req, res
 
         // Check ownership (non-admin can only edit their own)
         const userRole = await User.findByPk(req.user.id, { include: [{ model: Role }] });
-        if (!['master_admin', 'admin'].includes(userRole?.Role?.name) && article.authorId !== req.user.id) {
+        if (!['superadmin', 'admin'].includes(userRole?.Role?.name) && article.authorId !== req.user.id) {
             return res.status(403).json({ error: 'Not authorized to edit this article' });
         }
 
@@ -566,7 +566,7 @@ router.delete('/admin/articles/:id', authenticate, requireBlogRole, async (req, 
 
         // Check ownership
         const userRole = await User.findByPk(req.user.id, { include: [{ model: Role }] });
-        if (!['master_admin', 'admin'].includes(userRole?.Role?.name) && article.authorId !== req.user.id) {
+        if (!['superadmin', 'admin'].includes(userRole?.Role?.name) && article.authorId !== req.user.id) {
             return res.status(403).json({ error: 'Not authorized to delete this article' });
         }
 
@@ -751,7 +751,7 @@ router.delete('/admin/comments/:id', authenticate, requireBlogRole, async (req, 
 router.get('/admin/stats', authenticate, requireBlogRole, async (req, res) => {
     try {
         const userRole = await User.findByPk(req.user.id, { include: [{ model: Role }] });
-        const isAdmin = ['master_admin', 'admin'].includes(userRole?.Role?.name);
+        const isAdmin = ['superadmin', 'admin'].includes(userRole?.Role?.name);
 
         const authorFilter = isAdmin ? {} : { authorId: req.user.id };
 

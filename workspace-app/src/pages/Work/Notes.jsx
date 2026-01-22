@@ -16,6 +16,7 @@ import {
     HiOutlineRefresh,
 } from 'react-icons/hi';
 import { notesAPI, projectsAPI } from '../../services/api';
+import { NotesEmptyState } from '../../components/UI';
 
 const colorOptions = ['#8b5cf6', '#06b6d4', '#ec4899', '#10b981', '#f59e0b', '#ef4444', '#6366f1', '#14b8a6'];
 
@@ -481,23 +482,10 @@ const Notes = () => {
 
             {/* Empty State */}
             {filteredNotes.length === 0 && !loading && (
-                <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>📝</div>
-                    <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '8px' }}>No notes found</h3>
-                    <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '24px' }}>
-                        {searchTerm || filterLabel !== 'All' ? 'Try adjusting your filters' : 'Create your first note to get started'}
-                    </p>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={handleNewNote}
-                        className="btn-glow"
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}
-                    >
-                        <HiOutlinePlus style={{ width: '18px', height: '18px' }} />
-                        Create Note
-                    </motion.button>
-                </div>
+                <NotesEmptyState
+                    onAction={handleNewNote}
+                    isFiltered={!!(searchTerm || filterLabel !== 'All')}
+                />
             )}
 
             {/* Create/Edit Modal */}

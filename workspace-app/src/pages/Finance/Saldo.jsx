@@ -6,15 +6,7 @@ import {
     HiOutlineX, HiOutlineCreditCard, HiOutlineCash, HiOutlineDeviceMobile
 } from 'react-icons/hi';
 import { financeAPI } from '../../services/api';
-
-const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(amount);
-};
+import { AccountsEmptyState } from '../../components/UI';
 
 const getAccountTypes = (t) => ({
     bank: { name: t('finance.balance.bank'), icon: HiOutlineCreditCard, color: '#3b82f6' },
@@ -370,13 +362,7 @@ const Saldo = () => {
 
             {/* Empty State */}
             {!loading && accounts.length === 0 && (
-                <div className="glass-card" style={{ padding: '48px', textAlign: 'center' }}>
-                    <HiOutlineCreditCard style={{ width: '64px', height: '64px', color: '#6b7280', margin: '0 auto 16px' }} />
-                    <h3 style={{ fontSize: '18px', color: 'white', marginBottom: '8px' }}>{t('finance.balance.noAccounts')}</h3>
-                    <p style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '20px' }}>
-                        {t('finance.balance.addAccountDesc')}
-                    </p>
-                </div>
+                <AccountsEmptyState onAction={() => openAddModal()} />
             )}
 
             {/* Add/Edit Modal */}

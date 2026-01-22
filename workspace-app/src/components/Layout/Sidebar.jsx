@@ -35,6 +35,8 @@ import {
     HiOutlineUserCircle,
     HiOutlineCube,
     HiOutlineBookmark,
+    // CRM
+    HiOutlineUserGroup,
     // System
     HiOutlineUsers,
     HiOutlineShieldCheck,
@@ -143,6 +145,19 @@ const getModules = (t) => [
         ],
     },
     {
+        id: 'crm',
+        name: t('sidebar.crm', 'CRM'),
+        icon: HiOutlineUserGroup,
+        color: '#f43f5e',
+        gradient: 'from-rose-500 to-pink-600',
+        items: [
+            { name: t('sidebar.dashboard', 'Dashboard'), path: '/crm', icon: HiOutlineViewGrid },
+            { name: t('sidebar.clients', 'Clients'), path: '/crm/clients', icon: HiOutlineUserCircle },
+            { name: t('sidebar.reminders', 'Reminders'), path: '/crm/reminders', icon: HiOutlineBell },
+            { name: t('sidebar.settings', 'Settings'), path: '/crm/settings', icon: HiOutlineCog },
+        ],
+    },
+    {
         id: 'settings',
         name: t('sidebar.userSettings', 'Settings'),
         icon: HiOutlineCog,
@@ -183,7 +198,7 @@ const Sidebar = () => {
     // Determine initial expanded module from current URL path
     const getInitialExpandedModule = () => {
         const path = location.pathname;
-        const moduleIds = ['work', 'space', 'social', 'finance', 'assets', 'settings', 'system'];
+        const moduleIds = ['work', 'space', 'social', 'finance', 'assets', 'crm', 'settings', 'system'];
         for (const id of moduleIds) {
             if (path.startsWith(`/${id}`)) {
                 return [id];
@@ -214,7 +229,7 @@ const Sidebar = () => {
     }, []);
 
     // Filter modules based on role
-    const isAdmin = user?.Role?.name === 'master_admin' || user?.Role?.name === 'admin';
+    const isAdmin = user?.Role?.name === 'superadmin' || user?.Role?.name === 'admin';
 
     // Admin only sees System module, regular users see all except System
     const visibleModules = isAdmin
@@ -308,7 +323,7 @@ const Sidebar = () => {
                 animate={isCollapsed ? 'collapsed' : 'expanded'}
                 variants={sidebarVariants}
                 className={`
-                    fixed top-0 left-0 h-screen z-40
+                    sidebar fixed top-0 left-0 h-screen z-40
                     flex flex-col
                     transition-all duration-300
                     ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}

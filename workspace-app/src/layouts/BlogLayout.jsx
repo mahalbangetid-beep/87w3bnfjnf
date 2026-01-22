@@ -17,7 +17,7 @@ const BlogLayout = () => {
     useEffect(() => {
         // Check if user has blog role
         const userRole = user?.Role?.name?.toLowerCase();
-        if (userRole !== 'blog' && userRole !== 'admin' && userRole !== 'master_admin') {
+        if (userRole !== 'blog' && userRole !== 'admin' && userRole !== 'superadmin') {
             navigate('/work');
         }
     }, [user, navigate]);
