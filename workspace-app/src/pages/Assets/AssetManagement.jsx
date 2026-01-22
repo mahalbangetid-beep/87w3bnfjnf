@@ -297,7 +297,7 @@ const AssetManagement = () => {
                             {item.type === 'image' && item.filePath && (
                                 <div style={{ marginTop: '8px', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'rgba(255,255,255,0.02)' }}>
                                     <img
-                                        src={`http://localhost:5000/${item.filePath.replace(/\\/g, '/')}`}
+                                        src={`/api/${item.filePath.replace(/\\/g, '/')}`}
                                         alt={item.name}
                                         style={{ width: '100%', height: '120px', objectFit: 'cover' }}
                                     />

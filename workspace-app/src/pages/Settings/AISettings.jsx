@@ -21,7 +21,7 @@ import {
 } from 'react-icons/hi';
 import SettingsLayout from './SettingsLayout';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '/api';
 
 // AI Providers
 const AI_PROVIDERS = {
