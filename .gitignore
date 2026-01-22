@@ -37,11 +37,19 @@ uploads/*
 !uploads/.gitkeep
 
 # Archives
+beforesidebardesign.zip
+afterdone.zip
+workspace.zip
 *.zip
 *.tar.gz
 *.rar
 
 # Markdown files (as requested)
+error.md
+flow.md
+maynewfeat.md
+plan.md
+selectbox.md
 *.md
 
 # Misc
