@@ -294,12 +294,6 @@ const Login = () => {
                     </p>
                 </div>
 
-                {/* Demo Credentials */}
-                <div style={{ textAlign: 'center', marginTop: '24px' }}>
-                    <p style={{ color: '#6b7280', fontSize: '12px' }}>
-                        Demo: admin@workspace.com / admin123
-                    </p>
-                </div>
             </motion.div>
         </div>
     );
