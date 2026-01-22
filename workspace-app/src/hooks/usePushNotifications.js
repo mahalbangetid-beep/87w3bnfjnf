@@ -133,22 +133,26 @@ export const usePushNotifications = () => {
         }
     }, [subscription]);
 
-    // Register service worker on mount
+    // Register service worker on mount - DISABLED to prevent local network popup
+    // Service worker will only register when user explicitly enables push notifications
     useEffect(() => {
-        const registerServiceWorker = async () => {
-            if ('serviceWorker' in navigator) {
-                try {
-                    const registration = await navigator.serviceWorker.register('/sw.js');
-                    console.log('Service Worker registered:', registration.scope);
-                } catch (err) {
-                    console.error('Service Worker registration failed:', err);
-                }
-            }
-        };
+        // Don't auto-register service worker to avoid "local network" permission popup
+        // const registerServiceWorker = async () => {
+        //     if ('serviceWorker' in navigator) {
+        //         try {
+        //             const registration = await navigator.serviceWorker.register('/sw.js');
+        //             console.log('Service Worker registered:', registration.scope);
+        //         } catch (err) {
+        //             console.error('Service Worker registration failed:', err);
+        //         }
+        //     }
+        // };
+        // registerServiceWorker();
 
-        registerServiceWorker();
-        checkSubscription();
-    }, [checkSubscription]);
+        // Only check subscription status, don't register SW automatically
+        setIsLoading(false);
+        setIsSupported(isPushSupported());
+    }, []);
 
     return {
         isSupported,
