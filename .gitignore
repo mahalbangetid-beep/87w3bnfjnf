@@ -50,8 +50,14 @@ flow.md
 maynewfeat.md
 plan.md
 selectbox.md
+apikewhats.md
+area.md
 *.md
 
 # Misc
 .cache/
 .temp/
+
+# Others
+deploy/
+ucuydb.sqlite

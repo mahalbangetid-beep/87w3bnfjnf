@@ -12,9 +12,11 @@ const {
     IdeaProject,
     SocialPost,
     Goal,
+    Task,
     NotificationPreference
 } = require('../models');
 const notificationService = require('./notificationService');
+const whatsappService = require('./whatsappService');
 
 // Store scheduled jobs
 const scheduledJobs = new Map();
@@ -44,6 +46,18 @@ const schedulerService = {
 
         // Cleanup old notifications - Run every day at 2:00 AM
         this.scheduleJob('cleanup', '0 2 * * *', this.cleanupOldData);
+
+        // ============================================
+        // WhatsApp Automation Jobs
+        // ============================================
+        // WhatsApp Bill Reminders - Run every day at 8:30 AM
+        this.scheduleJob('whatsappBillReminders', '30 8 * * *', this.sendWhatsAppBillReminders);
+
+        // WhatsApp Task Deadlines - Run every hour
+        this.scheduleJob('whatsappTaskDeadlines', '0 * * * *', this.sendWhatsAppTaskDeadlines);
+
+        // WhatsApp Daily Summary - Run every day at 9:00 PM
+        this.scheduleJob('whatsappDailySummary', '0 21 * * *', this.sendWhatsAppDailySummary);
 
         console.log('✅ Scheduler initialized with', scheduledJobs.size, 'jobs');
     },
@@ -325,6 +339,204 @@ const schedulerService = {
     },
 
     // ============================================
+    // WhatsApp Bill Reminders
+    // ============================================
+    async sendWhatsAppBillReminders() {
+        console.log('📱 Sending WhatsApp bill reminders...');
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // Get all users with WhatsApp config
+        const users = await User.findAll({
+            where: {
+                settings: { [Op.ne]: null }
+            }
+        });
+
+        let sentCount = 0;
+
+        for (const user of users) {
+            // Check if user has WhatsApp config
+            const waConfig = user.settings?.whatsapp;
+            if (!waConfig?.apiKey || !waConfig?.deviceId) continue;
+
+            // Get bills with WhatsApp reminder enabled
+            const bills = await FinanceBill.findAll({
+                where: {
+                    userId: user.id,
+                    status: 'pending',
+                    reminderWhatsapp: true,
+                    dueDate: { [Op.gte]: today }
+                }
+            });
+
+            for (const bill of bills) {
+                const dueDate = new Date(bill.dueDate);
+                const diffTime = dueDate.getTime() - today.getTime();
+                const daysUntilDue = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                // Check if we should remind today based on bill's reminderDays setting
+                const reminderDays = bill.reminderDays || 3;
+                if (daysUntilDue !== reminderDays && daysUntilDue !== 1 && daysUntilDue !== 0) continue;
+
+                // Check if already sent today
+                if (bill.lastReminderSent) {
+                    const lastSent = new Date(bill.lastReminderSent);
+                    lastSent.setHours(0, 0, 0, 0);
+                    if (lastSent.getTime() === today.getTime()) continue;
+                }
+
+                try {
+                    const result = await whatsappService.sendBillReminder(waConfig, bill, daysUntilDue);
+
+                    if (result.success) {
+                        // Update last reminder sent
+                        bill.lastReminderSent = new Date();
+                        await bill.save();
+                        sentCount++;
+                    }
+                } catch (error) {
+                    console.error(`WhatsApp: Failed to send bill reminder for ${bill.name}:`, error);
+                }
+            }
+        }
+
+        console.log(`  📱 Sent ${sentCount} WhatsApp bill reminders`);
+    },
+
+    // ============================================
+    // WhatsApp Task Deadline Reminders
+    // ============================================
+    async sendWhatsAppTaskDeadlines() {
+        console.log('📱 Checking WhatsApp task deadlines...');
+
+        const now = new Date();
+
+        // Get all users with WhatsApp config
+        const users = await User.findAll({
+            where: {
+                settings: { [Op.ne]: null }
+            }
+        });
+
+        let sentCount = 0;
+
+        for (const user of users) {
+            const waConfig = user.settings?.whatsapp;
+            if (!waConfig?.apiKey || !waConfig?.deviceId || !waConfig?.defaultPhone) continue;
+
+            // Check if user has task deadline alert enabled
+            // For now, we'll check all incomplete tasks with time set
+            const tasks = await Task.findAll({
+                where: {
+                    userId: user.id,
+                    completed: false,
+                    date: {
+                        [Op.eq]: now.toISOString().split('T')[0]
+                    },
+                    time: { [Op.ne]: null }
+                },
+                include: [{ model: Project, required: false }]
+            });
+
+            for (const task of tasks) {
+                // Parse task time and calculate hours until deadline
+                const [hours, minutes] = task.time.split(':').map(Number);
+                const taskDateTime = new Date(task.date);
+                taskDateTime.setHours(hours, minutes, 0, 0);
+
+                const diffMs = taskDateTime.getTime() - now.getTime();
+                const hoursUntil = Math.floor(diffMs / (1000 * 60 * 60));
+
+                // Only remind if 1-2 hours before deadline
+                if (hoursUntil < 1 || hoursUntil > 2) continue;
+
+                try {
+                    const result = await whatsappService.sendTaskDeadline(waConfig, task, hoursUntil);
+                    if (result.success) {
+                        sentCount++;
+                    }
+                } catch (error) {
+                    console.error(`WhatsApp: Failed to send task deadline for ${task.title}:`, error);
+                }
+            }
+        }
+
+        console.log(`  📱 Sent ${sentCount} WhatsApp task deadline reminders`);
+    },
+
+    // ============================================
+    // WhatsApp Daily Summary
+    // ============================================
+    async sendWhatsAppDailySummary() {
+        console.log('📱 Sending WhatsApp daily summaries...');
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const users = await User.findAll({
+            where: {
+                settings: { [Op.ne]: null }
+            }
+        });
+
+        let sentCount = 0;
+
+        for (const user of users) {
+            const waConfig = user.settings?.whatsapp;
+            if (!waConfig?.apiKey || !waConfig?.deviceId || !waConfig?.defaultPhone) continue;
+            if (!waConfig?.dailySummaryEnabled) continue;
+
+            try {
+                // Count completed tasks today
+                const completedTasks = await Task.count({
+                    where: {
+                        userId: user.id,
+                        completed: true,
+                        updatedAt: { [Op.gte]: today }
+                    }
+                });
+
+                // Count pending tasks
+                const pendingTasks = await Task.count({
+                    where: {
+                        userId: user.id,
+                        completed: false
+                    }
+                });
+
+                // Count due bills
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const dueBills = await FinanceBill.count({
+                    where: {
+                        userId: user.id,
+                        status: 'pending',
+                        dueDate: { [Op.lte]: tomorrow }
+                    }
+                });
+
+                const summaryData = {
+                    completedTasks,
+                    pendingTasks,
+                    todayExpense: 0, // Could integrate with FinanceTransaction
+                    dueBills
+                };
+
+                const result = await whatsappService.sendDailySummary(waConfig, summaryData);
+                if (result.success) {
+                    sentCount++;
+                }
+            } catch (error) {
+                console.error('WhatsApp: Failed to send daily summary:', error);
+            }
+        }
+
+        console.log(`  📱 Sent ${sentCount} WhatsApp daily summaries`);
+    },
+
+    // ============================================
     // Manual Trigger (for testing)
     // ============================================
     async runJob(jobName) {
@@ -333,7 +545,11 @@ const schedulerService = {
             deadlineReminders: this.checkDeadlineReminders,
             goalProgress: this.sendGoalProgressSummary,
             scheduledPosts: this.checkScheduledPosts,
-            cleanup: this.cleanupOldData
+            cleanup: this.cleanupOldData,
+            // WhatsApp jobs
+            whatsappBillReminders: this.sendWhatsAppBillReminders,
+            whatsappTaskDeadlines: this.sendWhatsAppTaskDeadlines,
+            whatsappDailySummary: this.sendWhatsAppDailySummary
         };
 
         if (handlers[jobName]) {

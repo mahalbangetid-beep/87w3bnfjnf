@@ -115,6 +115,9 @@ const workFilesRoutes = require('./routes/workFiles');
 // CRM Routes
 const crmRoutes = require('./routes/crm');
 
+// WhatsApp Routes
+const whatsappRoutes = require('./routes/whatsapp');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -203,6 +206,9 @@ app.use('/api/work-files', workFilesRoutes);
 
 // CRM Routes
 app.use('/api/crm', crmRoutes);
+
+// WhatsApp Routes
+app.use('/api/whatsapp', whatsappRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

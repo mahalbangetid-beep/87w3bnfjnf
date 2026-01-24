@@ -31,6 +31,8 @@ import {
     HiOutlineTrendingUp,
     HiOutlineTrendingDown,
     HiOutlineClipboardList,
+    // WhatsApp
+    HiOutlineChatAlt2,
     // Assets
     HiOutlineUserCircle,
     HiOutlineCube,
@@ -131,6 +133,18 @@ const getModules = (t) => [
         ],
     },
     {
+        id: 'whatsapp',
+        name: t('sidebar.whatsapp', 'WhatsApp'),
+        icon: HiOutlineChatAlt2,
+        color: '#25D366',
+        gradient: 'from-green-500 to-emerald-600',
+        items: [
+            { name: t('sidebar.dashboard', 'Dashboard'), path: '/whatsapp', icon: HiOutlineViewGrid },
+            { name: t('sidebar.alerts', 'Custom Alerts'), path: '/whatsapp/alerts', icon: HiOutlineBell },
+            { name: t('sidebar.settings', 'Settings'), path: '/whatsapp/settings', icon: HiOutlineCog },
+        ],
+    },
+    {
         id: 'assets',
         name: t('sidebar.assets', 'Assets'),
         icon: HiOutlineCube,
@@ -198,7 +212,7 @@ const Sidebar = () => {
     // Determine initial expanded module from current URL path
     const getInitialExpandedModule = () => {
         const path = location.pathname;
-        const moduleIds = ['work', 'space', 'social', 'finance', 'assets', 'crm', 'settings', 'system'];
+        const moduleIds = ['work', 'space', 'social', 'finance', 'whatsapp', 'assets', 'crm', 'settings', 'system'];
         for (const id of moduleIds) {
             if (path.startsWith(`/${id}`)) {
                 return [id];

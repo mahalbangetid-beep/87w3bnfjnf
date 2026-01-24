@@ -527,7 +527,6 @@ const Tagihan = () => {
                             zIndex: 1000,
                             padding: '20px'
                         }}
-                        onClick={() => { setShowModal(false); resetForm(); }}
                     >
                         <motion.div
                             initial={{ scale: 0.9, y: 20 }}
@@ -656,7 +655,6 @@ const Tagihan = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}
-                        onClick={() => setShowPayModal(false)}
                     >
                         <motion.div
                             initial={{ scale: 0.9, y: 20 }}

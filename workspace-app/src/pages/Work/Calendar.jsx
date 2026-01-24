@@ -548,7 +548,6 @@ const Calendar = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: '20px' }}
-                        onClick={() => setShowModal(false)}
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -679,7 +678,6 @@ const Calendar = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: '20px' }}
-                        onClick={() => setShowTaskDetail(null)}
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}

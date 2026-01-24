@@ -14,7 +14,7 @@ const RemindersPage = () => {
     const [reminders, setReminders] = useState([]);
     const [filter, setFilter] = useState('pending'); // pending, completed, all
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     useEffect(() => {
         fetchReminders();
     }, [filter]);

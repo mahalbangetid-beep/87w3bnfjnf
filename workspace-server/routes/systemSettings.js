@@ -3,6 +3,31 @@ const router = express.Router();
 const { SystemSetting } = require('../models');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
+// ============================================
+// PUBLIC ENDPOINTS (no auth required)
+// ============================================
+
+// Get public settings needed for login page (Google OAuth Client ID)
+router.get('/public/google-auth', async (req, res) => {
+    try {
+        const setting = await SystemSetting.findOne({
+            where: { key: 'GOOGLE_OAUTH_CLIENT_ID' }
+        });
+
+        res.json({
+            clientId: setting?.value || '',
+            enabled: !!setting?.value
+        });
+    } catch (error) {
+        console.error('Error fetching Google OAuth settings:', error);
+        res.status(500).json({ error: 'Failed to fetch settings' });
+    }
+});
+
+// ============================================
+// PROTECTED ENDPOINTS (admin only)
+// ============================================
+
 // Initialize default settings if they don't exist
 router.post('/init', authenticateToken, requireAdmin, async (req, res) => {
     try {

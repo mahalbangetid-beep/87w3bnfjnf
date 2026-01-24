@@ -162,16 +162,22 @@ const Notes = () => {
     // Toggle pin
     const handleTogglePin = async (id) => {
         setToggling(id);
+        setOpenMenuId(null);
         try {
             const updated = await notesAPI.togglePin(id);
-            setNotes(notes.map(n => n.id === id ? updated : n));
+            // Defensive check - ensure valid response
+            if (updated && updated.id) {
+                setNotes(notes.map(n => n.id === id ? updated : n));
+            } else {
+                // Fallback: just toggle the pinned state locally
+                setNotes(notes.map(n => n.id === id ? { ...n, pinned: !n.pinned } : n));
+            }
         } catch (err) {
             console.error('Error toggling pin:', err);
             setErrorWithTimeout('Failed to toggle pin');
         } finally {
             setToggling(null);
         }
-        setOpenMenuId(null);
     };
 
     // Toggle archive
@@ -496,7 +502,6 @@ const Notes = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: '20px' }}
-                        onClick={() => setShowModal(false)}
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -769,7 +774,6 @@ const Notes = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: '20px' }}
-                        onClick={() => setShowDeleteConfirm(null)}
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}

@@ -71,6 +71,10 @@ SystemSetting.getDefaults = () => [
     { key: 'WHATSAPP_GATEWAY_URL', category: 'notification', description: 'WhatsApp Gateway API URL', isSecret: false, isRequired: false },
     { key: 'WHATSAPP_GATEWAY_TOKEN', category: 'notification', description: 'WhatsApp Gateway API Token', isSecret: true, isRequired: false },
 
+    // Google OAuth
+    { key: 'GOOGLE_OAUTH_CLIENT_ID', category: 'auth', description: 'Google OAuth Client ID for Google Sign-In', isSecret: false, isRequired: false },
+    { key: 'GOOGLE_OAUTH_CLIENT_SECRET', category: 'auth', description: 'Google OAuth Client Secret', isSecret: true, isRequired: false },
+
     // App Settings
     { key: 'APP_URL', category: 'general', description: 'Application URL', isSecret: false, isRequired: true, value: 'http://localhost:5174' },
     { key: 'API_URL', category: 'general', description: 'API URL', isSecret: false, isRequired: true, value: 'http://localhost:3001' },

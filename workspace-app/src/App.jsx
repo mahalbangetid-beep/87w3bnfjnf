@@ -55,6 +55,13 @@ import {
   FinanceAnalytics
 } from './pages/Finance';
 
+// WhatsApp Module
+import {
+  WhatsAppDashboard,
+  WhatsAppSettings,
+  WhatsAppAlerts
+} from './pages/WhatsApp';
+
 // Work Analytics
 import WorkAnalytics from './pages/Work/Analytics';
 
@@ -305,6 +312,11 @@ function AppRoutes() {
         <Route path="finance/laporan" element={<Laporan />} />
         <Route path="finance/settings" element={<FinanceSettings />} />
         <Route path="finance/analytics" element={<FinanceAnalytics />} />
+
+        {/* WhatsApp Module */}
+        <Route path="whatsapp" element={<WhatsAppDashboard />} />
+        <Route path="whatsapp/alerts" element={<WhatsAppAlerts />} />
+        <Route path="whatsapp/settings" element={<WhatsAppSettings />} />
 
         {/* Assets Module */}
         <Route path="assets" element={<AssetsDashboard />} />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -6,8 +6,7 @@ import { HiOutlineMail, HiOutlineLockClosed, HiOutlineEye, HiOutlineEyeOff } fro
 import { useAuth } from '../context/AuthContext';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 
-// Google OAuth Client ID from environment
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -21,6 +20,25 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [googleClientId, setGoogleClientId] = useState('');
+    const [googleEnabled, setGoogleEnabled] = useState(false);
+
+    // Fetch Google OAuth Client ID from system settings
+    useEffect(() => {
+        const fetchGoogleAuth = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/system-settings/public/google-auth`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setGoogleClientId(data.clientId || '');
+                    setGoogleEnabled(data.enabled || false);
+                }
+            } catch (err) {
+                console.error('Failed to fetch Google auth settings:', err);
+            }
+        };
+        fetchGoogleAuth();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,10 +56,15 @@ const Login = () => {
     };
 
     const handleGoogleLogin = () => {
+        if (!googleEnabled || !googleClientId) {
+            setError('Google Sign-In is not configured. Please contact admin.');
+            return;
+        }
+
         // Initialize Google Sign-In
         if (window.google) {
             window.google.accounts.id.initialize({
-                client_id: GOOGLE_CLIENT_ID,
+                client_id: googleClientId,
                 callback: async (response) => {
                     try {
                         setLoading(true);
@@ -56,7 +79,7 @@ const Login = () => {
             });
             window.google.accounts.id.prompt();
         } else {
-            setError('Google Sign-In not available. Please try again later.');
+            setError('Google Sign-In not available. Please refresh the page.');
         }
     };
 
