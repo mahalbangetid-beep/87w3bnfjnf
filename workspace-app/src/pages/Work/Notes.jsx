@@ -306,7 +306,7 @@ const Notes = () => {
             </p>
 
             {/* Labels */}
-            {Array.isArray(note.labels) && note.labels.length > 0 && (
+            {(note.labels || []).length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
                     {note.labels.map((label) => (
                         <span key={label} style={{ padding: '2px 8px', borderRadius: '20px', fontSize: '10px', backgroundColor: 'rgba(255,255,255,0.1)', color: '#d1d5db' }}>

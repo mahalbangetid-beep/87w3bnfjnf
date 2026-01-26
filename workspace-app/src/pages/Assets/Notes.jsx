@@ -448,7 +448,7 @@ const NoteCard = ({ note, index, onEdit, onDelete, onTogglePin, onToggleArchive,
                 </p>
             )}
 
-            {Array.isArray(note.tags) && note.tags.length > 0 && (
+            {note.tags && note.tags.length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '10px' }}>
                     {note.tags.map(tag => (
                         <span key={tag} style={{ padding: '2px 8px', borderRadius: '4px', backgroundColor: 'rgba(245,158,11,0.15)', color: '#fbbf24', fontSize: '10px' }}>

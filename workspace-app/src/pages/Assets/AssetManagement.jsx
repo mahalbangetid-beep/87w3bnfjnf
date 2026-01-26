@@ -304,7 +304,7 @@ const AssetManagement = () => {
                                 </div>
                             )}
 
-                            {Array.isArray(item.tags) && item.tags.length > 0 && (
+                            {item.tags && item.tags.length > 0 && (
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '10px' }}>
                                     {item.tags.map(tag => (
                                         <span key={tag} style={{ padding: '2px 8px', borderRadius: '4px', backgroundColor: 'rgba(139,92,246,0.15)', color: '#a78bfa', fontSize: '10px' }}>
