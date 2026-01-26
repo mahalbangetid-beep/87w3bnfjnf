@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import Chart from 'react-apexcharts';
+import Chart from '../../components/UI/SafeChart';
 import {
     HiOutlineTrendingUp, HiOutlineTrendingDown, HiOutlineCash,
     HiOutlineChartPie, HiOutlineCalendar, HiOutlineSparkles,

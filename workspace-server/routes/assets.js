@@ -45,10 +45,16 @@ function encrypt(text) {
 /**
  * Decrypt sensitive data
  * @param {string} text - Encrypted string with format: salt:iv:encrypted or iv:encrypted (legacy)
- * @returns {string|null} - Decrypted text
+ * @returns {string|null} - Decrypted text or null if decryption fails
  */
 function decrypt(text) {
     if (!text) return null;
+
+    // If it doesn't look like encrypted data (no colons), return as-is
+    if (!text.includes(':')) {
+        return text;
+    }
+
     try {
         const parts = text.split(':');
 
@@ -75,8 +81,10 @@ function decrypt(text) {
 
         return text; // Return original if format not recognized
     } catch (e) {
+        // Decryption failed - likely encrypted with different key
         console.error('Decryption error:', e.message);
-        return text; // Return original if decryption fails
+        // Return null to indicate decryption failure (don't expose corrupted data)
+        return null;
     }
 }
 
