@@ -122,6 +122,15 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ============================================
+// SECURITY: Trust Proxy (for reverse proxy/load balancer)
+// ============================================
+// Enable if behind Nginx, Cloudflare, or other reverse proxy
+// This allows express-rate-limit to correctly identify client IPs
+if (process.env.NODE_ENV === 'production' || process.env.TRUST_PROXY === 'true') {
+    app.set('trust proxy', 1); // Trust first proxy
+}
+
+// ============================================
 // SECURITY: Helmet - Security Headers
 // ============================================
 app.use(helmet({
