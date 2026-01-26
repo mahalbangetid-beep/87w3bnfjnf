@@ -241,17 +241,27 @@ class AIService {
         const keyNames = {
             gemini: 'GEMINI_API_KEY',
             openai: 'OPENAI_API_KEY',
-            deepseek: 'DEEPSEEK_API_KEY'
+            deepseek: 'DEEPSEEK_API_KEY',
+            claude: 'CLAUDE_API_KEY',
+            grok: 'GROK_API_KEY',
+            glm: 'GLM_API_KEY'
         };
 
+        const keyName = keyNames[provider];
+
+        // If provider not in mapping, return null
+        if (!keyName) {
+            return null;
+        }
+
         // First check environment variable
-        if (process.env[keyNames[provider]]) {
-            return process.env[keyNames[provider]];
+        if (process.env[keyName]) {
+            return process.env[keyName];
         }
 
         // Then check database settings
         const setting = await SystemSetting.findOne({
-            where: { key: keyNames[provider] }
+            where: { key: keyName }
         });
 
         return setting?.value || null;
