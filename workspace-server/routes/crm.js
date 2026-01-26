@@ -110,11 +110,7 @@ function encrypt(text) {
 }
 
 function decrypt(text) {
-    if (!text) return null;
-
-    // If it doesn't look like encrypted data (no colons), return as-is
-    if (!text.includes(':')) return text;
-
+    if (!text || !text.includes(':')) return text;
     try {
         const parts = text.split(':');
         const iv = Buffer.from(parts[0], 'hex');
@@ -125,10 +121,8 @@ function decrypt(text) {
         decrypted += decipher.final('utf8');
         return decrypted;
     } catch (error) {
-        // Decryption failed - likely encrypted with different key
-        console.error('Decryption error:', error.message);
-        // Return null to indicate decryption failure (don't expose corrupted data)
-        return null;
+        console.error('Decryption error:', error);
+        return text;
     }
 }
 

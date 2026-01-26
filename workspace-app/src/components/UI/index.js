@@ -6,7 +6,6 @@ export { default as MetricCard } from './MetricCard';
 export { default as ParticlesBackground } from './ParticlesBackground';
 export { default as RingChart } from './RingChart';
 export { default as WaveBackground } from './WaveBackground';
-export { default as SafeChart } from './SafeChart';
 
 // Empty State Components
 export { default as EmptyState } from './EmptyState';
