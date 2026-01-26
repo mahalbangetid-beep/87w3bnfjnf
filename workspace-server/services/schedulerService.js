@@ -105,18 +105,16 @@ const schedulerService = {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // Get all pending bills
+        // Get all pending AND overdue bills (removed the dueDate >= today filter)
         const bills = await FinanceBill.findAll({
             where: {
-                status: 'pending',
-                dueDate: {
-                    [Op.gte]: today
-                }
+                status: { [Op.in]: ['pending', 'overdue'] }
             },
             include: [{ model: User, include: [NotificationPreference] }]
         });
 
         let sentCount = 0;
+        let overdueUpdated = 0;
 
         for (const bill of bills) {
             const user = bill.User;
@@ -125,14 +123,15 @@ const schedulerService = {
             // Skip if bill reminders disabled
             if (prefs && !prefs.billReminders) continue;
 
-            // Calculate days until due
+            // Calculate days until/since due
             const dueDate = new Date(bill.dueDate);
+            dueDate.setHours(0, 0, 0, 0);
             const diffTime = dueDate.getTime() - today.getTime();
             const daysUntilDue = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            // Check if we should remind today
-            const reminderDays = prefs?.billReminderDays || [7, 3, 1];
-            if (!reminderDays.includes(daysUntilDue) && daysUntilDue !== 0) continue;
+            // Determine if we should send reminder
+            let shouldRemind = false;
+            let title, message, priority;
 
             // Format currency
             const formatter = new Intl.NumberFormat('id-ID', {
@@ -141,21 +140,43 @@ const schedulerService = {
                 minimumFractionDigits: 0
             });
 
-            // Build notification
-            let title, message, priority;
-            if (daysUntilDue === 0) {
+            if (daysUntilDue < 0) {
+                // OVERDUE - always remind daily until paid
+                shouldRemind = true;
+                priority = 'urgent';
+                const daysOverdue = Math.abs(daysUntilDue);
+                title = `🚨 TELAT: Tagihan ${bill.name} Sudah Lewat ${daysOverdue} Hari!`;
+                message = `Tagihan ${bill.name} sebesar ${formatter.format(bill.amount)} sudah melewati jatuh tempo ${daysOverdue} hari yang lalu. Segera lakukan pembayaran!`;
+
+                // Update bill status to overdue if not already
+                if (bill.status !== 'overdue') {
+                    await bill.update({ status: 'overdue' });
+                    overdueUpdated++;
+                }
+            } else if (daysUntilDue === 0) {
+                // Due today
+                shouldRemind = true;
                 title = `⚠️ Tagihan ${bill.name} Jatuh Tempo Hari Ini!`;
                 message = `Tagihan ${bill.name} sebesar ${formatter.format(bill.amount)} jatuh tempo HARI INI. Segera lakukan pembayaran.`;
                 priority = 'urgent';
             } else if (daysUntilDue === 1) {
+                // Due tomorrow
+                shouldRemind = true;
                 title = `⏰ Tagihan ${bill.name} Jatuh Tempo Besok`;
                 message = `Tagihan ${bill.name} sebesar ${formatter.format(bill.amount)} akan jatuh tempo besok.`;
                 priority = 'high';
             } else {
-                title = `📅 Pengingat Tagihan: ${bill.name}`;
-                message = `Tagihan ${bill.name} sebesar ${formatter.format(bill.amount)} akan jatuh tempo dalam ${daysUntilDue} hari (${dueDate.toLocaleDateString('id-ID')}).`;
-                priority = 'normal';
+                // Check reminder days preference
+                const reminderDays = prefs?.billReminderDays || [7, 3, 1];
+                if (reminderDays.includes(daysUntilDue)) {
+                    shouldRemind = true;
+                    title = `📅 Pengingat Tagihan: ${bill.name}`;
+                    message = `Tagihan ${bill.name} sebesar ${formatter.format(bill.amount)} akan jatuh tempo dalam ${daysUntilDue} hari (${dueDate.toLocaleDateString('id-ID')}).`;
+                    priority = 'normal';
+                }
             }
+
+            if (!shouldRemind) continue;
 
             try {
                 await notificationService.send(user.id, 'bill_reminder', title, message, {
@@ -169,7 +190,7 @@ const schedulerService = {
             }
         }
 
-        console.log(`  ✅ Sent ${sentCount} bill reminders`);
+        console.log(`  ✅ Sent ${sentCount} bill reminders, marked ${overdueUpdated} as overdue`);
     },
 
     // ============================================

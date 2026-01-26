@@ -78,36 +78,75 @@ const whatsappService = {
     },
 
     /**
-     * Send WhatsApp message via kewhats.app API
+     * Send WhatsApp message via kewhats.app API with retry mechanism
+     * @param {string} apiKey - API key for authentication
+     * @param {string} deviceId - Device ID for WhatsApp
+     * @param {string} phone - Target phone number
+     * @param {string} message - Message content
+     * @param {object} options - Optional settings (maxRetries, baseDelay)
      */
-    async sendMessage(apiKey, deviceId, phone, message) {
-        try {
-            if (!apiKey || !deviceId || !phone || !message) {
-                console.error('WhatsApp: Missing required parameters');
-                return { success: false, error: 'Missing required parameters' };
+    async sendMessage(apiKey, deviceId, phone, message, options = {}) {
+        const maxRetries = options.maxRetries || 3;
+        const baseDelay = options.baseDelay || 1000; // 1 second
+
+        if (!apiKey || !deviceId || !phone || !message) {
+            console.error('WhatsApp: Missing required parameters');
+            return { success: false, error: 'Missing required parameters', retryable: false };
+        }
+
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
+                const response = await fetch(`${KEWHATS_API_URL}/api/messages/send`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ deviceId, to: phone, message }),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    console.log(`WhatsApp: Message sent to ${phone} (attempt ${attempt})`);
+                    return { success: true, data: data.data, attempts: attempt };
+                }
+
+                // Non-retryable errors (bad request, unauthorized, etc.)
+                if (response.status === 400 || response.status === 401 || response.status === 403) {
+                    console.error(`WhatsApp: Non-retryable error - ${data.message}`);
+                    return { success: false, error: data.message, retryable: false, attempts: attempt };
+                }
+
+                // Server error or rate limit - will retry
+                throw new Error(data.message || `HTTP ${response.status}`);
+
+            } catch (error) {
+                const isLastAttempt = attempt === maxRetries;
+                const errorMsg = error.name === 'AbortError' ? 'Request timeout' : error.message;
+
+                console.error(`WhatsApp: Attempt ${attempt}/${maxRetries} failed - ${errorMsg}`);
+
+                if (isLastAttempt) {
+                    return {
+                        success: false,
+                        error: errorMsg,
+                        retryable: true,
+                        attempts: attempt
+                    };
+                }
+
+                // Exponential backoff: 1s, 2s, 4s
+                const delay = baseDelay * Math.pow(2, attempt - 1);
+                console.log(`WhatsApp: Retrying in ${delay}ms...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
             }
-
-            const response = await fetch(`${KEWHATS_API_URL}/api/messages/send`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ deviceId, to: phone, message }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok && data.success) {
-                console.log(`WhatsApp: Message sent to ${phone}`);
-                return { success: true, data: data.data };
-            } else {
-                console.error(`WhatsApp: Failed to send - ${data.message}`);
-                return { success: false, error: data.message };
-            }
-        } catch (error) {
-            console.error('WhatsApp: Send error:', error);
-            return { success: false, error: error.message };
         }
     },
 

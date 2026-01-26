@@ -119,12 +119,38 @@ const requireBlogRole = (req, res, next) => {
     next();
 };
 
+// Require verified phone for sensitive operations
+const requireVerifiedPhone = (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({ message: 'Authentication required.' });
+    }
+
+    if (!req.user.phone) {
+        return res.status(403).json({
+            code: 'PHONE_REQUIRED',
+            message: 'A phone number is required for this feature. Please add one in settings.',
+            action: '/settings/profile'
+        });
+    }
+
+    if (!req.user.phoneVerified) {
+        return res.status(403).json({
+            code: 'PHONE_NOT_VERIFIED',
+            message: 'Please verify your phone number to access this feature.',
+            action: '/settings/verify-phone'
+        });
+    }
+
+    next();
+};
+
 module.exports = {
     authenticate,
     authenticateToken: authenticate, // Alias for compatibility
     authorize,
     requireAdmin,
     requireBlogRole,
+    requireVerifiedPhone,
     logActivity
 };
 

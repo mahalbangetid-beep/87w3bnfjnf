@@ -3,6 +3,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const { authenticateToken } = require('../middleware/auth');
 const {
+    sequelize,
     FinanceAccount,
     FinanceCategory,
     FinanceTransaction,
@@ -267,6 +268,20 @@ router.delete('/categories/:id', authenticateToken, async (req, res) => {
         });
         if (!category) return res.status(404).json({ error: 'Category not found or is default' });
 
+        // SECURITY: Check if category is in use by any transactions
+        const transactionCount = await FinanceTransaction.count({
+            where: { categoryId: category.id }
+        });
+
+        if (transactionCount > 0) {
+            return res.status(409).json({
+                error: 'Cannot delete category that is in use',
+                usageCount: transactionCount,
+                message: `This category is used by ${transactionCount} transaction(s). Please reassign them to another category first.`,
+                suggestion: 'Use PUT /categories/:id/reassign to move transactions to another category'
+            });
+        }
+
         await category.destroy();
         res.json({ message: 'Category deleted' });
     } catch (error) {
@@ -320,49 +335,83 @@ router.get('/transactions', authenticateToken, async (req, res) => {
 
 // Create transaction (income/expense)
 router.post('/transactions', authenticateToken, transactionValidation, async (req, res) => {
+    // Use database transaction for atomicity
+    const t = await sequelize.transaction();
+
     try {
         // Validate input
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
+            await t.rollback();
             return res.status(400).json({ errors: errors.array() });
         }
 
         const { accountId, type, amount } = req.body;
+        const amountValue = parseFloat(amount);
 
-        // Validate account
+        // Validate and lock account for update (prevents race condition)
         const account = await FinanceAccount.findOne({
-            where: { id: accountId, userId: req.user.id }
+            where: { id: accountId, userId: req.user.id },
+            lock: t.LOCK.UPDATE,
+            transaction: t
         });
-        if (!account) return res.status(404).json({ error: 'Account not found' });
 
-        // Create transaction - SECURITY: Whitelist fields
+        if (!account) {
+            await t.rollback();
+            return res.status(404).json({ error: 'Account not found' });
+        }
+
+        // For expense/transfer, check sufficient balance
+        if ((type === 'expense' || type === 'transfer') && parseFloat(account.balance) < amountValue) {
+            await t.rollback();
+            return res.status(400).json({ error: 'Insufficient balance' });
+        }
+
+        // For transfer, validate and lock destination account
+        let toAccount = null;
+        if (type === 'transfer' && req.body.toAccountId) {
+            toAccount = await FinanceAccount.findOne({
+                where: { id: req.body.toAccountId, userId: req.user.id },
+                lock: t.LOCK.UPDATE,
+                transaction: t
+            });
+
+            if (!toAccount) {
+                await t.rollback();
+                return res.status(404).json({ error: 'Destination account not found' });
+            }
+
+            if (toAccount.id === account.id) {
+                await t.rollback();
+                return res.status(400).json({ error: 'Cannot transfer to the same account' });
+            }
+        }
+
+        // Create transaction record - SECURITY: Whitelist fields
         const { categoryId, description, toAccountId, source, sourceId, sourceModule } = req.body;
         const transaction = await FinanceTransaction.create({
             userId: req.user.id,
             accountId, type, amount,
             categoryId, description, toAccountId, source, sourceId, sourceModule,
             transactionDate: req.body.transactionDate || new Date()
-        });
+        }, { transaction: t });
 
-        // Update account balance
-        const amountValue = parseFloat(amount);
+        // Update account balances atomically using increment/decrement
         if (type === 'income') {
-            await account.update({ balance: parseFloat(account.balance) + amountValue });
+            await account.increment('balance', { by: amountValue, transaction: t });
         } else if (type === 'expense') {
-            await account.update({ balance: parseFloat(account.balance) - amountValue });
-        } else if (type === 'transfer' && req.body.toAccountId) {
-            // Transfer: decrease from source, increase to destination
-            const toAccount = await FinanceAccount.findOne({
-                where: { id: req.body.toAccountId, userId: req.user.id }
-            });
-            if (toAccount) {
-                await account.update({ balance: parseFloat(account.balance) - amountValue });
-                await toAccount.update({ balance: parseFloat(toAccount.balance) + amountValue });
-            }
+            await account.decrement('balance', { by: amountValue, transaction: t });
+        } else if (type === 'transfer' && toAccount) {
+            await account.decrement('balance', { by: amountValue, transaction: t });
+            await toAccount.increment('balance', { by: amountValue, transaction: t });
         }
+
+        // Commit transaction
+        await t.commit();
 
         res.status(201).json(transaction);
     } catch (error) {
+        await t.rollback();
         logger.error('Error creating transaction:', error);
         res.status(500).json({ error: 'An error occurred while processing your request' });
     }

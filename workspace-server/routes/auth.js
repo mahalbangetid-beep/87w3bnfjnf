@@ -159,28 +159,25 @@ router.post('/google', async (req, res) => {
 
         let payload;
 
-        // Verify Google token properly
-        if (process.env.GOOGLE_CLIENT_ID) {
-            try {
-                const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-                const ticket = await client.verifyIdToken({
-                    idToken: token,
-                    audience: process.env.GOOGLE_CLIENT_ID
-                });
-                payload = ticket.getPayload();
-            } catch (verifyError) {
-                console.error('Google token verification failed:', verifyError.message);
-                return res.status(401).json({ message: 'Invalid Google token' });
-            }
-        } else {
-            // Fallback for development when GOOGLE_CLIENT_ID is not set
-            console.warn('WARNING: GOOGLE_CLIENT_ID not set. Using insecure token decode for development only!');
-            try {
-                const base64Payload = token.split('.')[1];
-                payload = JSON.parse(Buffer.from(base64Payload, 'base64').toString());
-            } catch (decodeError) {
-                return res.status(400).json({ message: 'Invalid token format' });
-            }
+        // SECURITY: Always verify Google token properly - no fallback allowed
+        if (!process.env.GOOGLE_CLIENT_ID) {
+            console.error('SECURITY: GOOGLE_CLIENT_ID is not configured. Google login is disabled.');
+            return res.status(503).json({
+                message: 'Google login is temporarily unavailable. Please use email/password login.',
+                code: 'GOOGLE_AUTH_UNAVAILABLE'
+            });
+        }
+
+        try {
+            const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: process.env.GOOGLE_CLIENT_ID
+            });
+            payload = ticket.getPayload();
+        } catch (verifyError) {
+            console.error('Google token verification failed:', verifyError.message);
+            return res.status(401).json({ message: 'Invalid Google token' });
         }
 
         const { email, name, picture, sub: googleId } = payload;
@@ -404,9 +401,15 @@ router.post('/forgot-password', [
             resetTokenExpiry: new Date(Date.now() + 15 * 60 * 1000)
         });
 
-        // In production, send OTP via SMS (e.g., Twilio, Nexmo)
-        // For now, we'll return it in response (ONLY FOR DEVELOPMENT)
-        console.log(`OTP for ${phone}: ${otp}`);
+        // SECURITY: OTP should be sent via out-of-band channel (SMS/WhatsApp)
+        // In production, integrate with Twilio, Nexmo, or WhatsApp API
+        // For development, OTP is logged to server console only - NEVER in response
+        if (process.env.NODE_ENV === 'development') {
+            console.log(`[DEV ONLY] OTP for ${phone}: ${otp}`);
+        }
+
+        // TODO: Integrate with SMS/WhatsApp service
+        // await smsService.sendOTP(phone, otp);
 
         await ActivityLog.create({
             action: 'forgot_password',
@@ -417,10 +420,10 @@ router.post('/forgot-password', [
             userId: user.id
         });
 
+        // SECURITY: Never include OTP in response body
         res.json({
-            message: 'OTP sent to your phone number',
-            // Remove this in production - only for development
-            otp: process.env.NODE_ENV === 'development' ? otp : undefined
+            message: 'OTP has been sent to your registered phone number',
+            expiresIn: 900 // 15 minutes in seconds
         });
     } catch (error) {
         console.error('Forgot password error:', error);

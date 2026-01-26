@@ -145,6 +145,18 @@ router.put('/:id', authenticate, logActivity('update', 'task'), async (req, res)
             return res.status(400).json({ message: 'Invalid priority. Must be low, medium, or high' });
         }
 
+        // SECURITY: Validate projectId ownership if provided
+        if (projectId !== undefined && projectId !== null) {
+            const project = await Project.findOne({
+                where: { id: projectId, userId: req.user.id }
+            });
+            if (!project) {
+                return res.status(400).json({
+                    message: 'Invalid project. You can only assign tasks to your own projects.'
+                });
+            }
+        }
+
         await task.update({
             title,
             description,

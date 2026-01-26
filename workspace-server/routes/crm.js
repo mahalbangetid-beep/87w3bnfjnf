@@ -38,13 +38,39 @@ const upload = multer({
     storage,
     limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
     fileFilter: (req, file, cb) => {
-        const allowedTypes = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.jpg', '.jpeg', '.png', '.gif', '.txt', '.csv'];
+        // Allowed extensions
+        const allowedExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.jpg', '.jpeg', '.png', '.gif', '.txt', '.csv'];
+
+        // Allowed MIME types mapping
+        const allowedMimeTypes = {
+            '.pdf': ['application/pdf'],
+            '.doc': ['application/msword'],
+            '.docx': ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+            '.xls': ['application/vnd.ms-excel'],
+            '.xlsx': ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+            '.jpg': ['image/jpeg'],
+            '.jpeg': ['image/jpeg'],
+            '.png': ['image/png'],
+            '.gif': ['image/gif'],
+            '.txt': ['text/plain'],
+            '.csv': ['text/csv', 'application/csv', 'text/plain']
+        };
+
         const ext = path.extname(file.originalname).toLowerCase();
-        if (allowedTypes.includes(ext)) {
-            cb(null, true);
-        } else {
-            cb(new Error('File type not allowed'));
+
+        // Check extension
+        if (!allowedExtensions.includes(ext)) {
+            return cb(new Error(`File extension ${ext} is not allowed`));
         }
+
+        // Check MIME type matches extension
+        const validMimes = allowedMimeTypes[ext] || [];
+        if (!validMimes.includes(file.mimetype)) {
+            console.warn(`CRM Upload: Suspicious file - extension ${ext} but MIME type ${file.mimetype}`);
+            return cb(new Error('File type mismatch. The file content does not match its extension.'));
+        }
+
+        cb(null, true);
     }
 });
 
@@ -52,11 +78,20 @@ const upload = multer({
 // ENCRYPTION HELPERS
 // =====================
 
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || 'your-fallback-32-char-key-here!!';
+// SECURITY: Encryption key is REQUIRED - no fallback allowed
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 const IV_LENGTH = 16;
 
-if (!process.env.ENCRYPTION_KEY) {
-    console.warn('⚠️ CRM: ENCRYPTION_KEY not set! Using fallback.');
+if (!ENCRYPTION_KEY) {
+    console.error('❌ FATAL: ENCRYPTION_KEY environment variable is required for CRM module');
+    console.error('   Generate a secure key with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"');
+    console.error('   Then set it in your .env file: ENCRYPTION_KEY=your_generated_key');
+    process.exit(1);
+}
+
+if (ENCRYPTION_KEY.length < 32) {
+    console.error('❌ FATAL: ENCRYPTION_KEY must be at least 32 characters for security');
+    process.exit(1);
 }
 
 function encrypt(text) {
