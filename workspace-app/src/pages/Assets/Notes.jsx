@@ -50,7 +50,16 @@ const AssetNotes = () => {
                 assetsAPI.getNotes(params),
                 assetsAPI.getAccounts()
             ]);
-            setNotes(notesData);
+            // Parse tags if it's a string (JSON from backend)
+            const parsedNotes = notesData.map(note => ({
+                ...note,
+                tags: Array.isArray(note.tags)
+                    ? note.tags
+                    : (typeof note.tags === 'string' && note.tags
+                        ? JSON.parse(note.tags)
+                        : [])
+            }));
+            setNotes(parsedNotes);
             setAccounts(accountsData);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -75,6 +84,10 @@ const AssetNotes = () => {
 
     const openEditModal = (note) => {
         setEditNote(note);
+        // Parse tags if it's a string
+        const parsedTags = Array.isArray(note.tags)
+            ? note.tags
+            : (typeof note.tags === 'string' && note.tags ? JSON.parse(note.tags) : []);
         setFormData({
             title: note.title,
             content: note.content || '',
@@ -82,7 +95,7 @@ const AssetNotes = () => {
             accountId: note.accountId || '',
             color: note.color || '#f59e0b',
             isPinned: note.isPinned,
-            tags: note.tags || []
+            tags: parsedTags
         });
         setShowModal(true);
     };
