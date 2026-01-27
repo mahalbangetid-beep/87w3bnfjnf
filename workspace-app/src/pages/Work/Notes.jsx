@@ -69,7 +69,16 @@ const Notes = () => {
                 notesAPI.getAll(showArchived),
                 projectsAPI.getAll().catch(() => []),
             ]);
-            setNotes(notesData || []);
+            // Parse labels if it's a string (JSON from backend)
+            const parsedNotes = (notesData || []).map(note => ({
+                ...note,
+                labels: Array.isArray(note.labels)
+                    ? note.labels
+                    : (typeof note.labels === 'string' && note.labels
+                        ? JSON.parse(note.labels)
+                        : [])
+            }));
+            setNotes(parsedNotes);
             setProjects(projectsData || []);
         } catch (err) {
             console.error('Error fetching notes:', err);
