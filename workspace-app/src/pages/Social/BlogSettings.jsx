@@ -463,7 +463,7 @@ const BlogSettings = () => {
                             zIndex: 1000,
                             padding: '20px'
                         }}
-                        onClick={() => { setShowAddModal(false); resetForm(); }}
+
                     >
                         <motion.div
                             initial={{ scale: 0.9, y: 20 }}

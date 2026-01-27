@@ -2,6 +2,7 @@
   "common": {
     "loading": "Memuat...",
     "save": "Simpan",
+    "saveChanges": "Simpan Perubahan",
     "cancel": "Batal",
     "delete": "Hapus",
     "edit": "Edit",
@@ -18,11 +19,14 @@
     "previous": "Sebelumnya",
     "close": "Tutup",
     "submit": "Kirim",
+    "submitting": "Mengirim...",
     "refresh": "Segarkan",
     "export": "Ekspor",
     "import": "Impor",
+    "importing": "Mengimpor...",
     "download": "Unduh",
     "upload": "Unggah",
+    "uploading": "Mengunggah...",
     "settings": "Pengaturan",
     "logout": "Keluar",
     "login": "Masuk",
@@ -33,7 +37,106 @@
     "success": "Berhasil",
     "error": "Gagal",
     "warning": "Peringatan",
-    "info": "Informasi"
+    "info": "Informasi",
+    "saving": "Menyimpan...",
+    "deleting": "Menghapus...",
+    "updating": "Memperbarui...",
+    "viewAll": "Lihat Semua",
+    "noData": "Tidak ada data",
+    "copied": "Berhasil disalin",
+    "pinned": "Disematkan",
+    "unpinned": "Batal Semat",
+    "archived": "Diarsipkan",
+    "unarchived": "Batal Arsip",
+    "actions": "Aksi",
+    "status": "Status",
+    "priority": "Prioritas",
+    "category": "Kategori",
+    "name": "Nama",
+    "description": "Deskripsi",
+    "type": "Jenis",
+    "color": "Warna",
+    "icon": "Ikon",
+    "date": "Tanggal",
+    "time": "Waktu",
+    "amount": "Jumlah",
+    "currency": "Mata Uang",
+    "tags": "Tag",
+    "addTag": "Tambah Tag",
+    "apply": "Terapkan",
+    "restore": "Pulihkan",
+    "deleteForever": "Hapus Selamanya",
+    "permanentDelete": "Hapus Permanen",
+    "justNow": "Baru saja",
+    "done": "Selesai",
+    "placeholder": {
+      "search": "Cari...",
+      "select": "Pilih...",
+      "loading": "Memuat data...",
+      "noResults": "Tidak ada hasil ditemukan",
+      "enterName": "Masukkan nama...",
+      "enterDescription": "Masukkan deskripsi...",
+      "enterAmount": "Masukkan jumlah..."
+    },
+    "statusLabel": {
+      "active": "Aktif",
+      "pending": "Menunggu",
+      "completed": "Selesai",
+      "review": "Review",
+      "onHold": "Tertunda",
+      "cancelled": "Dibatalkan",
+      "overdue": "Terlambat",
+      "left": "Tersisa"
+    },
+    "priorityLabel": {
+      "high": "Tinggi",
+      "medium": "Sedang",
+      "low": "Rendah",
+      "critical": "Kritis"
+    },
+    "personal": "Pribadi",
+    "today": "Hari Ini",
+    "allDay": "Sepanjang hari",
+    "progress": "Kemajuan",
+    "confirmDelete": "Hapus data ini?",
+    "confirmDeletePermanently": "Hapus data ini secara permanen?",
+    "restore": "Pulihkan",
+    "deleteForever": "Hapus Selamanya",
+    "notMapped": "-- Belum dipetakan --",
+    "allTime": "Semua Waktu",
+    "last7Days": "7 Hari Terakhir",
+    "last14Days": "14 Hari Terakhir",
+    "last30Days": "30 Hari Terakhir",
+    "last60Days": "60 Hari Terakhir",
+    "last90Days": "90 Hari Terakhir",
+    "active": "Aktif",
+    "completed": "Selesai",
+    "pending": "Menunggu",
+    "cancelled": "Dibatalkan",
+    "overdue": "Terlambat",
+    "loading": "Memuat...",
+    "generating": "Sedang membuat...",
+    "saving": "Menyimpan...",
+    "deleting": "Menghapus...",
+    "viewAll": "Lihat Semua",
+    "viewDetails": "Lihat Detail",
+    "noResults": "Tidak ada hasil ditemukan",
+    "actions": {
+      "add": "Tambah",
+      "edit": "Edit",
+      "delete": "Hapus",
+      "save": "Simpan",
+      "cancel": "Batal",
+      "update": "Perbarui",
+      "create": "Buat",
+      "export": "Ekspor",
+      "import": "Impor",
+      "publish": "Publikasikan",
+      "schedule": "Jadwalkan",
+      "preview": "Pratinjau",
+      "close": "Tutup",
+      "confirm": "Konfirmasi"
+    }
   },
   "auth": {
     "login": {
@@ -82,109 +185,13 @@
       "emailSent": "Email reset telah dikirim"
     }
   },
-  "placeholder": {
-    "comingSoon": "Segera Hadir",
-    "comingSoonDesc": "Kami sedang bekerja keras untuk menghadirkan fitur ini. Nantikan update-nya!",
-    "goBack": "Kembali",
-    "notifyMe": "Beritahu Saya"
-  },
-  "landing": {
-    "nav": {
-      "features": "Fitur",
-      "pricing": "Harga",
-      "about": "Tentang",
-      "contact": "Kontak",
-      "login": "Masuk",
-      "getStarted": "Mulai Gratis"
-    },
-    "hero": {
-      "title": "Ruang Kerja Digital Untuk Kreator Modern",
-      "subtitle": "Kelola project, keuangan, dan media sosial dalam satu platform terintegrasi",
-      "cta": "Mulai Sekarang",
-      "watchDemo": "Lihat Demo"
-    },
-    "features": {
-      "title": "Fitur Unggulan",
-      "subtitle": "Semua yang Anda butuhkan untuk produktivitas maksimal",
-      "work": {
-        "title": "Management Project",
-        "description": "Kelola project, tugas, dan catatan dengan mudah"
-      },
-      "finance": {
-        "title": "Pelacakan Keuangan",
-        "description": "Pantau pemasukan, pengeluaran, dan tagihan"
-      },
-      "social": {
-        "title": "Media Sosial",
-        "description": "Jadwalkan posting ke berbagai platform"
-      },
-      "ai": {
-        "title": "Asisten AI",
-        "description": "Bantuan cerdas untuk konten dan analisis"
-      }
-    },
-    "pricing": {
-      "title": "Pilih Paket Anda",
-      "subtitle": "Mulai gratis, upgrade kapan saja",
-      "monthly": "Bulanan",
-      "yearly": "Tahunan",
-      "free": {
-        "name": "Gratis",
-        "price": "Rp 0",
-        "period": "/bulan",
-        "features": [
-          "3 Project",
-          "Pelacakan keuangan dasar",
-          "5 posting terjadwal/bulan"
-        ],
-        "cta": "Mulai Gratis"
-      },
-      "pro": {
-        "name": "Pro",
-        "price": "Rp 99.000",
-        "period": "/bulan",
-        "features": [
-          "Project tak terbatas",
-          "Laporan keuangan lengkap",
-          "100 posting terjadwal/bulan",
-          "Integrasi AI"
-        ],
-        "cta": "Mulai Pro"
-      },
-      "enterprise": {
-        "name": "Enterprise",
-        "price": "Rp 299.000",
-        "period": "/bulan",
-        "features": [
-          "Semua fitur Pro",
-          "Kolaborasi tim",
-          "API akses",
-          "Dukungan prioritas"
-        ],
-        "cta": "Hubungi Kami"
-      }
-    },
-    "cta": {
-      "title": "Siap Meningkatkan Produktivitas?",
-      "subtitle": "Bergabunglah dengan ribuan kreator yang telah menggunakan Workspace",
-      "button": "Mulai Sekarang - Gratis"
-    },
-    "footer": {
-      "description": "Platform all-in-one untuk kreator dan profesional modern",
-      "product": "Produk",
-      "company": "Perusahaan",
-      "resources": "Sumber Daya",
-      "legal": "Legal",
-      "copyright": "© 2026 Workspace. Hak cipta dilindungi."
-    }
-  },
   "sidebar": {
     "work": "Work",
     "space": "Space",
-    "social": "Sosial",
+    "social": "Sosial Stack",
     "finance": "Keuangan",
     "assets": "Aset",
-    "system": "Sistem",
+    "system": "Pengaturan Sistem",
     "dashboard": "Dasbor",
     "projects": "Project",
     "tasks": "Tugas",
@@ -194,9 +201,9 @@
     "reporting": "Laporan",
     "settings": "Pengaturan",
     "accounts": "Management Akun",
-    "posting": "Posting",
-    "schedule": "Jadwal",
-    "blog": "Blog",
+    "posting": "Sosmed Posting",
+    "schedule": "Jadwal Posting",
+    "blog": "Blog/Web Posting",
     "balance": "Saldo",
     "income": "Pemasukan",
     "expense": "Pengeluaran",
@@ -206,16 +213,16 @@
     "management": "Management Aset",
     "bookmarks": "Favorit",
     "users": "Pengguna",
-    "projectsPlan": "Ide Project",
+    "projectsPlan": "Project Plan",
     "roadmap": "Roadmap",
-    "sosmedSettings": "Pengaturan Sosmed",
-    "blogSettings": "Pengaturan Blog/Web",
+    "sosmedSettings": "Sosmed Settings",
+    "blogSettings": "Blog/Web Settings",
     "overview": "Ringkasan",
-    "roleManagement": "Management Role",
+    "roleManagement": "Management Peran",
     "activityLogs": "Log Aktivitas",
     "integrations": "Integrasi",
     "invitations": "Undangan",
-    "analytics": "Analitik",
+    "analytics": "Analytics",
     "userSettings": "Pengaturan",
     "profile": "Profil",
     "account": "Akun",
@@ -223,7 +230,12 @@
     "notifications": "Notifikasi",
     "preferences": "Preferensi",
     "suggestions": "Saran Fitur",
-    "security": "Keamanan"
+    "security": "Keamanan",
+    "crm": "CRM",
+    "whatsapp": "WhatsApp",
+    "clients": "Klien",
+    "reminders": "Pengingat",
+    "alerts": "Peringatan"
   },
   "work": {
     "dashboard": {
@@ -233,18 +245,87 @@
       "activeProjects": "Project Aktif",
       "pendingTasks": "Tugas Tertunda",
       "completedThisWeek": "Selesai Minggu Ini",
-      "upcomingDeadlines": "Deadline Mendatang"
+      "upcomingDeadlines": "Deadline Mendatang",
+      "productivity": "Produktivitas",
+      "goals": "Target",
+      "activeProjectsCount": "{{count}} Project Aktif",
+      "pendingTasksCount": "{{count}} Tugas Tertunda",
+      "completedCount": "{{count}} Selesai",
+      "greeting": {
+        "morning": "Selamat Pagi",
+        "afternoon": "Selamat Siang",
+        "evening": "Selamat Malam"
+      },
+      "totalBudget": "Total Anggaran",
+      "tasksDone": "Tugas Selesai",
+      "taskProgress": "Progress Tugas",
+      "noProjectsYet": "Belum ada project. Mulai perjalanan Anda!",
+      "noTasksToday": "Tidak ada tugas untuk hari ini",
+      "viewAll": "Lihat Semua",
+      "newProject": "Project Baru",
+      "productivity": "Produktivitas",
+      "activeProjects": "Project Aktif",
+      "completed": "Selesai",
+      "pending": "Menunggu",
+      "today": "Hari Ini",
+      "done": "Selesai"
     },
     "projects": {
       "title": "Project",
       "newProject": "Project Baru",
+      "editProject": "Edit Project",
       "allProjects": "Semua Project",
       "active": "Aktif",
       "completed": "Selesai",
       "archived": "Diarsipkan",
+      "review": "Peninjauan",
       "noProjects": "Belum ada project",
       "createFirst": "Buat project pertama Anda",
-      "subtitle": "Kelola dan lacak semua project Anda"
+      "subtitle": "Kelola dan lacak semua project Anda",
+      "client": "Klien",
+      "value": "Nilai Project",
+      "startDate": "Tanggal Mulai",
+      "endDate": "Tanggal Selesai",
+      "reportingFrequency": "Frekuensi Laporan",
+      "daysRemaining": "Hari Tersisa",
+      "progress": "Kemajuan",
+      "milestones": "Capaian",
+      "daily": "Harian",
+      "weekly": "Mingguan",
+      "monthly": "Bulanan",
+      "searchPlaceholder": "Cari project atau klien...",
+      "loadFailed": "Gagal memuat project",
+      "saveFailed": "Gagal menyimpan project",
+      "deleteConfirm": "Yakin ingin menghapus project ini?",
+      "fillRequired": "Harap isi semua kolom yang diperlukan",
+      "loading": "Memuat project...",
+      "stats": {
+        "total": "Total Project",
+        "active": "Project Aktif",
+        "review": "Perlu Review",
+        "completed": "Selesai"
+      },
+      "labels": {
+        "projectName": "Nama Project *",
+        "clientCompany": "Klien / Perusahaan *",
+        "description": "Deskripsi",
+        "startDate": "Tanggal Mulai *",
+        "endDate": "Tanggal Selesai *",
+        "projectValue": "Nilai Project (Rp) *",
+        "status": "Status",
+        "reportingFrequency": "Frekuensi Laporan"
+      },
+      "placeholders": {
+        "name": "contoh: Redesain Website",
+        "client": "contoh: PT Maju Jaya",
+        "description": "Deskripsi project...",
+        "value": "contoh: 15000000"
+      },
+      "actions": {
+        "inviteTeam": "Undang Tim",
+        "refresh": "Segarkan project",
+        "clickToEdit": "klik untuk edit"
+      }
     },
     "tasks": {
       "title": "Tugas",
@@ -255,7 +336,12 @@
       "done": "Selesai",
       "priority": "Prioritas",
       "dueDate": "Tanggal Jatuh Tempo",
-      "assignee": "Ditugaskan ke"
+      "assignee": "Ditugaskan ke",
+      "high": "Tinggi",
+      "medium": "Sedang",
+      "low": "Rendah",
+      "noTasks": "Tidak ada tugas",
+      "allDay": "Sepanjang hari"
     },
     "calendar": {
       "title": "Kalender",
@@ -264,11 +350,16 @@
       "todaysTasks": "Tugas Hari Ini",
       "upcoming": "Mendatang",
       "activeProjects": "Project Aktif",
-      "goToToday": "Ke Hari Ini"
+      "goToToday": "Ke Hari Ini",
+      "loading": "Memuat kalender...",
+      "noTasksToday": "Tidak ada tugas untuk hari ini",
+      "noUpcoming": "Tidak ada tugas mendatang",
+      "noActiveProjects": "Tidak ada project aktif"
     },
     "notes": {
       "title": "Catatan",
       "newNote": "Catatan Baru",
+      "editNote": "Edit Catatan",
       "allNotes": "Semua Catatan",
       "noNotes": "Belum ada catatan",
       "searchNotes": "Cari catatan...",
@@ -276,7 +367,10 @@
     },
     "budget": {
       "title": "Anggaran",
-      "subtitle": "Lacak dan kelola anggaran dan pengeluaran project"
+      "subtitle": "Lacak dan kelola anggaran dan pengeluaran project",
+      "totalBudget": "Total Anggaran",
+      "totalSpent": "Total Terpakai",
+      "remaining": "Sisa Anggaran"
     },
     "assets": {
       "title": "Aset",
@@ -284,7 +378,54 @@
     },
     "reporting": {
       "title": "Pelaporan",
-      "subtitle": "Buat dan lihat laporan project"
+      "subtitle": "Buat dan lihat laporan project",
+      "project": "Project",
+      "period": "Periode",
+      "thisWeek": "Minggu Ini",
+      "thisMonth": "Bulan Ini",
+      "thisQuarter": "Kuartal Ini",
+      "thisYear": "Tahun Ini",
+      "allTime": "Semua Waktu",
+      "projectStatus": "Status Project",
+      "noProjectsFound": "Project tidak ditemukan. Buat project untuk melihat laporan.",
+      "overBudget": "Melebihi Anggaran",
+      "overdue": "Terlambat",
+      "budgetUsage": "Penggunaan Anggaran",
+      "ofTotalBudgetUsed": "dari total anggaran digunakan",
+      "expenseBreakdown": "Rincian Pengeluaran",
+      "noExpenses": "Belum ada pengeluaran tercatat",
+      "exportReport": "Ekspor Laporan",
+      "generatedReports": "Laporan yang Dibuat",
+      "projectReport": "Laporan Project",
+      "projectDetails": "Detail Project",
+      "totalProjects": "Total Project",
+      "totalBudget": "Total Anggaran",
+      "totalSpent": "Total Terpakai",
+      "taskCompletion": "Penyelesaian Tugas",
+      "projectStatus": "Status Project",
+      "noProjectsFound": "No projects found. Create projects to see reports.",
+      "overBudget": "Melebihi Anggaran",
+      "overdue": "Terlambat",
+      "budgetUsage": "Penggunaan Anggaran",
+      "ofTotalBudgetUsed": "dari total anggaran digunakan",
+      "expenseBreakdown": "Rincian Pengeluaran",
+      "noExpensesRecorded": "Belum ada pengeluaran tercatat",
+      "exportReport": "Ekspor Laporan",
+      "generatedReports": "Laporan yang Dibuat",
+      "preview": "Pratinjau",
+      "generateReport": "Buat Laporan",
+      "downloadPDF": "Unduh PDF",
+      "downloadExcel": "Unduh Excel",
+      "printReport": "Cetak Laporan",
+      "closePreview": "Tutup Pratinjau",
+      "daysLeft": "Hari Tersisa",
+      "headers": {
+        "project": "Project",
+        "budget": "Anggaran",
+        "spent": "Terpakai",
+        "progress": "Progress",
+        "status": "Status"
+      }
     },
     "settings": {
       "title": "Pengaturan Kerja",
@@ -369,6 +510,7 @@
       "amount": "Jumlah",
       "markAsPaid": "Tandai Lunas",
       "pay": "Bayar",
+      "payBill": "Bayar Tagihan",
       "totalUnpaid": "Total Belum Bayar",
       "waiting": "Menunggu",
       "noBills": "Belum Ada Tagihan",
@@ -380,13 +522,14 @@
       "monthly": "Bulanan",
       "weekly": "Mingguan",
       "yearly": "Tahunan",
-      "payBill": "Bayar Tagihan",
       "selectAccount": "Pilih akun",
       "paidAmount": "Jumlah dibayar",
       "category": "Kategori",
       "billName": "Nama tagihan",
       "recurring": "Berulang",
+      "recurringBills": "Tagihan Berulang",
       "reminder": "Pengingat",
+      "enableReminder": "Aktifkan Pengingat",
       "reminderDays": "Ingatkan sebelum (hari)",
       "notes": "Catatan",
       "saving": "Menyimpan...",
@@ -407,7 +550,7 @@
     },
     "balance": {
       "title": "Saldo",
-      "subtitle": "Kelola semua akun dan saldo Anda",
+      "subtitle": "Kelola semua akun and saldo Anda",
       "totalBalance": "Total Saldo Semua Akun",
       "addAccount": "Tambah Akun",
       "editAccount": "Edit Akun",
@@ -495,7 +638,8 @@
     },
     "settings": {
       "title": "Pengaturan Keuangan",
-      "subtitle": "Kelola kategori pemasukan dan pengeluaran"
+      "subtitle": "Kelola kategori pemasukan dan pengeluaran",
+      "defaultCategory": "Kategori Default"
     },
     "notes": {
       "title": "Catatan Keuangan",
@@ -531,8 +675,8 @@
   },
   "social": {
     "dashboard": {
-      "title": "Pusat Sosial",
-      "subtitle": "Kelola media sosial dan blog Anda",
+      "title": "Social Stack",
+      "subtitle": "Kelola media sosial dan kehadiran blog Anda",
       "totalPosts": "Total Posting",
       "scheduled": "Posting Terjadwal",
       "published": "Posting Dipublikasikan",
@@ -554,8 +698,9 @@
     "manageBlogs": "Kelola Blog",
     "connectedBlogs": "Blog Terhubung",
     "totalPosts": "Total Posting",
+    "confirmDisconnectAccount": "Yakin ingin memutuskan akun ini?",
     "posting": {
-      "title": "Posting Media Sosial",
+      "title": "Social Media Posting",
       "subtitle": "Buat dan jadwalkan posting di semua platform sosial Anda",
       "content": "Konten",
       "platforms": "Platform",
@@ -563,7 +708,38 @@
       "publishNow": "Publikasikan Sekarang",
       "saveDraft": "Simpan Draft",
       "addMedia": "Tambah Media",
-      "preview": "Pratinjau"
+      "preview": "Pratinjau",
+      "selectPlatforms": "Pilih platform untuk posting:",
+      "composerPlaceholder": "Apa yang Anda pikirkan? Tulis postingan Anda di sini...",
+      "aiCaption": "Caption AI",
+      "aiKeywordsHint": "💡 Tulis kata kunci terlebih dahulu untuk hasil yang lebih baik",
+      "dragDropHint": "Tarik & lepas gambar atau video ke sini, atau {{browse}}",
+      "browse": "telusuri",
+      "mediaLimitHint": "Maksimum 10 file • PNG, JPG, GIF, MP4",
+      "hashtagCollections": "Koleksi",
+      "aiSuggest": "Saran AI",
+      "addHashtags": "Tambah hashtag...",
+      "allPlatforms": "Semua Platform"
+    },
+    "success": {
+      "contentGenerated": "Konten berhasil dibuat",
+      "hashtagsGenerated": "Hashtag berhasil dibuat",
+      "draftSaved": "Draft berhasil disimpan",
+      "addedToQueue": "Berhasil ditambahkan ke antrean",
+      "postScheduled": "Postingan berhasil dijadwalkan",
+      "postPublished": "Postingan berhasil dipublikasikan"
+    },
+    "errors": {
+      "aiGeneration": "Gagal membuat konten",
+      "aiHashtags": "Gagal membuat hashtag",
+      "saveDraft": "Gagal menyimpan draft",
+      "addToQueue": "Gagal menambahkan ke antrean",
+      "schedule": "Gagal menjadwalkan postingan",
+      "publish": "Gagal mempublikasikan postingan",
+      "fetchAccounts": "Gagal memuat akun",
+      "fetchPosts": "Gagal memuat postingan terjadwal",
+      "deletePost": "Gagal menghapus postingan",
+      "disconnectAccount": "Gagal memutuskan akun"
     },
     "accounts": {
       "title": "Akun Media Sosial",
@@ -579,23 +755,79 @@
       "subtitle": "Hubungkan dan kelola platform blog Anda"
     },
     "sosmedSettings": {
-      "title": "Pengaturan Media Sosial",
+      "title": "Social Media Settings",
       "subtitle": "Hubungkan dan kelola akun media sosial Anda"
     },
     "schedule": {
-      "title": "Kalender Konten",
+      "title": "Content Calendar",
       "subtitle": "Lihat dan kelola posting media sosial terjadwal Anda"
     },
     "settings": {
       "title": "Pengaturan Sosial",
+      "connectSubtitle": "Hubungkan platform blog Anda dan pelajari cara integrasi dengan CMS populer",
       "subtitle": "Konfigurasi penyedia AI, prompt, dan notifikasi"
+    }
+  },
+  "blog": {
+    "confirmDeleteConnection": "Yakin ingin menghapus koneksi blog ini?",
+    "errors": {
+      "aiActionFailed": "Gagal melakukan aksi AI. Silakan coba lagi.",
+      "connectionFailed": "Tes koneksi gagal",
+      "deleteConnection": "Gagal menghapus koneksi",
+      "enterTitle": "Silakan masukkan judul",
+      "enterTitleAndContent": "Silakan masukkan judul dan konten",
+      "enterTitleFirst": "Silakan masukkan judul terlebih dahulu",
+      "fetchConnections": "Gagal memuat koneksi blog",
+      "fillSiteNameUrl": "Silakan isi nama situs dan URL",
+      "publishFailed": "Gagal mempublikasikan artikel",
+      "saveConnection": "Gagal menyimpan koneksi",
+      "saveDraftFailed": "Gagal menyimpan draft",
+      "scheduleFailed": "Gagal menjadwalkan artikel",
+      "writeContentFirst": "Silakan tulis konten terlebih dahulu"
+    },
+    "success": {
+      "connectionDeleted": "Koneksi berhasil dihapus",
+      "connectionSaved": "Koneksi berhasil disimpan",
+      "connectionVerified": "Koneksi berhasil diverifikasi!",
+      "contentExpanded": "Konten berhasil diperluas",
+      "contentImproved": "Konten berhasil ditingkatkan",
+      "draftSaved": "Draft berhasil disimpan",
+      "outlineGenerated": "Outline berhasil dibuat",
+      "postPublished": "Artikel berhasil dipublikasikan",
+      "postScheduled": "Artikel berhasil dijadwalkan",
+      "seoGenerated": "Metadata SEO berhasil dibuat"
     }
   },
   "settings": {
     "title": "Pengaturan",
+    "subtitle": "Kelola akun Anda",
     "general": "Umum",
     "appearance": "Tampilan",
-    "notifications": "Notifikasi",
+    "notifications": {
+      "title": "Notifikasi",
+      "subtitle": "Kontrol bagaimana Anda menerima pembaruan",
+      "channels": "Saluran Notifikasi",
+      "email": "Notifikasi Email",
+      "emailDesc": "Terima notifikasi melalui email",
+      "push": "Notifikasi Push",
+      "pushDesc": "Terima notifikasi push di perangkat Anda",
+      "browser": "Notifikasi Browser",
+      "browserDesc": "Tampilkan notifikasi di browser Anda",
+      "categories": "Kategori Notifikasi",
+      "projects": "Pembaruan Project",
+      "projectsDesc": "Tugas baru, komentar, dan perubahan project",
+      "tasks": "Pengingat Tugas",
+      "tasksDesc": "Pengingat untuk tugas mendatang dan terlambat",
+      "calendar": "Acara Kalender",
+      "calendarDesc": "Pertemuan dan acara mendatang",
+      "finance": "Peringatan Keuangan",
+      "financeDesc": "Batas anggaran, pengingat tagihan, transaksi",
+      "social": "Media Sosial",
+      "socialDesc": "Status posting, posting terjadwal, interaksi",
+      "digest": "Ringkasan Mingguan",
+      "digestDesc": "Ringkasan aktivitas Anda setiap minggu",
+      "saved": "Pengaturan notifikasi disimpan"
+    },
     "security": "Keamanan",
     "language": "Bahasa",
     "currency": "Mata Uang",
@@ -603,7 +835,74 @@
     "theme": "Tema",
     "darkMode": "Mode Gelap",
     "lightMode": "Mode Terang",
-    "systemDefault": "Ikuti Sistem"
+    "systemDefault": "Ikuti Sistem",
+    "profile": {
+      "title": "Pengaturan Profil",
+      "subtitle": "Kelola informasi pribadi dan bagaimana orang lain melihat Anda.",
+      "name": "Nama Lengkap",
+      "email": "Email",
+      "phone": "Telepon",
+      "bio": "Bio",
+      "bioPlaceholder": "Ceritakan sedikit tentang diri Anda...",
+      "avatarHint": "Klik ikon kamera untuk mengubah foto",
+      "updateSuccess": "Profil berhasil diperbarui!"
+    },
+    "account": {
+      "changePassword": "Ubah Kata Sandi",
+      "changePasswordDesc": "Perbarui kata sandi Anda untuk menjaga keamanan akun.",
+      "currentPassword": "Kata Sandi Saat Ini",
+      "newPassword": "Kata Sandi Baru",
+      "confirmPassword": "Konfirmasi Kata Sandi Baru",
+      "passwordHint": "Minimal 8 karakter",
+      "updatePassword": "Update Kata Sandi",
+      "passwordMismatch": "Kata sandi baru tidak cocok",
+      "passwordTooShort": "Kata sandi minimal 8 karakter",
+      "passwordChanged": "Kata sandi berhasil diubah!",
+      "twoFactor": "Autentikasi Dua Faktor",
+      "twoFactorDesc": "Tambahkan lapisan keamanan ekstra dengan kode verifikasi saat masuk.",
+      "enable2FA": "Aktifkan 2FA",
+      "disable2FA": "Nonaktifkan 2FA",
+      "2faActive": "2FA Aktif",
+      "2faActiveDesc": "Akun Anda dilindungi dengan autentikasi dua faktor.",
+      "2faComingSoon": "Pengaturan 2FA - Segera Hadir!",
+      "sessions": "Sesi Aktif",
+      "sessionsDesc": "Kelola sesi masuk Anda di berbagai perangkat.",
+      "currentSession": "Sesi saat ini",
+      "thisDevice": "Perangkat Ini"
+    },
+    "preferences": {
+      "title": "Preferensi",
+      "subtitle": "Sesuaikan pengalaman dan pengaturan tampilan Anda.",
+      "language": "Bahasa",
+      "theme": "Tema",
+      "dateTime": "Tanggal & Waktu",
+      "timezone": "Zona Waktu",
+      "timezoneHint": "Dideteksi dari browser Anda",
+      "dateFormat": "Format Tanggal",
+      "timeFormat": "Format Waktu",
+      "weekStart": "Minggu Dimulai Pada",
+      "saved": "Preferensi berhasil disimpan!"
+    },
+    "suggestions": {
+      "title": "Saran Fitur",
+      "subtitle": "Bantu kami menjadi lebih baik dengan berbagi ide dan masukan.",
+      "newSuggestion": "Saran Baru",
+      "formTitle": "Apa yang ingin Anda lihat?",
+      "titlePlaceholder": "Judul fitur...",
+      "descPlaceholder": "Jelaskan ide Anda secara mendetail...",
+      "categoryFeature": "Fitur Baru",
+      "categoryImprovement": "Peningkatan",
+      "categoryBug": "Laporan Bug",
+      "categoryOther": "Lainnya",
+      "priorityLow": "Prioritas Rendah",
+      "priorityMedium": "Prioritas Sedang",
+      "priorityHigh": "Prioritas Tinggi",
+      "submit": "Kirim Saran",
+      "successMessage": "Terima kasih! Saran Anda telah dikirim ke admin.",
+      "noSuggestions": "Belum ada saran",
+      "beFirst": "Jadilah yang pertama menyarankan fitur!",
+      "adminResponse": "Respon Admin"
+    }
   },
   "errors": {
     "generic": "Terjadi kesalahan. Silakan coba lagi.",
@@ -611,7 +910,10 @@
     "unauthorized": "Anda tidak memiliki akses",
     "notFound": "Data tidak ditemukan",
     "validation": "Silakan periksa input Anda",
-    "serverError": "Terjadi kesalahan pada server"
+    "serverError": "Terjadi kesalahan pada server",
+    "loadFailed": "Gagal memuat data",
+    "saveFailed": "Gagal menyimpan data",
+    "deleteFailed": "Gagal menghapus data"
   },
   "success": {
     "saved": "Berhasil disimpan",
@@ -631,51 +933,130 @@
   },
   "space": {
     "dashboard": {
-      "title": "Dasbor Ruang",
-      "subtitle": "Perencanaan strategis dan pelacakan tujuan"
+      "title": "Space Dashboard",
+      "subtitle": "Perencanaan strategis dan pelacakan tujuan",
+      "loading": "Memuat dasbor...",
+      "dateLabel": "Tanggal *",
+      "statusLabel": "Status",
+      "upcoming": "Mendatang",
+      "active": "Aktif",
+      "completed": "Selesai",
+      "linkToProject": "Tautkan ke Project (opsional)",
+      "noProject": "Tidak ada project",
+      "currentLabel": "Saat Ini",
+      "targetLabel": "Target *",
+      "unitLabel": "Unit",
+      "deadlineLabel": "Deadline (opsional)",
+      "colorLabel": "Warna"
     },
     "assets": {
-      "title": "Aset Ruang",
-      "subtitle": "Kelola sumber daya untuk project pribadi Anda"
+      "title": "Space Assets",
+      "subtitle": "Kelola sumber daya untuk project pribadi Anda",
+      "deleteWarning": "Tindakan ini tidak dapat dibatalkan."
     },
     "budget": {
-      "title": "Anggaran Ruang",
-      "subtitle": "Alokasikan dan lacak anggaran untuk project Anda"
+      "title": "Space Budget",
+      "subtitle": "Alokasikan dan lacak anggaran untuk project Anda",
+      "deleteWarning": "Tindakan ini tidak dapat dibatalkan."
     },
     "calendar": {
-      "title": "Kalender Ruang",
+      "title": "Space Calendar",
       "subtitle": "Jadwalkan capaian dan lacak tenggat waktu"
     },
     "settings": {
-      "title": "Pengaturan Ruang",
+      "title": "Space Settings",
       "subtitle": "Konfigurasi preferensi workspace project pribadi Anda"
     },
     "finance": {
-      "title": "Keuangan Ruang",
-      "subtitle": "Lacak pendapatan dan pengeluaran dari project yang diluncurkan"
+      "title": "Space Finance",
+      "subtitle": "Lacak pendapatan dan pengeluaran dari project yang diluncurkan",
+      "loading": "Memuat keuangan...",
+      "allTime": "Sepanjang Waktu",
+      "deleteWarning": "Tindakan ini tidak dapat dibatalkan."
     },
     "roadmap": {
-      "title": "Peta Jalan",
-      "subtitle": "Timeline visual untuk capaian project Anda"
+      "title": "Roadmap",
+      "subtitle": "Timeline visual untuk capaian project Anda",
+      "noMilestones": "Belum ada capaian. Tambah capaian untuk memulai roadmap Anda.",
+      "date": "Tanggal",
+      "status": "Status",
+      "upcoming": "Mendatang",
+      "active": "Sedang Jalan",
+      "completed": "Selesai",
+      "linkToProject": "Tautkan ke Project",
+      "noProject": "Tidak ada project",
+      "cannotUndone": "Tindakan ini tidak dapat dibatalkan."
     },
+    "roadmapTimeline": "Roadmap Timeline",
     "targeting": {
-      "title": "Penargetan",
-      "subtitle": "Tetapkan dan lacak tujuan untuk project Anda"
+      "title": "Targeting",
+      "subtitle": "Setel dan lacak tujuan untuk project Anda",
+      "stats": {
+        "total": "Total Target",
+        "completed": "Selesai",
+        "inProgress": "Sedang Jalan",
+        "avgProgress": "Rata-rata Kemajuan"
+      },
+      "noGoals": "Belum ada target. Tambah target untuk mulai melacak.",
+      "createFirst": "Tetapkan target pertama Anda untuk mulai melacak progress!",
+      "confirmDeleteGoal": "Hapus target ini?",
+      "achieved": "Tercapai",
+      "categories": {
+        "revenue": "Pendapatan",
+        "users": "Pengguna",
+        "features": "Fitur",
+        "performance": "Performa",
+        "marketing": "Pemasaran",
+        "other": "Lainnya"
+      }
     },
+    "goalTracking": "Goal Tracking",
     "projects": {
-      "title": "Rencana Project",
-      "subtitle": "Rencanakan dan luncurkan ide project Anda"
+      "title": "Projects Plan",
+      "subtitle": "Rencanakan dan luncurkan ide project Anda",
+      "loading": "Memuat rencana project...",
+      "noProjectsYet": "Belum ada rencana project",
+      "startPlanning": "Mulai merencanakan ide besar Anda berikutnya!",
+      "clickToEdit": "(klik untuk edit)",
+      "descriptionLabel": "Deskripsi (mendukung gambar & tautan)",
+      "status": "Status",
+      "priority": "Prioritas",
+      "targetDate": "Tanggal Target",
+      "color": "Warna",
+      "tags": "Tag",
+      "add": "Tambah",
+      "externalLinks": "Tautan Eksternal",
+      "progress": "Progress",
+      "description": "Deskripsi",
+      "launchDate": "Tanggal Peluncuran",
+      "links": "Tautan",
+      "insertLink": "Masukkan Tautan",
+      "linkUrl": "URL Tautan *",
+      "linkText": "Teks Tautan (opsional)",
+      "cannotUndone": "Tindakan ini tidak dapat dibatalkan.",
+      "insertImage": "Masukkan Gambar",
+      "imageUrl": "URL Gambar *"
     },
-    "newGoal": "Tujuan Baru",
-    "addMilestone": "Tambah Capaian",
-    "newMilestone": "Capaian Baru",
-    "quickTask": "Tugas Cepat",
-    "viewReports": "Lihat Laporan",
+    "newGoal": "New Goal",
+    "addGoal": "Add Goal",
+    "editGoal": "Edit Goal",
+    "goalName": "Nama Target",
+    "currentProgress": "Kemajuan Saat Ini",
+    "targetValue": "Nilai Target",
+    "unit": "Unit",
+    "deadline": "Tenggat Waktu",
+    "linkToProject": "Hubungkan ke Project",
+    "addMilestone": "Add Milestone",
+    "newMilestone": "New Milestone",
+    "quickTask": "Quick Task",
+    "viewReports": "View Reports",
     "confirmDeleteMilestone": "Hapus capaian ini?",
-    "confirmDeleteGoal": "Hapus tujuan ini?",
+    "confirmDeleteProject": "Hapus Rencana Project?",
+    "confirmDeleteGoal": "Hapus Goal?",
     "validation": {
       "titleDateRequired": "Silakan masukkan judul dan tanggal",
-      "nameTargetRequired": "Silakan masukkan nama dan target"
+      "nameTargetRequired": "Silakan masukkan nama dan target",
+      "enterGoalName": "Harap masukkan nama target"
     }
   },
   "currency": {
@@ -688,28 +1069,36 @@
   },
   "system": {
     "settings": {
-      "title": "Pengaturan Sistem",
-      "subtitle": "Panel admin untuk mengelola sistem",
+      "title": "System Administration",
+      "subtitle": "Kelola pengguna, peran, dan konfigurasi sistem",
       "overview": "Ikhtisar",
-      "users": "Management Pengguna",
-      "roles": "Role",
+      "users": "Manajemen Pengguna",
+      "roles": "Peran",
       "activity": "Log Aktivitas",
       "systemSettings": "Pengaturan Sistem",
-      "integrations": "Integrasi"
+      "integrations": "Integrasi",
+      "roleManagement": "Manajemen Peran"
     }
   },
   "assets": {
     "dashboard": {
-      "title": "Assets",
+      "title": "Aset",
       "subtitle": "Kelola akun, aset, dan bookmark Anda"
     },
     "accounts": {
-      "title": "Management Akun",
+      "title": "Manajemen Akun",
       "subtitle": "Simpan dan kelola semua akun Anda dengan aman"
     },
     "management": {
-      "title": "Management Aset",
-      "subtitle": "Simpan teks, gambar, dan link penting"
+      "title": "Manajemen Aset",
+      "subtitle": "Simpan teks, gambar, dan link penting",
+      "addAsset": "Tambah Aset",
+      "assetName": "Nama Aset",
+      "assetType": "Jenis Aset",
+      "content": "Konten",
+      "link": "Tautan",
+      "searchPlaceholder": "Cari aset...",
+      "deleteConfirm": "Yakin ingin menghapus item ini?"
     },
     "bookmark": {
       "title": "Bookmark",
@@ -734,7 +1123,7 @@
       "financeAnalysis": "Analisis Keuangan",
       "savingsTips": "Tips Menabung",
       "ideaPriority": "Prioritaskan Ide",
-      "goalProgress": "Progress Goals",
+      "goalProgress": "Progress Target",
       "postingTime": "Waktu Posting Terbaik",
       "contentIdeas": "Ide Konten",
       "overview": "Ringkasan",
@@ -746,11 +1135,145 @@
       "financeAnalysis": "Analisis keuangan saya bulan ini",
       "savingsTips": "Berikan tips menghemat berdasarkan pengeluaran saya",
       "ideaPriority": "Ide project mana yang harus saya prioritaskan?",
-      "goalProgress": "Analisis progress goals saya dan sarankan langkah selanjutnya",
+      "goalProgress": "Analisis progress target saya dan sarankan langkah selanjutnya",
       "postingTime": "Kapan waktu terbaik untuk posting di Instagram?",
       "contentIdeas": "Berikan ide konten untuk media sosial",
       "overview": "Berikan ringkasan produktivitas saya hari ini",
       "priorities": "Apa yang harus saya prioritaskan hari ini?"
     }
-  }
+  },
+  "crm": {
+    "dashboard": "Dasbor CRM",
+    "dashboardSubtitle": "Kelola klien dan pantau pipeline Anda",
+    "quickAdd": "Tambah Cepat",
+    "quickAddClient": "Tambah Klien Cepat",
+    "clientName": "Nama Klien",
+    "company": "Perusahaan",
+    "stage": "Tahap",
+    "priority": "Prioritas",
+    "email": "Email",
+    "phone": "Telepon",
+    "fullForm": "Formulir Lengkap",
+    "createClient": "Buat Klien",
+    "totalClients": "Total Klien",
+    "newThisMonth": "Baru Bulan Ini",
+    "wonThisMonth": "Berhasil Bulan Ini",
+    "pendingReminders": "Follow-up Tertunda",
+    "pipelineFunnel": "Corong Pipeline",
+    "noClients": "Belum ada klien. Tambahkan klien pertama Anda untuk memulai!",
+    "upcomingFollowups": "Follow-up Mendatang",
+    "noReminders": "Tidak ada pengingat ditemukan",
+    "quickActions": "Aksi Cepat",
+    "viewClients": "Lihat Semua Klien",
+    "managePipeline": "Kelola Pipeline",
+    "clients": "Klien",
+    "analytics": "Analytics",
+    "analyticsSubtitle": "Pantau performa pipeline dan tren klien Anda",
+    "reminders": "Pengingat",
+    "manageReminders": "Kelola pengingat follow-up Anda",
+    "stageStats": "Statistik Tahap",
+    "viewAll": "Lihat Semua",
+    "socialMedia": "Social Media",
+    "notes": "Catatan",
+    "contacts": "Kontak",
+    "activities": "Aktivitas",
+    "activitiesCount": "Jumlah Aktivitas",
+    "activities30d": "Aktivitas (30 hari terakhir)",
+    "noActivitiesYet": "Belum ada aktivitas tercatat",
+    "documents": "Dokumen",
+    "overview": "Ringkasan",
+    "companyDetails": "Detail Perusahaan",
+    "industry": "Industri",
+    "companySize": "Ukuran Perusahaan",
+    "budget": "Rentang Anggaran",
+    "clientType": "Tipe Klien",
+    "source": "Sumber",
+    "website": "Situs Web",
+    "address": "Alamat",
+    "addContact": "Tambah Kontak",
+    "contactName": "Nama",
+    "role": "Peran",
+    "whatsapp": "WhatsApp",
+    "primary": "Kontak Utama",
+    "noContacts": "Belum ada kontak ditambahkan",
+    "activityTimeline": "Timeline Aktivitas",
+    "addActivity": "Tambah Aktivitas",
+    "activityTitle": "Judul...",
+    "activityContent": "Konten (opsional)...",
+    "noActivities": "Belum ada aktivitas",
+    "addReminder": "Tambah Pengingat",
+    "overdue": "Terlambat",
+    "upcoming": "Mendatang",
+    "completed": "Selesai",
+    "overdueReminders": "Pengingat Terlambat",
+    "upcomingReminders": "Pengingat Mendatang",
+    "completedReminders": "Pengingat Selesai",
+    "createReminderHint": "Buat pengingat dari halaman detail klien",
+    "importClients": "Impor Klien",
+    "uploadFile": "Unggah File",
+    "confirmDeleteReminder": "Hapus pengingat ini?",
+    "confirmDeleteDocument": "Hapus dokumen ini?",
+    "confirmDeleteContact": "Yakin ingin menghapus kontak ini?",
+    "confirmDeleteActivity": "Hapus aktivitas ini?",
+    "confirmDelete": "Yakin ingin menghapus klien ini?",
+    "clientNotFound": "Klien tidak ditemukan",
+    "labels": {
+      "backToClients": "← Kembali ke klien",
+      "save": "Simpan",
+      "primary": "UTAMA",
+      "overdue": "TERLAMBAT",
+      "note": "Catatan",
+      "call": "Telepon",
+      "email": "Email",
+      "meeting": "Pertemuan",
+      "message": "Pesan",
+      "task": "Tugas",
+      "noTags": "Tidak ada tag",
+      "notMapped": "-- Tidak dipetakan --"
+    },
+    "periods": {
+      "last7Days": "7 hari terakhir",
+      "last14Days": "14 hari terakhir",
+      "last30Days": "30 hari terakhir",
+      "last60Days": "60 hari terakhir",
+      "last90Days": "90 hari terakhir"
+    },
+    "stats": {
+      "totalActivities": "Total Aktivitas"
+    }
+  },
+  "whatsapp": {
+    "dashboard": "Dasbor WhatsApp",
+    "alerts": "Peringatan Kustom",
+    "settings": "Pengaturan WhatsApp"
+  },
+  "No projects yet. Start your journey!": "Belum ada project. Mulai perjalanan Anda!",
+  "No projects found. Create projects to see reports.": "Project tidak ditemukan. Buat project untuk melihat laporan.",
+  "Dashboard": "Dasbor",
+  "New Project": "Project Baru",
+  "Active Projects": "Project Aktif",
+  "Total Budget": "Total Anggaran",
+  "Tasks Done": "Tugas Selesai",
+  "Productivity": "Produktivitas",
+  "View All": "Lihat Semua",
+  "Task Progress": "Progress Tugas",
+  "Done": "Selesai",
+  "Pending": "Menunggu",
+  "Today": "Hari Ini",
+  "No tasks for today": "Tidak ada tugas untuk hari ini",
+  "Completed": "Selesai",
+  "Progress": "Progress",
+  "Loading...": "Memuat...",
+  "Reporting": "Laporan",
+  "Project Report": "Laporan Project",
+  "Project Status": "Status Project",
+  "Total Projects": "Total Project",
+  "Total Spent": "Total Terpakai",
+  "Task Completion": "Penyelesaian Tugas",
+  "Budget Usage": "Penggunaan Anggaran",
+  "of total budget used": "dari total anggaran digunakan",
+  "Expense Breakdown": "Rincian Pengeluaran",
+  "No expenses recorded": "Belum ada pengeluaran tercatat",
+  "Export Report": "Ekspor Laporan",
+  "Generated Reports": "Laporan yang Dibuat"
 }

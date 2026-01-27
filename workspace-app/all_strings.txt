@@ -1,0 +1,467 @@
+2FA / Two-Factor Authentication Aktif
+Actions
+Active
+Active Alerts
+Active user
+Add
+Add resources to manage for your projects!
+Agency
+AI Assistant Settings
+AI is configured
+Aktifkan Notifikasi
+Aktifkan Pengingat
+Alert Type
+All Categories
+All-in-One Productivity Platform
+Allow Comments
+Allow Two-Factor Authentication
+All Projects
+All Status
+All Time
+All Types
+Always keep your API keys secure and never share them publicly
+Amount (Rp)
+Amount (Rp) *
+Any method
+API Key & device setup
+API Key not set
+Appearance Settings
+Article
+Author
+Automated reports & notifications via WhatsApp
+Auto-Suggest
+Available Alert Types
+B2B
+B2C
+← Back to clients
+Batal
+Bayar dari Akun
+Bayar Tagihan
+before connecting accounts.
+Belum ada akun
+Belum Ada Akun
+Belum Ada Aset
+Belum ada bookmark
+Belum Ada Bookmark
+Belum ada catatan
+Belum Ada Catatan
+Belum ada kategori custom
+Blog Posting
+Budget
+Budget Alert
+Budget Amount (Rp)
+Budget Amount (Rp) *
+Budget by Category
+Budget Usage
+Budget Used
+Bulanan
+📞 Call
+📞 Calls
+Cancel
+Cancelled
+Catatan
+Catatan (opsional)
+Category
+Category *
+Check back soon for new content!
+Checkbox
+Click on an alert type above to create one
+Client / Company *
+Color
+Compact Mode
+Completed
+Configure AI in Settings → AI Configuration to auto-generate content
+Configure defaults for new projects
+Configure your WhatsApp API connection
+Connected Blogs
+Connected to KeWhats API
+Connection failed
+Contact us at legal@workspace.app
+Contact us at privacy@workspace.app
+Content
+Created
+Create folders and add files to get started
+Create New
+Currency
+Current
+Custom Alerts
+Customize your experience
+Daily
+Daily, weekly, monthly reports
+Dark Mode
+Data Management
+Data Stored Securely
+Date
+Date *
+Day of Month
+Day of Week
+Days Left
+Deadline
+Deadline (optional)
+Deadline Proyek
+Deep insights into your financial patterns
+Default
+Default Priority
+Default Project Color
+Default Project Status
+Default Project View
+Default Reporting
+Default Values
+Delete Note?
+Delete Project?
+Description
+Description *
+Description (optional)
+Description (supports images & links)
+Deskripsi
+Development
+Display achieved goals in the targeting page
+Done
+Don't follow links
+Draft
+Drafts
+Dropdown
+Effective: January 2026
+📧 Email
+Email
+Email *
+Email:
+Email Notifications
+✉️ Emails
+Enable AI Assistant
+Enable Notifications
+Enable reader comments
+End Date
+End Date *
+Enterprise (200+)
+Enter your API key to enable AI features
+Error
+Euro (EUR)
+Existing tags:
+Expense
+Expense Breakdown
+Expense History
+Explore our security
+Export Report
+External Links
+Facebook
+Featured Article
+For Meta platforms (Instagram & Facebook), you need a Meta Business App with proper permissions.
+Frekuensi
+🖼️ Gambar
+General Settings
+Generated Reports
+Get AI-powered suggestions and help
+Get AI suggestions while typing
+Get notified about upcoming deadlines
+Get Started Free
+Get your API key from kewhats.app to enable WhatsApp integration
+Google Drive Integration
+Google (Login)
+Grid View
+Hide from search engines
+🔥 High
+High
+Icon
+Idea
+Image URL *
+Income
+Indonesian Rupiah (IDR)
+Ingatkan Sebelum (hari)
+In Progress
+In Review
+Insert Image
+Insert Link
+Instagram
+Isi Catatan
+Jadikan akun default
+Jatuh Tempo *
+Judul *
+Jumlah *
+Jumlah Dibayar
+Kanban View
+Kategori
+Kategori Custom
+Kategori Default
+Keluar dari Akun *
+Kirim notifikasi juga ke email
+Konten
+Kontrol utama untuk semua notifikasi
+Lainnya
+Large (51-200)
+Last 14 days
+Last 30 days
+Last 60 days
+Last 7 days
+Last 90 days
+Last updated: January 2026
+Launch Date
+Launched Projects
+Legend
+🔗 Link
+LinkedIn
+LinkedIn requires an approved LinkedIn Developer Application.
+Links
+Link Text (optional)
+Link to Project
+Link to Project:
+Link to Project (optional)
+Link URL *
+List View
+Loading...
+Loading alerts...
+Loading assets...
+Loading budget data...
+Loading budgets...
+Loading calendar...
+Loading finance...
+Loading goals...
+Loading notes...
+Loading project plans...
+Loading projects...
+Loading roadmap...
+Loading settings...
+Loading WhatsApp...
+📋 Low
+Low
+Maintenance Mode
+Manage your stored data
+📌 Medium
+Medium
+Medium (11-50)
+🤝 Meeting
+🤝 Meetings
+💬 Message
+Messages Sent
+Message Template
+Mingguan
+Minimum Password Length
+Model
+Monthly
+Nama *
+Nama Akun *
+Nama Kategori *
+Nama Tagihan *
+Name *
+Near Limit
+Need an API Key?
+Net Profit
+new Date(r.remindAt)
+New Task
+No accounts connected yet
+No active projects
+No activities found
+No alerts configured yet
+No articles found
+No assets yet
+No budgets set. Set a budget for a project to track spending.
+No budgets yet
+No content available.
+No events on this day
+No expenses recorded
+No expenses recorded. Add an expense to start tracking.
+No expenses recorded yet.
+No goals yet
+No messages sent yet
+No milestones
+No posts scheduled for this day
+No project
+No Project
+No project plans yet
+No projects found. Create projects to see reports.
+No projects to display
+No projects yet. Create your first project!
+No projects yet. Start your journey!
+No recent activity
+No Roles Found
+No scheduled posts
+No tags
+No tasks for today
+📝 Note
+Note:
+📝 Notes
+Notification Settings
+Notifikasi Email
+Notifikasi sebelum tagihan jatuh tempo
+-- Not mapped --
+No transactions yet
+No upcoming events
+No upcoming tasks
+No users found
+Number
+On Hold
+Others
+Over
+Over budget!
+Over Budget
+Overdue
+OVERDUE
+Overview
+Page Not Found
+Password
+Password:
+Pending
+Pengingat deadline proyek mendekati
+Pengingat Tagihan
+Performance
+Period
+Personal
+Phone Number (optional - uses default if empty)
+Pilih akun
+Pilih Akun
+Pilih Kategori
+Planning
+Planning vs Actual
+Post content...
+Post content here...
+Powerful Features
+Powerful Modules
+Prefer Email
+Preferences
+Prefer Phone
+Prefer WhatsApp
+Preview
+Preview:
+Primary
+PRIMARY
+Priority
+Profit
+Profit Margin
+Progress
+Project
+Project *
+Project Analytics
+Project Color
+Project Details
+Project Folders
+Project Name *
+Project Report
+Project Status
+Project Value (Rp) *
+= p.startDate && date
+Published
+Push Notifications
+Quick Actions
+Receive browser notifications
+Receive updates via email
+Recent Activity
+Recent Messages
+Reduce spacing for more content
+Remaining
+Reporting Frequency
+Report issues to security@workspace.app
+Required
+Required for Google Login
+Retry
+Role
+Roles are not configured in the system.
+Save
+Save Changes
+Scheduled
+Scheduled Reports
+Scroll to explore
+Scroll to read
+Search Preview
+Select a blog...
+Select budget
+Select category
+Selected:
+Select project
+Select size
+Select type
+Sematkan catatan ini
+Semua
+Semua Kategori
+Semua Tipe
+Session Timeout
+Settings
+Setup automated WhatsApp notifications
+Setup bill & task reminders
+Set up webhooks to receive notifications when posts are published
+Set your first goal to start tracking progress!
+Share Article
+Show Completed Goals
+Show prominently on homepage
+Small (2-10)
+Social Analytics
+Solo / Individual
+Some platforms may require app review and approval before production use.
+Spent
+Spent Amount (Rp)
+Start allocating budgets for your projects!
+Start Date
+Start Date *
+= startDate && clientDate
+Start Free Trial
+Start planning your next big idea!
+Start tracking income from your launched projects!
+Status
+Success Rate
+Tagihan Berulang
+Tags
+Tahunan
+Tanggal
+Target
+Target *
+Target Date
+Task Completion
+Task Progress
+✅ Tasks
+!t.completed && new Date(t.date)
+📄 Teks
+Test your connection with a draft post before publishing
+Text
+This action cannot be undone.
+This action cannot be undone. Are you sure you want to delete this project?
+This folder is empty
+This Month
+This Quarter
+This Week
+This Year
+Tidak ada notifikasi
+Tidak terkait akun
+TikTok
+Time
+Time (optional)
+Tipe
+Total Activities
+Total Budget
+Total Expenses
+Total Posts
+Total Projects
+Total Spent
+Track your productivity and project performance
+Track your social media performance
+Transactions
+Twitter/X requires a Developer Account with API access enabled.
+Type
+Uncategorized
+Unit
+Upcoming
+Upload Gambar
+URL
+URL *
+URL / Link (optional)
+URL Login
+US Dollar (USD)
+Use dark theme throughout the app
+(Used for data analysis across all modules)
+(Used for enhancing blog/web posts)
+(Used for enhancing social media posts)
+Use environment variables for storing API keys in production
+User
+Username
+Username:
+Users by Role
+View All →
+Views
+⭐ VIP
+VIP
+Warna
+Weekly
+WhatsApp Reporting
+WhatsApp Settings
+Workspace
+X (Twitter)
+Your Alerts
+Your Name

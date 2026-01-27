@@ -1214,7 +1214,6 @@ const SosmedPosting = () => {
                             zIndex: 1000,
                             padding: '20px'
                         }}
-                        onClick={() => setShowScheduleModal(false)}
                     >
                         <motion.div
                             initial={{ scale: 0.9, y: 20 }}

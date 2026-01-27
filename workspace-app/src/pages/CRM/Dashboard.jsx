@@ -283,7 +283,6 @@ const CRMDashboard = () => {
                             zIndex: 1000,
                             padding: 20
                         }}
-                        onClick={() => setShowQuickAdd(false)}
                     >
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}

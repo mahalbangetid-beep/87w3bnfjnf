@@ -276,7 +276,7 @@ const SystemSettings = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}
-                        onClick={() => { setShowUserModal(false); resetUserForm(); }}
+
                     >
                         <motion.div
                             initial={{ scale: 0.9, y: 20 }}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import {
     HiOutlineKey,
@@ -12,6 +12,9 @@ import {
     HiOutlineEyeOff,
     HiOutlineSave,
     HiOutlineTranslate,
+    HiOutlineQuestionMarkCircle,
+    HiOutlineChevronDown,
+    HiOutlineChevronUp,
 } from 'react-icons/hi';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -25,6 +28,7 @@ const WhatsAppSettings = () => {
     const [connectionStatus, setConnectionStatus] = useState(null); // null, 'success', 'error'
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [showTutorial, setShowTutorial] = useState(false);
 
     const [formData, setFormData] = useState({
         apiKey: '',
@@ -305,6 +309,212 @@ const WhatsAppSettings = () => {
                     </motion.button>
                 </a>
             </div>
+
+            {/* Tutorial Section */}
+            <div className="glass-card" style={{ padding: '0', overflow: 'hidden' }}>
+                <motion.button
+                    whileHover={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
+                    onClick={() => setShowTutorial(!showTutorial)}
+                    style={{
+                        width: '100%',
+                        padding: '20px 24px',
+                        border: 'none',
+                        background: 'transparent',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '16px',
+                    }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '10px',
+                            background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                            <HiOutlineQuestionMarkCircle style={{ width: '22px', height: '22px', color: 'white' }} />
+                        </div>
+                        <div style={{ textAlign: 'left' }}>
+                            <h3 style={{ fontWeight: '600', color: 'white', fontSize: '15px', margin: 0 }}>
+                                How to Get API Key & Device ID
+                            </h3>
+                            <p style={{ fontSize: '13px', color: '#9ca3af', margin: '4px 0 0 0' }}>
+                                Step-by-step guide to connect your WhatsApp
+                            </p>
+                        </div>
+                    </div>
+                    {showTutorial ? (
+                        <HiOutlineChevronUp style={{ width: '20px', height: '20px', color: '#9ca3af' }} />
+                    ) : (
+                        <HiOutlineChevronDown style={{ width: '20px', height: '20px', color: '#9ca3af' }} />
+                    )}
+                </motion.button>
+
+                <AnimatePresence>
+                    {showTutorial && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            style={{ overflow: 'hidden' }}
+                        >
+                            <div style={{ padding: '0 24px 24px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                                {/* Tutorial 1: How to Get API Key */}
+                                <div>
+                                    <h4 style={{
+                                        fontSize: '16px',
+                                        fontWeight: '600',
+                                        color: '#25D366',
+                                        marginBottom: '16px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                    }}>
+                                        <span style={{
+                                            width: '24px',
+                                            height: '24px',
+                                            borderRadius: '50%',
+                                            background: 'linear-gradient(135deg, #25D366, #128C7E)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            fontSize: '12px',
+                                            fontWeight: '700',
+                                            color: 'white',
+                                        }}>1</span>
+                                        How to Get Your API Key
+                                    </h4>
+
+                                    <div style={{
+                                        borderRadius: '12px',
+                                        overflow: 'hidden',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        marginBottom: '16px',
+                                    }}>
+                                        <img
+                                            src="/images/tutorapi.png"
+                                            alt="How to get API Key from kewhats.app"
+                                            style={{
+                                                width: '100%',
+                                                height: 'auto',
+                                                display: 'block',
+                                            }}
+                                        />
+                                    </div>
+
+                                    <ol style={{
+                                        margin: 0,
+                                        paddingLeft: '20px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: '10px',
+                                    }}>
+                                        <li style={{ color: '#d1d5db', fontSize: '14px' }}>
+                                            <strong style={{ color: 'white' }}>Register</strong> at{' '}
+                                            <a href="https://kewhats.app" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', textDecoration: 'none' }}>
+                                                kewhats.app
+                                            </a>
+                                        </li>
+                                        <li style={{ color: '#d1d5db', fontSize: '14px' }}>
+                                            <strong style={{ color: 'white' }}>Connect Device</strong> - Link your WhatsApp by scanning QR code
+                                        </li>
+                                        <li style={{ color: '#d1d5db', fontSize: '14px' }}>
+                                            Click <strong style={{ color: 'white' }}>Settings</strong> on the Sidebar
+                                        </li>
+                                        <li style={{ color: '#d1d5db', fontSize: '14px' }}>
+                                            Click <strong style={{ color: 'white' }}>API Key</strong> menu
+                                        </li>
+                                        <li style={{ color: '#d1d5db', fontSize: '14px' }}>
+                                            <strong style={{ color: '#25D366' }}>Copy your API Key</strong> and paste it in the field above
+                                        </li>
+                                    </ol>
+                                </div>
+
+                                {/* Divider */}
+                                <div style={{ height: '1px', backgroundColor: 'rgba(255,255,255,0.1)' }} />
+
+                                {/* Tutorial 2: How to Get Device ID */}
+                                <div>
+                                    <h4 style={{
+                                        fontSize: '16px',
+                                        fontWeight: '600',
+                                        color: '#8b5cf6',
+                                        marginBottom: '16px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                    }}>
+                                        <span style={{
+                                            width: '24px',
+                                            height: '24px',
+                                            borderRadius: '50%',
+                                            background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            fontSize: '12px',
+                                            fontWeight: '700',
+                                            color: 'white',
+                                        }}>2</span>
+                                        How to Get Your Device ID
+                                    </h4>
+
+                                    <div style={{
+                                        borderRadius: '12px',
+                                        overflow: 'hidden',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        marginBottom: '16px',
+                                    }}>
+                                        <img
+                                            src="/images/tutordeviceid.png"
+                                            alt="How to get Device ID from kewhats.app"
+                                            style={{
+                                                width: '100%',
+                                                height: 'auto',
+                                                display: 'block',
+                                            }}
+                                        />
+                                    </div>
+
+                                    <ol style={{
+                                        margin: 0,
+                                        paddingLeft: '20px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: '10px',
+                                    }}>
+                                        <li style={{ color: '#d1d5db', fontSize: '14px' }}>
+                                            Click <strong style={{ color: 'white' }}>"Setup N8N"</strong> on the Sidebar
+                                        </li>
+                                        <li style={{ color: '#d1d5db', fontSize: '14px' }}>
+                                            <strong style={{ color: '#8b5cf6' }}>Copy the Device ID</strong> from the "Select Source Device" area (choose your connected device)
+                                        </li>
+                                    </ol>
+
+                                    <div style={{
+                                        marginTop: '16px',
+                                        padding: '12px 16px',
+                                        borderRadius: '8px',
+                                        backgroundColor: 'rgba(139,92,246,0.1)',
+                                        border: '1px solid rgba(139,92,246,0.3)',
+                                    }}>
+                                        <p style={{ margin: 0, fontSize: '13px', color: '#c4b5fd' }}>
+                                            💡 <strong>Tip:</strong> Make sure your WhatsApp device shows "Connected" status before copying the Device ID.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
             {/* Language Selection - MUST be configured first */}
             <div className="glass-card" style={{ padding: '24px', marginBottom: '0' }}>
                 <h2 style={{ fontSize: '18px', fontWeight: '600', color: 'white', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>

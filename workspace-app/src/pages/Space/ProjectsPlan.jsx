@@ -692,7 +692,6 @@ const ProjectsPlan = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: '20px', overflowY: 'auto' }}
-                        onClick={() => setShowModal(false)}
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -918,7 +917,6 @@ const ProjectsPlan = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: '20px', overflowY: 'auto' }}
-                        onClick={() => setShowViewModal(false)}
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -1056,7 +1054,6 @@ const ProjectsPlan = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
-                        onClick={() => setShowLinkModal(false)}
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -1110,7 +1107,7 @@ const ProjectsPlan = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
-                        onClick={() => setConfirmDelete(null)}
+
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -1146,7 +1143,6 @@ const ProjectsPlan = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110, padding: '20px' }}
-                        onClick={() => setShowImageModal(false)}
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
