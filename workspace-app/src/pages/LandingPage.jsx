@@ -73,14 +73,15 @@ const modules = [
         description: 'Strategic planning with roadmaps, milestones, and targeting',
         features: ['Roadmap', 'Milestones', 'Goals', 'Targeting', 'Projects Plan']
     },
-    {
-        id: 'social',
-        name: 'Social Stack',
-        icon: HiOutlineShare,
-        color: '#ec4899',
-        description: 'Social media management with multi-platform posting and AI content',
-        features: ['Facebook', 'Instagram', 'Twitter/X', 'LinkedIn', 'AI Content']
-    },
+    // Social Stack - Hidden for now
+    // {
+    //     id: 'social',
+    //     name: 'Social Stack',
+    //     icon: HiOutlineShare,
+    //     color: '#ec4899',
+    //     description: 'Social media management with multi-platform posting and AI content',
+    //     features: ['Facebook', 'Instagram', 'Twitter/X', 'LinkedIn', 'AI Content']
+    // },
     {
         id: 'finance',
         name: 'Finance',
@@ -112,7 +113,7 @@ const features = [
     { icon: HiOutlineDocumentText, title: 'Rich Notes', desc: 'Create notes with markdown support', color: '#06b6d4' },
     { icon: HiOutlineCalendar, title: 'Smart Calendar', desc: 'Never miss deadlines', color: '#ec4899' },
     { icon: HiOutlineChartBar, title: 'Analytics & Reports', desc: 'Beautiful charts and insights', color: '#10b981' },
-    { icon: HiOutlineShare, title: 'Social Integration', desc: 'Connect all social platforms', color: '#f59e0b' },
+    // { icon: HiOutlineShare, title: 'Social Integration', desc: 'Connect all social platforms', color: '#f59e0b' }, // Hidden
     { icon: HiOutlineChip, title: 'AI Powered', desc: 'Generate content with AI', color: '#6366f1' },
     { icon: HiOutlineUserCircle, title: 'Password Manager', desc: 'Secure encrypted storage', color: '#ef4444' },
     { icon: HiOutlineBookmark, title: 'Bookmarks', desc: 'Save favorite resources', color: '#14b8a6' },
