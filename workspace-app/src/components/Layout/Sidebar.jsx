@@ -103,6 +103,7 @@ const getModules = (t) => [
         icon: HiOutlineShare,
         color: '#ec4899',
         gradient: 'from-pink-500 to-rose-600',
+        hidden: true, // Hidden for now
         items: [
             { name: t('sidebar.dashboard', 'Dashboard'), path: '/social', icon: HiOutlineViewGrid },
             { name: t('sidebar.posting', 'Sosmed Posting'), path: '/social/sosmed-posting', icon: HiOutlinePencilAlt },
@@ -246,9 +247,10 @@ const Sidebar = () => {
     const isAdmin = user?.Role?.name === 'superadmin' || user?.Role?.name === 'admin';
 
     // Admin only sees System module, regular users see all except System
+    // Also filter out hidden modules
     const visibleModules = isAdmin
-        ? modules.filter(m => m.id === 'system')  // Admin: only System
-        : modules.filter(m => !m.adminOnly);       // Users: all except adminOnly (System)
+        ? modules.filter(m => m.id === 'system' && !m.hidden)  // Admin: only System
+        : modules.filter(m => !m.adminOnly && !m.hidden);       // Users: all except adminOnly and hidden
 
     // Filter items based on search
     const filteredModules = searchQuery
