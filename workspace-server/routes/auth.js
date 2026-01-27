@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
-const { User, Role, ActivityLog } = require('../models');
+const { User, Role, ActivityLog, SystemSetting } = require('../models');
 const { authenticate } = require('../middleware/auth');
 const { OAuth2Client } = require('google-auth-library');
 
@@ -159,9 +159,13 @@ router.post('/google', async (req, res) => {
 
         let payload;
 
+        // Get Google Client ID from database (admin settings)
+        const clientIdSetting = await SystemSetting.findOne({ where: { key: 'GOOGLE_OAUTH_CLIENT_ID' } });
+        const googleClientId = clientIdSetting?.value || process.env.GOOGLE_CLIENT_ID;
+
         // SECURITY: Always verify Google token properly - no fallback allowed
-        if (!process.env.GOOGLE_CLIENT_ID) {
-            console.error('SECURITY: GOOGLE_CLIENT_ID is not configured. Google login is disabled.');
+        if (!googleClientId) {
+            console.error('SECURITY: GOOGLE_OAUTH_CLIENT_ID is not configured. Google login is disabled.');
             return res.status(503).json({
                 message: 'Google login is temporarily unavailable. Please use email/password login.',
                 code: 'GOOGLE_AUTH_UNAVAILABLE'
@@ -169,10 +173,10 @@ router.post('/google', async (req, res) => {
         }
 
         try {
-            const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+            const client = new OAuth2Client(googleClientId);
             const ticket = await client.verifyIdToken({
                 idToken: token,
-                audience: process.env.GOOGLE_CLIENT_ID
+                audience: googleClientId
             });
             payload = ticket.getPayload();
         } catch (verifyError) {
