@@ -1212,7 +1212,7 @@ router.get('/analytics/overview', authenticateToken, async (req, res) => {
             where: {
                 userId,
                 isDeleted: false,
-                [Op.and]: sequelize.literal(`clients.created_at >= '${startOfMonth.toISOString()}'`)
+                [Op.and]: sequelize.literal(`Client.created_at >= '${startOfMonth.toISOString()}'`)
             }
         });
 
@@ -1229,7 +1229,7 @@ router.get('/analytics/overview', authenticateToken, async (req, res) => {
                     userId,
                     stageId: wonStage.id,
                     isDeleted: false,
-                    [Op.and]: sequelize.literal(`clients.updated_at >= '${startOfMonth.toISOString()}'`)
+                    [Op.and]: sequelize.literal(`Client.updated_at >= '${startOfMonth.toISOString()}'`)
                 }
             });
         }
