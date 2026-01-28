@@ -313,13 +313,17 @@ router.get('/clients', authenticateToken, async (req, res) => {
 
         const offset = (parseInt(page) - 1) * parseInt(limit);
 
+        // Map sortBy to actual column name
+        const sortColumn = sortBy === 'createdAt' ? 'created_at' :
+            sortBy === 'updatedAt' ? 'updated_at' : sortBy;
+
         const { count, rows } = await Client.findAndCountAll({
             where,
             include: [
                 { model: ClientPipelineStage, as: 'stage', attributes: ['id', 'name', 'color', 'icon'] },
                 { model: ClientContact, as: 'contacts', where: { isPrimary: true }, required: false }
             ],
-            order: [[sortBy, sortOrder]],
+            order: [[sortColumn, sortOrder]],
             limit: parseInt(limit),
             offset
         });
@@ -1208,7 +1212,7 @@ router.get('/analytics/overview', authenticateToken, async (req, res) => {
             where: {
                 userId,
                 isDeleted: false,
-                createdAt: { [Op.gte]: startOfMonth }
+                [Op.and]: sequelize.literal(`clients.created_at >= '${startOfMonth.toISOString()}'`)
             }
         });
 
@@ -1225,7 +1229,7 @@ router.get('/analytics/overview', authenticateToken, async (req, res) => {
                     userId,
                     stageId: wonStage.id,
                     isDeleted: false,
-                    updatedAt: { [Op.gte]: startOfMonth }
+                    [Op.and]: sequelize.literal(`clients.updated_at >= '${startOfMonth.toISOString()}'`)
                 }
             });
         }
