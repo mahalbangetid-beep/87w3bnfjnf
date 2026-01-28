@@ -18,6 +18,14 @@ import {
 import { notesAPI, projectsAPI } from '../../services/api';
 import { NotesEmptyState } from '../../components/UI';
 
+// Helper to safely parse labels
+const parseLabels = (labels) => {
+    if (Array.isArray(labels)) return labels;
+    if (typeof labels === 'string' && labels) {
+        try { return JSON.parse(labels); } catch { return []; }
+    }
+    return [];
+};
 const colorOptions = ['#8b5cf6', '#06b6d4', '#ec4899', '#10b981', '#f59e0b', '#ef4444', '#6366f1', '#14b8a6'];
 
 const Notes = () => {
@@ -315,9 +323,9 @@ const Notes = () => {
             </p>
 
             {/* Labels */}
-            {(note.labels || []).length > 0 && (
+            {parseLabels(note.labels).length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
-                    {note.labels.map((label) => (
+                    {parseLabels(note.labels).map((label) => (
                         <span key={label} style={{ padding: '2px 8px', borderRadius: '20px', fontSize: '10px', backgroundColor: 'rgba(255,255,255,0.1)', color: '#d1d5db' }}>
                             {label}
                         </span>
