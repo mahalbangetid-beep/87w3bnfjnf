@@ -9,6 +9,15 @@ import { financeAPI } from '../../services/api';
 
 const COLORS = ['#8b5cf6', '#ec4899', '#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#06b6d4', '#6b7280'];
 
+// Helper to safely parse tags
+const parseTags = (tags) => {
+    if (Array.isArray(tags)) return tags;
+    if (typeof tags === 'string' && tags) {
+        try { return JSON.parse(tags); } catch { return []; }
+    }
+    return [];
+};
+
 const Notes = () => {
     const { t, i18n } = useTranslation();
     const [notes, setNotes] = useState([]);
@@ -38,7 +47,12 @@ const Notes = () => {
                 filter === 'pinned' ? { isPinned: 'true', isArchived: 'false' } :
                     { isArchived: 'false' };
             const data = await financeAPI.getNotes(params);
-            setNotes(data);
+            // Parse tags if string
+            const parsedNotes = (data || []).map(note => ({
+                ...note,
+                tags: parseTags(note.tags)
+            }));
+            setNotes(parsedNotes);
         } catch (error) {
             console.error('Error fetching notes:', error);
         } finally {
@@ -67,7 +81,7 @@ const Notes = () => {
             type: note.type,
             color: note.color || '#8b5cf6',
             isPinned: note.isPinned,
-            tags: note.tags || []
+            tags: parseTags(note.tags)
         });
         setShowModal(true);
     };
@@ -405,9 +419,9 @@ const NoteCard = ({ note, index, language, onEdit, onDelete, onTogglePin, onTogg
                 {note.content}
             </p>
         )}
-        {note.tags && note.tags.length > 0 && (
+        {parseTags(note.tags).length > 0 && (
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '12px' }}>
-                {note.tags.map(tag => (
+                {parseTags(note.tags).map(tag => (
                     <span key={tag} style={{ padding: '2px 8px', borderRadius: '4px', backgroundColor: 'rgba(139,92,246,0.15)', color: '#a78bfa', fontSize: '11px' }}>
                         {tag}
                     </span>
