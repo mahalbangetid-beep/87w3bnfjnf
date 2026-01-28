@@ -9,6 +9,15 @@ import { assetsAPI } from '../../services/api';
 
 const COLORS = ['#f59e0b', '#10b981', '#8b5cf6', '#ef4444', '#3b82f6', '#06b6d4', '#ec4899', '#6b7280'];
 
+// Helper to safely parse tags
+const parseTags = (tags) => {
+    if (Array.isArray(tags)) return tags;
+    if (typeof tags === 'string' && tags) {
+        try { return JSON.parse(tags); } catch { return []; }
+    }
+    return [];
+};
+
 const NOTE_TYPES = [
     { key: 'update', label: 'Update', color: '#f59e0b', icon: '🔄' },
     { key: 'reminder', label: 'Pengingat', color: '#3b82f6', icon: '🔔' },
@@ -461,9 +470,9 @@ const NoteCard = ({ note, index, onEdit, onDelete, onTogglePin, onToggleArchive,
                 </p>
             )}
 
-            {note.tags && note.tags.length > 0 && (
+            {parseTags(note.tags).length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '10px' }}>
-                    {note.tags.map(tag => (
+                    {parseTags(note.tags).map(tag => (
                         <span key={tag} style={{ padding: '2px 8px', borderRadius: '4px', backgroundColor: 'rgba(245,158,11,0.15)', color: '#fbbf24', fontSize: '10px' }}>
                             {tag}
                         </span>
