@@ -63,22 +63,7 @@
             "purpose": "maskable any"
         }
     ],
-    "screenshots": [
-        {
-            "src": "/screenshots/desktop.png",
-            "sizes": "1280x720",
-            "type": "image/png",
-            "form_factor": "wide",
-            "label": "Workspace Dashboard"
-        },
-        {
-            "src": "/screenshots/mobile.png",
-            "sizes": "390x844",
-            "type": "image/png",
-            "form_factor": "narrow",
-            "label": "Workspace Mobile"
-        }
-    ],
+    "screenshots": [],
     "shortcuts": [
         {
             "name": "Dashboard",
