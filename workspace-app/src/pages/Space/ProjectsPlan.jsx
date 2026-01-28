@@ -87,7 +87,16 @@ const ProjectsPlan = () => {
         try {
             setLoading(true);
             const data = await projectPlansAPI.getAll();
-            setProjects(data || []);
+            // Parse tags if it's a string (JSON from backend)
+            const parsedProjects = (data || []).map(project => ({
+                ...project,
+                tags: Array.isArray(project.tags)
+                    ? project.tags
+                    : (typeof project.tags === 'string' && project.tags
+                        ? JSON.parse(project.tags)
+                        : [])
+            }));
+            setProjects(parsedProjects);
         } catch {
             setErrorWithTimeout(t('errors.generic', 'Failed to load project plans'));
         } finally {
