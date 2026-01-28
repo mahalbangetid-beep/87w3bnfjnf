@@ -140,7 +140,7 @@ const Notes = () => {
             title: note.title || '',
             content: note.content || '',
             color: note.color || '#8b5cf6',
-            labels: note.labels || [],
+            labels: parseLabels(note.labels),
             pinned: note.pinned || false,
         });
         setShowModal(true);
